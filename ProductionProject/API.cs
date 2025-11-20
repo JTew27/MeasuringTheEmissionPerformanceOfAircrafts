@@ -42,6 +42,20 @@ namespace ProductionProject
             var parsed = JToken.Parse(responseJson);
             Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
 
+            //flights flightData = JsonConvert.DeserializeObject<flights>(responseJson);
+            
+
+            foreach (JArray obj in parsed["states"])
+            {
+                string callsign = (string)obj[1];
+                double latitude = (double)obj[6];
+                double longitude = (double)obj[5];
+                Debug.WriteLine($"Callsign: {callsign}, Latitude: {latitude}, Longitude: {longitude}");
+                
+            }
+
+
+
             return responseJson;
 
         }
