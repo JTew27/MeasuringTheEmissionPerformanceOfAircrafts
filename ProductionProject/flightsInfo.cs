@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace ProductionProject
 {
-    public class flights
+    public class flightsInfo
     {
         public string icao24 { get; set; }
         public string callsign { get; set; }

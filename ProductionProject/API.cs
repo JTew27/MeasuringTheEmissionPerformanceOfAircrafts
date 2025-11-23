@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace ProductionProject
 
         }
 
-        public async Task<string> GetStatesAsync()
+        public async Task<List<flightsInfo>> GetStatesAsync()
         {
             Debug.WriteLine("Running");
             //states all provides all current state vectors from all aircrafts
@@ -44,19 +45,29 @@ namespace ProductionProject
 
             //flights flightData = JsonConvert.DeserializeObject<flights>(responseJson);
             
+            List<flightsInfo> flightList = new List<flightsInfo>();
 
             foreach (JArray obj in parsed["states"])
             {
-                string callsign = (string)obj[1];
-                double latitude = (double)obj[6];
-                double longitude = (double)obj[5];
-                Debug.WriteLine($"Callsign: {callsign}, Latitude: {latitude}, Longitude: {longitude}");
+                flightList.Add( new flightsInfo
+                {
+
+                 icao24 = (string)obj[0],
+                 callsign = (string)obj[1],
+                 origin_country = (string)obj[2],
+                 time_position = (long)(obj[3] ?? 0),
+                 last_contact = (long)(obj[4] ?? 0),
+                 longitude = (double)(obj[5] ?? 0),
+                 latitude = (double)(obj[6] ?? 0),
+                 on_ground = (bool)(obj[8] ?? false),
+                });
+               
+                //Debug.WriteLine($"Callsign:{callsign}, Latitude: {latitude}, Longitude: {longitude}");
                 
             }
 
-
-
-            return responseJson;
+            //return responseJson;
+            return flightList;
 
         }
 

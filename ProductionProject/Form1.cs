@@ -8,7 +8,9 @@ namespace ProductionProject
     public partial class Form1 : Form
     {
         private API api;
-
+        private flightsInfo flights;
+        private List<flightsInfo> flightList;
+        public string json;
         public Form1()
         {
             InitializeComponent();
@@ -20,8 +22,10 @@ namespace ProductionProject
         {
             try
             {
-                string json = await api.GetStatesAsync();
+                flightList = await api.GetStatesAsync();
                 Debug.WriteLine("API was called");
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = flightList;
             }
 
             catch (Exception er)
@@ -30,6 +34,25 @@ namespace ProductionProject
             }
         }
 
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
+
+        private async void Refresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                flightList = await api.GetStatesAsync();
+                Debug.WriteLine("API was called");
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = flightList;
+            }
+
+            catch (Exception er)
+            {
+                Debug.WriteLine("Error: " + er.Message);
+            }
+        }
     }
 }
