@@ -8,6 +8,7 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 
+
 namespace ProductionProject
 {
     public partial class Form1 : Form
@@ -22,9 +23,17 @@ namespace ProductionProject
         private GMapOverlay aircraftOverlay;
         //GMap.NET.WindowsForms.GMapControl gmap;
 
+        private System.Windows.Forms.Timer apiTimer;
+
         public Form1()
         {
             InitializeComponent();
+
+            apiTimer = new System.Windows.Forms.Timer();
+            apiTimer.Interval = 5000; // 5 seconds
+            apiTimer.Tick += apiTimer_Tick;
+            apiTimer.Start();
+
             api = new API();
             this.Load += Form1_Load;
 
@@ -41,13 +50,24 @@ namespace ProductionProject
             splitContainer1.Panel1.Controls.Add(gmap);
             gMapControl1.Dock = DockStyle.Fill;
 
-            
 
+            aircraftOverlay = new GMapOverlay("aircrafts");
+            GMapMarker marker = new GMarkerGoogle(new PointLatLng(52.7888, -1.2095),GMarkerGoogleType.blue_pushpin);
+            marker.ToolTipText = "Hello There";
+
+
+            GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(53.7888, -1.2090), new Bitmap("C:\\Users\\ianct\\source\\repos\\ProductionProject\\PlaneBlueStripeTopView.jpg"));
+            
+            
+            
+            aircraftOverlay.Markers.Add(marker);
+            aircraftOverlay.Markers.Add(marker1);
+            gMapControl1.Overlays.Add(aircraftOverlay);
 
 
 
         }
-
+        
         private async void Form1_Load(object sender, EventArgs e)
         {
             try
@@ -105,7 +125,20 @@ namespace ProductionProject
             }
         }
 
-       
+       private async void apiTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                flightList = await api.GetStatesAsync();
+                Debug.WriteLine("API was called");
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = flightList;
+            }
+            catch (Exception er)
+            {
+                Debug.WriteLine("Error: " + er.Message);
+            }
+        }
 
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {

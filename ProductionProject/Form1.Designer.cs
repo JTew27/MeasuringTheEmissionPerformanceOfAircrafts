@@ -158,6 +158,7 @@
             // 
             // gMapControl1
             // 
+            gMapControl1.AutoSize = true;
             gMapControl1.Bearing = 0F;
             gMapControl1.CanDragMap = true;
             gMapControl1.EmptyTileColor = Color.Navy;
@@ -214,6 +215,7 @@
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
