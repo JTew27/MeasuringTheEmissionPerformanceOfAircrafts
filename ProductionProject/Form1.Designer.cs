@@ -30,11 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             Refresh = new Button();
-            pictureBox1 = new PictureBox();
-            splitContainer2 = new SplitContainer();
-            aPIBindingSource = new BindingSource(components);
             dataGridView1 = new DataGridView();
-            flightsInfoBindingSource = new BindingSource(components);
             icao24DataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             callsign = new DataGridViewTextBoxColumn();
             origincountryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -43,19 +39,24 @@
             longitudeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             latitudeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ongroundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
-            splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
+            flightsInfoBindingSource = new BindingSource(components);
+            aPIBindingSource = new BindingSource(components);
+            gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            splitContainer1 = new SplitContainer();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // Refresh
             // 
             Refresh.BackColor = Color.FromArgb(128, 255, 128);
             Refresh.BackgroundImageLayout = ImageLayout.None;
-            Refresh.Location = new Point(556, 519);
+            Refresh.Location = new Point(871, 744);
             Refresh.Name = "Refresh";
             Refresh.Size = new Size(133, 42);
             Refresh.TabIndex = 1;
@@ -63,41 +64,17 @@
             Refresh.UseVisualStyleBackColor = false;
             Refresh.Click += Refresh_Click;
             // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(200, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(844, 487);
-            pictureBox1.TabIndex = 2;
-            pictureBox1.TabStop = false;
-            // 
-            // splitContainer2
-            // 
-            splitContainer2.Location = new Point(972, 12);
-            splitContainer2.Name = "splitContainer2";
-            splitContainer2.Size = new Size(225, 597);
-            splitContainer2.SplitterDistance = 75;
-            splitContainer2.TabIndex = 4;
-            // 
-            // aPIBindingSource
-            // 
-            aPIBindingSource.DataSource = typeof(API);
-            // 
             // dataGridView1
             // 
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn, callsign, origincountryDataGridViewTextBoxColumn, timepositionDataGridViewTextBoxColumn, lastcontactDataGridViewTextBoxColumn, longitudeDataGridViewTextBoxColumn, latitudeDataGridViewTextBoxColumn, ongroundDataGridViewCheckBoxColumn });
             dataGridView1.DataSource = flightsInfoBindingSource;
-            dataGridView1.Location = new Point(6, 567);
+            dataGridView1.Location = new Point(-1, 137);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(1256, 219);
+            dataGridView1.Size = new Size(814, 171);
             dataGridView1.TabIndex = 5;
-            // 
-            // flightsInfoBindingSource
-            // 
-            flightsInfoBindingSource.DataSource = typeof(flightsInfo);
             // 
             // icao24DataGridViewTextBoxColumn
             // 
@@ -171,31 +148,80 @@
             ongroundDataGridViewCheckBoxColumn.ReadOnly = true;
             ongroundDataGridViewCheckBoxColumn.Width = 150;
             // 
+            // flightsInfoBindingSource
+            // 
+            flightsInfoBindingSource.DataSource = typeof(flightsInfo);
+            // 
+            // aPIBindingSource
+            // 
+            aPIBindingSource.DataSource = typeof(API);
+            // 
+            // gMapControl1
+            // 
+            gMapControl1.Bearing = 0F;
+            gMapControl1.CanDragMap = true;
+            gMapControl1.EmptyTileColor = Color.Navy;
+            gMapControl1.GrayScaleMode = false;
+            gMapControl1.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            gMapControl1.LevelsKeepInMemory = 5;
+            gMapControl1.Location = new Point(3, 3);
+            gMapControl1.MarkersEnabled = true;
+            gMapControl1.MaxZoom = 2;
+            gMapControl1.MinZoom = 2;
+            gMapControl1.MouseWheelZoomEnabled = true;
+            gMapControl1.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            gMapControl1.Name = "gMapControl1";
+            gMapControl1.NegativeMode = false;
+            gMapControl1.PolygonsEnabled = true;
+            gMapControl1.RetryLoadTile = 0;
+            gMapControl1.RoutesEnabled = true;
+            gMapControl1.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            gMapControl1.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
+            gMapControl1.ShowTileGridLines = false;
+            gMapControl1.Size = new Size(919, 720);
+            gMapControl1.TabIndex = 6;
+            gMapControl1.Zoom = 0D;
+            gMapControl1.Load += gMapControl1_Load;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Location = new Point(2, -2);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(gMapControl1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(dataGridView1);
+            splitContainer1.Panel2.Paint += splitContainer1_Panel2_Paint;
+            splitContainer1.Size = new Size(1764, 726);
+            splitContainer1.SplitterDistance = 925;
+            splitContainer1.TabIndex = 7;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(1274, 798);
-            Controls.Add(dataGridView1);
-            Controls.Add(splitContainer2);
-            Controls.Add(pictureBox1);
+            ClientSize = new Size(1791, 798);
+            Controls.Add(splitContainer1);
             Controls.Add(Refresh);
             Name = "Form1";
             Text = "Flight Tracker";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
-            splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)aPIBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)aPIBindingSource).EndInit();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
         private Button Refresh;
-        private PictureBox pictureBox1;
-        private SplitContainer splitContainer2;
         private BindingSource aPIBindingSource;
         private DataGridView dataGridView1;
         private BindingSource flightsInfoBindingSource;
@@ -208,5 +234,7 @@
         private DataGridViewTextBoxColumn longitudeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn latitudeDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn ongroundDataGridViewCheckBoxColumn;
+        private GMap.NET.WindowsForms.GMapControl gMapControl1;
+        private SplitContainer splitContainer1;
     }
 }
