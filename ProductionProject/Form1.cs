@@ -13,7 +13,7 @@ namespace ProductionProject
 {
     public partial class Form1 : Form
     {
-      
+
         private flightsInfo flights;
         private List<flightsInfo> flightList;
         public string json;
@@ -38,12 +38,12 @@ namespace ProductionProject
             apiTimer.Tick += apiTimer_Tick;
             apiTimer.Start();
 
-           
+
 
             this.Load += Form1_Load;
 
             gMapControl1.MapProvider = GMapProviders.GoogleMap;
-            
+
             //gmap.ShowCenter = false;
             gMapControl1.MinZoom = 4;
             gMapControl1.MaxZoom = 20;
@@ -63,19 +63,19 @@ namespace ProductionProject
             GMapMarker markerT = new GMarkerGoogle(new PointLatLng(52.7888, -1.2095), new Bitmap("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png"));
             markerT.ToolTipText = "Hello There";
             // GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(53.7888, -1.2090), new Bitmap("C:\\Users\\ianct\\source\\repos\\ProductionProject\\PlaneBlueStripeTopView.jpg"));
-            
-            
-            
+
+
+
             aircraftOverlay.Markers.Add(markerT);
-           // aircraftOverlay.Markers.Add(marker1);
-            
-            
-           gMapControl1.Overlays.Add(aircraftOverlay);
-           gMapControl1.Overlays.Add(airportOverlay);
+            // aircraftOverlay.Markers.Add(marker1);
+
+
+            gMapControl1.Overlays.Add(aircraftOverlay);
+            gMapControl1.Overlays.Add(airportOverlay);
 
 
         }
-        
+
         private async void Form1_Load(object sender, EventArgs e)
         {
             try
@@ -85,11 +85,12 @@ namespace ProductionProject
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = flightList;
 
-               // map = new Bitmap("leedsMapDemo.png");
+                // map = new Bitmap("leedsMapDemo.png");
 
                 updateFlights(flightList);
                 flightPath(flightList);
                 drawAirport();
+                //drawDetectArea();
             }
 
             catch (Exception er)
@@ -100,10 +101,10 @@ namespace ProductionProject
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            
+
 
         }
-       
+
 
         private async void Refresh_Click(object sender, EventArgs e)
         {
@@ -111,7 +112,7 @@ namespace ProductionProject
             {
                 flightList = await apiWAuthorisation.FetchFlightDataAsync();
                 Debug.WriteLine("API was called");
-                dataGridView1.DataSource = null;
+                //dataGridView1.DataSource = null;
                 dataGridView1.DataSource = flightList;
             }
 
@@ -119,9 +120,10 @@ namespace ProductionProject
             {
                 Debug.WriteLine("Error: " + er.Message);
             }
+
         }
 
-       private async void apiTimer_Tick(object sender, EventArgs e)
+        private async void apiTimer_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -162,7 +164,7 @@ namespace ProductionProject
                         {
                             Tag = flight.icao24,
                             ToolTipText = flight.callsign
-                            
+
                         };
 
                         aircraftOverlay.Markers.Add(marker);
@@ -182,11 +184,11 @@ namespace ProductionProject
 
         private void drawAirport()
         {
-            
+
             List<PointLatLng> airportPoints = new List<PointLatLng>
             {
                 new PointLatLng(53.874490, -1.670046), // Leeds Bradford Airport
-                new PointLatLng(53.872824, -1.673219), 
+                new PointLatLng(53.872824, -1.673219),
                 new PointLatLng(53.857594, -1.650133),
                 new PointLatLng(53.859197, -1.647613),
                 new PointLatLng(53.866195, -1.648335),
@@ -198,6 +200,21 @@ namespace ProductionProject
             LdsAirport.Fill = new SolidBrush(Color.FromArgb(50, Color.Blue));
             //gmap.Overlays.Add(airportOverlay);
         }
+
+        private void drawDetectArea()
+        {
+            airportOverlay.Polygons.Clear();
+            List<PointLatLng> detectAreaPoints = new List<PointLatLng>
+            {
+                new PointLatLng(54.0, -2.0), // Top-left corner
+                new PointLatLng(54.0, 0.0), // Top-right corner
+                new PointLatLng(53.6, 0.0), // Bottom-right corner
+                new PointLatLng(53.6, -2.0) // Bottom-left corner
+            };
+            GMapPolygon detectArea = new GMapPolygon(detectAreaPoints, "Detection Area");
+            airportOverlay.Polygons.Add(detectArea);
+            detectArea.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
+        }
         private void flightPath(List<flightsInfo> flights)
         {
 
@@ -205,7 +222,7 @@ namespace ProductionProject
             {
                 if (flight.latitude != 0.0 && flight.longitude != 0.0)
                 {
-                    
+
 
                     List<PointLatLng> points = new List<PointLatLng>();
                     PointLatLng startPoint = new PointLatLng(flight.latitude, flight.longitude);
@@ -223,18 +240,34 @@ namespace ProductionProject
         private void button1_Click(object sender, EventArgs e)
         {
             flightPath(flightList);
+            
+            Debug.WriteLine("Button Clicked");
         }
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
         }
 
+        private void gMapControl_OnPolygonClick(GMapPolygon LdsAirport, MouseEventArgs e)
+        {
+            MessageBox.Show("You clicked on polygon: " + LdsAirport.Name);
+        }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
+        private void ShowDetectBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowDetectBox.Checked)
+            {
+                drawDetectArea();
+            }
+            else { 
+               airportOverlay.Polygons.Clear();
+                drawAirport();
+            }
+        }
 
-
-    
+        
     }
 }

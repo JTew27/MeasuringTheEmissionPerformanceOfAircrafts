@@ -43,6 +43,8 @@
             aPIBindingSource = new BindingSource(components);
             gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             splitContainer1 = new SplitContainer();
+            button1 = new Button();
+            ShowDetectBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -73,7 +75,7 @@
             dataGridView1.Location = new Point(-1, 137);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(814, 171);
+            dataGridView1.Size = new Size(814, 233);
             dataGridView1.TabIndex = 5;
             // 
             // icao24DataGridViewTextBoxColumn
@@ -195,11 +197,33 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(ShowDetectBox);
+            splitContainer1.Panel2.Controls.Add(button1);
             splitContainer1.Panel2.Controls.Add(dataGridView1);
             splitContainer1.Panel2.Paint += splitContainer1_Panel2_Paint;
             splitContainer1.Size = new Size(1764, 726);
             splitContainer1.SplitterDistance = 925;
             splitContainer1.TabIndex = 7;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(31, 38);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 6;
+            button1.Text = "Flight Path ";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // ShowDetectBox
+            // 
+            ShowDetectBox.AutoSize = true;
+            ShowDetectBox.Location = new Point(353, 51);
+            ShowDetectBox.Name = "ShowDetectBox";
+            ShowDetectBox.Size = new Size(197, 29);
+            ShowDetectBox.TabIndex = 7;
+            ShowDetectBox.Text = "Show Detection Box";
+            ShowDetectBox.UseVisualStyleBackColor = true;
+            ShowDetectBox.CheckedChanged += ShowDetectBox_CheckedChanged;
             // 
             // Form1
             // 
@@ -217,6 +241,7 @@
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
@@ -238,5 +263,7 @@
         private DataGridViewCheckBoxColumn ongroundDataGridViewCheckBoxColumn;
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
         private SplitContainer splitContainer1;
+        private Button button1;
+        private CheckBox ShowDetectBox;
     }
 }

@@ -27,7 +27,10 @@ namespace ProductionProject
             string baseAddress = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
 
             string grant_type = "client_credentials";
-            
+            string client_id = "jtew-api-client";
+            string REMOVED = "YaXalxvqHpJxdG5Pu6XNJa8cl1AK9Bip";
+
+
             var requestBody = new Dictionary<string, string>
             {
                 { "grant_type", grant_type },
@@ -39,7 +42,6 @@ namespace ProductionProject
             var responseJson = await response.Content.ReadAsStringAsync();
             Token token = JsonConvert.DeserializeObject<Token>(responseJson);
 
-            //token.ExpirationTime = DateTime.UtcNow.AddSeconds(token.ExpiresIn);
 
             return token;
 
