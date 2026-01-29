@@ -21,6 +21,8 @@ namespace ProductionProject
 
         private GMapControl gmap;
         private GMapOverlay aircraftOverlay;
+        private GMapOverlay airportOverlay;
+
         //GMap.NET.WindowsForms.GMapControl gmap;
 
         private System.Windows.Forms.Timer apiTimer;
@@ -36,14 +38,12 @@ namespace ProductionProject
             apiTimer.Tick += apiTimer_Tick;
             apiTimer.Start();
 
-            //api = new API();
            
 
             this.Load += Form1_Load;
 
-            //gmap = new GMapControl();
             gMapControl1.MapProvider = GMapProviders.GoogleMap;
-            //gmap.Dock = DockStyle.Fill;
+            
             //gmap.ShowCenter = false;
             gMapControl1.MinZoom = 4;
             gMapControl1.MaxZoom = 20;
@@ -52,6 +52,8 @@ namespace ProductionProject
             gMapControl1.DragButton = MouseButtons.Left;
 
             aircraftOverlay = new GMapOverlay("aircrafts");
+            airportOverlay = new GMapOverlay("airports");
+
             splitContainer1.Panel1.Controls.Add(gmap);
             gMapControl1.Dock = DockStyle.Fill;
 
@@ -60,9 +62,7 @@ namespace ProductionProject
 
             GMapMarker markerT = new GMarkerGoogle(new PointLatLng(52.7888, -1.2095), new Bitmap("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png"));
             markerT.ToolTipText = "Hello There";
-
-
-           // GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(53.7888, -1.2090), new Bitmap("C:\\Users\\ianct\\source\\repos\\ProductionProject\\PlaneBlueStripeTopView.jpg"));
+            // GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(53.7888, -1.2090), new Bitmap("C:\\Users\\ianct\\source\\repos\\ProductionProject\\PlaneBlueStripeTopView.jpg"));
             
             
             
@@ -71,7 +71,7 @@ namespace ProductionProject
             
             
            gMapControl1.Overlays.Add(aircraftOverlay);
-
+           gMapControl1.Overlays.Add(airportOverlay);
 
 
         }
@@ -89,6 +89,7 @@ namespace ProductionProject
 
                 updateFlights(flightList);
                 flightPath(flightList);
+                drawAirport();
             }
 
             catch (Exception er)
@@ -99,21 +100,10 @@ namespace ProductionProject
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //Debug.WriteLine("painting");
-
-
-            //pictureBox1.Image = Bitmap.FromFile("leedsMapDemo.png");
+            
 
         }
-        // private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        //{
-        //   Pen pen = new Pen(Color.Red, 3);
-        //   Bitmap myBitmap = new Bitmap("C:/Users/ianct/source/repos/ProductionProject/LeedsMapDemo.png.png");
-        //   Graphics g = Graphics.FromImage(myBitmap);
-        //   e.Graphics.DrawImage(myBitmap, 0, 0, pictureBox1.Width, pictureBox1.Height);
-        //   e.Graphics.DrawEllipse(pen, 230, 100, 500, 500);
-        //  }
-
+       
 
         private async void Refresh_Click(object sender, EventArgs e)
         {
@@ -146,6 +136,8 @@ namespace ProductionProject
                 dataGridView1.DataSource = flightList;
 
                 updateFlights(flightList);
+
+
             }
             catch (Exception er)
             {
@@ -153,30 +145,6 @@ namespace ProductionProject
             }
         }
 
-        private void DrawFlights(List<flightsInfo> flights)
-        {
-            var redPlaneIcon = ("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png");
-
-            Debug.WriteLine("Drawing Flights");
-            aircraftOverlay.Clear();
-
-            foreach (var flight in flights)
-            {
-                if (flight.latitude != 0.0 && flight.longitude != 0.0)
-                {
-
-                   GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(flight.latitude, flight.longitude), new Bitmap(redPlaneIcon));
-
-
-                    //GMapMarker marker = new GMarkerGoogle(new PointLatLng(flight.latitude, flight.longitude), GMarkerGoogleType.red_dot);
-                    marker1.ToolTipText = flight.callsign;
-                    aircraftOverlay.Markers.Add(marker1);
-
-                }
-            }
-            gMapControl1.Refresh();
-
-        }
 
         private void updateFlights(List<flightsInfo> flights)
         {
@@ -198,6 +166,7 @@ namespace ProductionProject
                         };
 
                         aircraftOverlay.Markers.Add(marker);
+                        Debug.WriteLine($"ICAO: {marker.Tag}, Lat: {marker.Position.Lat}, Lng: {marker.Position.Lng}");
                     }
 
                     else
@@ -210,6 +179,25 @@ namespace ProductionProject
                 gMapControl1.Refresh();
             }
         }
+
+        private void drawAirport()
+        {
+            
+            List<PointLatLng> airportPoints = new List<PointLatLng>
+            {
+                new PointLatLng(53.874490, -1.670046), // Leeds Bradford Airport
+                new PointLatLng(53.872824, -1.673219), 
+                new PointLatLng(53.857594, -1.650133),
+                new PointLatLng(53.859197, -1.647613),
+                new PointLatLng(53.866195, -1.648335),
+                new PointLatLng(53.869789, -1.649418)
+            };
+
+            GMapPolygon LdsAirport = new GMapPolygon(airportPoints, "Leeds Bradford Airport");
+            airportOverlay.Polygons.Add(LdsAirport);
+            LdsAirport.Fill = new SolidBrush(Color.FromArgb(50, Color.Blue));
+            //gmap.Overlays.Add(airportOverlay);
+        }
         private void flightPath(List<flightsInfo> flights)
         {
 
@@ -221,7 +209,6 @@ namespace ProductionProject
 
                     List<PointLatLng> points = new List<PointLatLng>();
                     PointLatLng startPoint = new PointLatLng(flight.latitude, flight.longitude);
-                    PointLatLng nextPoint = new PointLatLng(flight.latitude + 0.01, flight.longitude + 0.01); 
                     points.Add(new PointLatLng(flight.latitude, flight.longitude));
                     //points.Add(new PointLatLng(flight.latitude + 0.01, flight.longitude + 0.01)); // Example next point
                     GMapRoute route = new GMapRoute(points, flight.callsign);
