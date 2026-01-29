@@ -28,7 +28,7 @@ namespace ProductionProject
 
             string grant_type = "client_credentials";
             string client_id = "jtew-api-client";
-            string REMOVED = "YaXalxvqHpJxdG5Pu6XNJa8cl1AK9Bip";
+            string REMOVED = "etSfC0ftIAQLzCN4L4GcI5aPQ3IdlijA";
 
 
             var requestBody = new Dictionary<string, string>
