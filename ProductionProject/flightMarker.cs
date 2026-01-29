@@ -37,10 +37,17 @@ namespace ProductionProject
             Matrix temp = g.Transform;
 
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            //g.RotateTransform(-Overlay.Control.Bearing); // rotates
+            //g.RotateTransform(-Overlay.Control.Bearing); 
             g.RotateTransform(planeDirection);
 
-            g.DrawImage(PlaneIcon, -PlaneIcon.Width /2, -PlaneIcon.Height / 2, PlaneIcon.Width, PlaneIcon.Height);
+            float baseZoom = 12f;
+            float scale = (float)Math.Pow(1.1, Overlay.Control.Zoom - baseZoom);
+
+            int scaledWidth = (int)(PlaneIcon.Width * scale);
+            int scaledHeight = (int)(PlaneIcon.Height * scale);
+
+
+            g.DrawImage(PlaneIcon, -scaledWidth /2, scaledHeight / 2, scaledWidth, scaledHeight);
             g.Transform = temp;
 
         }
