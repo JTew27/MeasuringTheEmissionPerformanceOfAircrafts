@@ -47,7 +47,7 @@ namespace ProductionProject
             int scaledHeight = (int)(PlaneIcon.Height * scale);
 
 
-            g.DrawImage(PlaneIcon, -scaledWidth /2, scaledHeight / 2, scaledWidth, scaledHeight);
+            g.DrawImage(PlaneIcon, -scaledWidth /2, -scaledHeight / 2, scaledWidth, scaledHeight);
             g.Transform = temp;
 
         }
