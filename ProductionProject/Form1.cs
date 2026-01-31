@@ -16,6 +16,8 @@ namespace ProductionProject
 
         private flightsInfo flights;
         private List<flightsInfo> flightList;
+        private List<airportDepartures> departureList;
+
         private flightsMap flightsMap;
 
         public string json;
@@ -67,7 +69,9 @@ namespace ProductionProject
                 flightsMap.updateFlights(flightList);
                 flightsMap.flightPath(flightList);
                 flightsMap.drawAirport();
+
                 //drawDetectArea();
+                departureList = await apiWAuthorisation.GetDepartures();
             }
 
             catch (Exception er)
@@ -127,7 +131,7 @@ namespace ProductionProject
         private void button1_Click(object sender, EventArgs e)
         {
             flightsMap.flightPath(flightList);
-            
+
             Debug.WriteLine("Button Clicked");
         }
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
@@ -149,12 +153,16 @@ namespace ProductionProject
             {
                 flightsMap.drawDetectArea();
             }
-            else { 
-               flightsMap.airportOverlay.Polygons.Clear();
+            else
+            {
+                flightsMap.airportOverlay.Polygons.Clear();
                 flightsMap.drawAirport();
             }
         }
 
-        
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

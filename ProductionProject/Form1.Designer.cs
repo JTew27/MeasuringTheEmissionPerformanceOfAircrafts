@@ -31,20 +31,19 @@
             components = new System.ComponentModel.Container();
             Refresh = new Button();
             dataGridView1 = new DataGridView();
+            flightsInfoBindingSource = new BindingSource(components);
+            aPIBindingSource = new BindingSource(components);
+            gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            splitContainer1 = new SplitContainer();
+            ShowDetectBox = new CheckBox();
+            button1 = new Button();
             icao24DataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             callsign = new DataGridViewTextBoxColumn();
             origincountryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             timepositionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             lastcontactDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            longitudeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            latitudeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            geo_altitude = new DataGridViewTextBoxColumn();
             ongroundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            flightsInfoBindingSource = new BindingSource(components);
-            aPIBindingSource = new BindingSource(components);
-            gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            splitContainer1 = new SplitContainer();
-            button1 = new Button();
-            ShowDetectBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -70,85 +69,14 @@
             // 
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn, callsign, origincountryDataGridViewTextBoxColumn, timepositionDataGridViewTextBoxColumn, lastcontactDataGridViewTextBoxColumn, longitudeDataGridViewTextBoxColumn, latitudeDataGridViewTextBoxColumn, ongroundDataGridViewCheckBoxColumn });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn, callsign, origincountryDataGridViewTextBoxColumn, timepositionDataGridViewTextBoxColumn, lastcontactDataGridViewTextBoxColumn, geo_altitude, ongroundDataGridViewCheckBoxColumn });
             dataGridView1.DataSource = flightsInfoBindingSource;
             dataGridView1.Location = new Point(-1, 137);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
             dataGridView1.Size = new Size(814, 233);
             dataGridView1.TabIndex = 5;
-            // 
-            // icao24DataGridViewTextBoxColumn
-            // 
-            icao24DataGridViewTextBoxColumn.DataPropertyName = "icao24";
-            icao24DataGridViewTextBoxColumn.HeaderText = "icao24 Code";
-            icao24DataGridViewTextBoxColumn.MinimumWidth = 8;
-            icao24DataGridViewTextBoxColumn.Name = "icao24DataGridViewTextBoxColumn";
-            icao24DataGridViewTextBoxColumn.ReadOnly = true;
-            icao24DataGridViewTextBoxColumn.Width = 150;
-            // 
-            // callsign
-            // 
-            callsign.DataPropertyName = "callsign";
-            callsign.HeaderText = "callsign";
-            callsign.MinimumWidth = 8;
-            callsign.Name = "callsign";
-            callsign.ReadOnly = true;
-            callsign.Width = 150;
-            // 
-            // origincountryDataGridViewTextBoxColumn
-            // 
-            origincountryDataGridViewTextBoxColumn.DataPropertyName = "origin_country";
-            origincountryDataGridViewTextBoxColumn.HeaderText = "Country of Origin";
-            origincountryDataGridViewTextBoxColumn.MinimumWidth = 8;
-            origincountryDataGridViewTextBoxColumn.Name = "origincountryDataGridViewTextBoxColumn";
-            origincountryDataGridViewTextBoxColumn.ReadOnly = true;
-            origincountryDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // timepositionDataGridViewTextBoxColumn
-            // 
-            timepositionDataGridViewTextBoxColumn.DataPropertyName = "time_position";
-            timepositionDataGridViewTextBoxColumn.HeaderText = "time_position";
-            timepositionDataGridViewTextBoxColumn.MinimumWidth = 8;
-            timepositionDataGridViewTextBoxColumn.Name = "timepositionDataGridViewTextBoxColumn";
-            timepositionDataGridViewTextBoxColumn.ReadOnly = true;
-            timepositionDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // lastcontactDataGridViewTextBoxColumn
-            // 
-            lastcontactDataGridViewTextBoxColumn.DataPropertyName = "last_contact";
-            lastcontactDataGridViewTextBoxColumn.HeaderText = "last_contact";
-            lastcontactDataGridViewTextBoxColumn.MinimumWidth = 8;
-            lastcontactDataGridViewTextBoxColumn.Name = "lastcontactDataGridViewTextBoxColumn";
-            lastcontactDataGridViewTextBoxColumn.ReadOnly = true;
-            lastcontactDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // longitudeDataGridViewTextBoxColumn
-            // 
-            longitudeDataGridViewTextBoxColumn.DataPropertyName = "longitude";
-            longitudeDataGridViewTextBoxColumn.HeaderText = "longitude";
-            longitudeDataGridViewTextBoxColumn.MinimumWidth = 8;
-            longitudeDataGridViewTextBoxColumn.Name = "longitudeDataGridViewTextBoxColumn";
-            longitudeDataGridViewTextBoxColumn.ReadOnly = true;
-            longitudeDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // latitudeDataGridViewTextBoxColumn
-            // 
-            latitudeDataGridViewTextBoxColumn.DataPropertyName = "latitude";
-            latitudeDataGridViewTextBoxColumn.HeaderText = "latitude";
-            latitudeDataGridViewTextBoxColumn.MinimumWidth = 8;
-            latitudeDataGridViewTextBoxColumn.Name = "latitudeDataGridViewTextBoxColumn";
-            latitudeDataGridViewTextBoxColumn.ReadOnly = true;
-            latitudeDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // ongroundDataGridViewCheckBoxColumn
-            // 
-            ongroundDataGridViewCheckBoxColumn.DataPropertyName = "on_ground";
-            ongroundDataGridViewCheckBoxColumn.HeaderText = "on ground";
-            ongroundDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            ongroundDataGridViewCheckBoxColumn.Name = "ongroundDataGridViewCheckBoxColumn";
-            ongroundDataGridViewCheckBoxColumn.ReadOnly = true;
-            ongroundDataGridViewCheckBoxColumn.Width = 150;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // flightsInfoBindingSource
             // 
@@ -205,15 +133,6 @@
             splitContainer1.SplitterDistance = 925;
             splitContainer1.TabIndex = 7;
             // 
-            // button1
-            // 
-            button1.Location = new Point(31, 38);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 6;
-            button1.Text = "Flight Path ";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // ShowDetectBox
             // 
             ShowDetectBox.AutoSize = true;
@@ -224,6 +143,78 @@
             ShowDetectBox.Text = "Show Detection Box";
             ShowDetectBox.UseVisualStyleBackColor = true;
             ShowDetectBox.CheckedChanged += ShowDetectBox_CheckedChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(31, 38);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 6;
+            button1.Text = "Flight Path ";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // icao24DataGridViewTextBoxColumn
+            // 
+            icao24DataGridViewTextBoxColumn.DataPropertyName = "icao24";
+            icao24DataGridViewTextBoxColumn.HeaderText = "icao24 Code";
+            icao24DataGridViewTextBoxColumn.MinimumWidth = 8;
+            icao24DataGridViewTextBoxColumn.Name = "icao24DataGridViewTextBoxColumn";
+            icao24DataGridViewTextBoxColumn.ReadOnly = true;
+            icao24DataGridViewTextBoxColumn.Width = 150;
+            // 
+            // callsign
+            // 
+            callsign.DataPropertyName = "callsign";
+            callsign.HeaderText = "callsign";
+            callsign.MinimumWidth = 8;
+            callsign.Name = "callsign";
+            callsign.ReadOnly = true;
+            callsign.Width = 150;
+            // 
+            // origincountryDataGridViewTextBoxColumn
+            // 
+            origincountryDataGridViewTextBoxColumn.DataPropertyName = "origin_country";
+            origincountryDataGridViewTextBoxColumn.HeaderText = "Country of Origin";
+            origincountryDataGridViewTextBoxColumn.MinimumWidth = 8;
+            origincountryDataGridViewTextBoxColumn.Name = "origincountryDataGridViewTextBoxColumn";
+            origincountryDataGridViewTextBoxColumn.ReadOnly = true;
+            origincountryDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // timepositionDataGridViewTextBoxColumn
+            // 
+            timepositionDataGridViewTextBoxColumn.DataPropertyName = "time_position";
+            timepositionDataGridViewTextBoxColumn.HeaderText = "time_position";
+            timepositionDataGridViewTextBoxColumn.MinimumWidth = 8;
+            timepositionDataGridViewTextBoxColumn.Name = "timepositionDataGridViewTextBoxColumn";
+            timepositionDataGridViewTextBoxColumn.ReadOnly = true;
+            timepositionDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // lastcontactDataGridViewTextBoxColumn
+            // 
+            lastcontactDataGridViewTextBoxColumn.DataPropertyName = "last_contact";
+            lastcontactDataGridViewTextBoxColumn.HeaderText = "last_contact";
+            lastcontactDataGridViewTextBoxColumn.MinimumWidth = 8;
+            lastcontactDataGridViewTextBoxColumn.Name = "lastcontactDataGridViewTextBoxColumn";
+            lastcontactDataGridViewTextBoxColumn.ReadOnly = true;
+            lastcontactDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // geo_altitude
+            // 
+            geo_altitude.DataPropertyName = "geo_altitude";
+            geo_altitude.HeaderText = "geo_altitude";
+            geo_altitude.MinimumWidth = 8;
+            geo_altitude.Name = "geo_altitude";
+            geo_altitude.ReadOnly = true;
+            geo_altitude.Width = 150;
+            // 
+            // ongroundDataGridViewCheckBoxColumn
+            // 
+            ongroundDataGridViewCheckBoxColumn.DataPropertyName = "on_ground";
+            ongroundDataGridViewCheckBoxColumn.HeaderText = "on ground";
+            ongroundDataGridViewCheckBoxColumn.MinimumWidth = 8;
+            ongroundDataGridViewCheckBoxColumn.Name = "ongroundDataGridViewCheckBoxColumn";
+            ongroundDataGridViewCheckBoxColumn.ReadOnly = true;
+            ongroundDataGridViewCheckBoxColumn.Width = 150;
             // 
             // Form1
             // 
@@ -253,17 +244,16 @@
         private DataGridView dataGridView1;
         private BindingSource flightsInfoBindingSource;
         private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn;
+        private GMap.NET.WindowsForms.GMapControl gMapControl1;
+        private SplitContainer splitContainer1;
+        private Button button1;
+        private CheckBox ShowDetectBox;
         private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn callsign;
         private DataGridViewTextBoxColumn origincountryDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn timepositionDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn lastcontactDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn longitudeDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn latitudeDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn geo_altitude;
         private DataGridViewCheckBoxColumn ongroundDataGridViewCheckBoxColumn;
-        private GMap.NET.WindowsForms.GMapControl gMapControl1;
-        private SplitContainer splitContainer1;
-        private Button button1;
-        private CheckBox ShowDetectBox;
     }
 }

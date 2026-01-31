@@ -21,6 +21,8 @@ namespace ProductionProject
                 return await GetStatesAsync(client, token.AccessToken);
             }
         }
+
+      
         public static async Task<Token> getToken(HttpClient client)
         {
 
@@ -67,7 +69,7 @@ namespace ProductionProject
 
         public static async Task<List<flightsInfo>> GetStatesAsync(HttpClient client, string accessToken)
         {
-            Debug.WriteLine("\nNew Response\nRunning with valid credentials");
+            Debug.WriteLine("\nNew Response\nRetrieving current flight states ");
             var url = "https://opensky-network.org/api/states/all?lamin=53.6&lomin=-2.0&lamax=54.0&lomax=0.0";
 
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
@@ -96,6 +98,42 @@ namespace ProductionProject
                 
             }
             return flightList;
+        }
+
+        public static async  Task<List<airportDepartures>> GetDepartures()
+        {
+            string airport = "EGNM";
+
+            long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            long begin = end - 7200; // last 2 hours
+
+            Debug.WriteLine("\nNew Response\nRetrieving current flight departures ");
+            var url = "https://opensky-network.org/api/flights/departure"+$"?airport={airport}&begin={begin}&end={end}";
+
+            var _httpClient = new HttpClient();
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string responseJson = await response.Content.ReadAsStringAsync();
+
+            var parsed = JArray.Parse(responseJson);
+            Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
+
+            List<airportDepartures> departureList = new List<airportDepartures>();
+
+            foreach (JObject obj in parsed)
+            {
+                departureList.Add(new airportDepartures
+                {
+                    icao24 = (string)obj["icao24"],
+                    firstSeen = (long)(obj["firstSeen"] ?? 0),
+                    estDepartureAirport = (string)obj["estDepartureAirport"],
+                    lastSeen = (long)(obj["lastSeen"] ?? 0),
+                    estArrivalAirport = (string)obj["estArrivalAirport"],
+                    callsign = (string)obj["callsign"],
+                });
+            }
+            return departureList;
         }
     }
 }
