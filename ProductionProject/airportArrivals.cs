@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProductionProject
 {
-    public class airportDepartures
+    public class airportArrivals
     {
+
         public string icao24 { get; set; }
         public string firstSeen { get; set; }
         public string estDepartureAirport { get; set; }
@@ -20,5 +21,7 @@ namespace ProductionProject
         public string estArrivalAirportVertDistance { get; set; }
         public string departureAirportCandidatesCount { get; set; }
         public string arrivalAirportCandidatesCount { get; set; }
+
+
     }
 }

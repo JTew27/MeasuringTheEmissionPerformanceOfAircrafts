@@ -14,8 +14,8 @@ namespace ProductionProject
         public string icao24 { get; set; }
         public string callsign { get; set; }
         public string origin_country { get; set; }
-        public long time_position { get; set; }
-        public long last_contact { get; set; }
+        public string time_position { get; set; }
+        public string last_contact { get; set; }
         public double longitude { get; set; }
         public double latitude { get; set; }
         public double baro_altitude { get; set; }

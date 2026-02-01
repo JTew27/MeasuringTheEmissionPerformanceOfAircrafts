@@ -13,6 +13,7 @@ namespace ProductionProject
 
     public class apiWAuthorisation
     {
+
         public static async Task<List<flightsInfo>> FetchFlightDataAsync()
         {
             using (HttpClient client = new HttpClient())
@@ -42,10 +43,10 @@ namespace ProductionProject
 
             HttpResponseMessage response = await client.PostAsync(baseAddress, new FormUrlEncodedContent(requestBody));
             var responseJson = await response.Content.ReadAsStringAsync();
-            Token token = JsonConvert.DeserializeObject<Token>(responseJson);
+            Token Token = JsonConvert.DeserializeObject<Token>(responseJson);
 
 
-            return token;
+            return Token;
 
 
         }
@@ -65,7 +66,7 @@ namespace ProductionProject
 
             public DateTime ExpirationTime { get; set; }
         }
-
+ 
 
         public static async Task<List<flightsInfo>> GetStatesAsync(HttpClient client, string accessToken)
         {
@@ -80,16 +81,25 @@ namespace ProductionProject
             var parsed = JToken.Parse(responseJson);
             Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
 
+           ;
+
             List<flightsInfo> flightList = new List<flightsInfo>();
             foreach (JArray obj in parsed["states"])
             {
+               DateTimeOffset timePosUnix = DateTimeOffset.FromUnixTimeSeconds((long)obj[3]);
+                string timePos = timePosUnix.ToString("HH:mm:ss");
+
+                DateTimeOffset lastContactUnix = DateTimeOffset.FromUnixTimeSeconds((long)obj[4]);
+                string lastContact = lastContactUnix.ToString("HH:mm:ss");
+
+
                 flightList.Add(new flightsInfo
                 {
                     icao24 = (string)obj[0],
                     callsign = (string)obj[1],
                     origin_country = (string)obj[2],
-                    time_position = (long)(obj[3] ?? 0),
-                    last_contact = (long)(obj[4] ?? 0),
+                    time_position = timePos,
+                    last_contact = lastContact,
                     longitude = (double)(obj[5] ?? 0),
                     latitude = (double)(obj[6] ?? 0),
                     on_ground = (bool)(obj[8] ?? false),
@@ -100,19 +110,20 @@ namespace ProductionProject
             return flightList;
         }
 
-        public static async  Task<List<airportDepartures>> GetDepartures()
+        public static async  Task<List<airportDepartures>> GetDeparturesAsync(HttpClient client, string accessToken)
         {
             string airport = "EGNM";
 
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             long begin = end - 7200; // last 2 hours
 
-            Debug.WriteLine("\nNew Response\nRetrieving current flight departures ");
+            Debug.WriteLine("Retrieving current flight departures ");
             var url = "https://opensky-network.org/api/flights/departure"+$"?airport={airport}&begin={begin}&end={end}";
 
-            var _httpClient = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            //var _httpClient = new HttpClient();
 
-            var response = await _httpClient.GetAsync(url);
+            var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             string responseJson = await response.Content.ReadAsStringAsync();
 
@@ -123,18 +134,72 @@ namespace ProductionProject
 
             foreach (JObject obj in parsed)
             {
+                DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj["firstSeen"] ?? 0));
+                DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj["lastSeen"] ?? 0));
+
+                string firstSeen = firstSeenUnix.ToString("HH:mm:ss");
+                string lastSeen = lastSeenUnix.ToString("HH:mm:ss");
+
                 departureList.Add(new airportDepartures
                 {
-                    icao24 = (string)obj["icao24"],
-                    firstSeen = (long)(obj["firstSeen"] ?? 0),
-                    estDepartureAirport = (string)obj["estDepartureAirport"],
-                    lastSeen = (long)(obj["lastSeen"] ?? 0),
-                    estArrivalAirport = (string)obj["estArrivalAirport"],
-                    callsign = (string)obj["callsign"],
+                    icao24 = (string)obj[1],
+                    firstSeen = firstSeen,
+                    estDepartureAirport = (string)obj[3],
+                    lastSeen = lastSeen,
+                    estArrivalAirport = (string)obj[5],
+                    callsign = (string)obj[6],
                 });
             }
             return departureList;
         }
+        
+        public static async Task<List<airportArrivals>> GetArrivals()
+        {
+            string airport = "EGNM";
+
+            long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            long begin = end - 7200; // last 2 hours
+
+            Debug.WriteLine("Retrieving current flight arrivals ");
+            var url = "https://opensky-network.org/api/flights/arrival" + $"?airport={airport}&begin={begin}&end={end}";
+
+            var _httpClient = new HttpClient();
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string responseJson = await response.Content.ReadAsStringAsync();
+
+            var parsed = JArray.Parse(responseJson);
+            Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
+
+            List<airportArrivals> arrivalList = new List<airportArrivals>();
+
+            foreach (JObject obj in parsed)
+            {
+                DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj[1] ?? 0));
+                DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj[2] ?? 0));
+
+                string firstSeen = firstSeenUnix.ToString("HH:mm:ss");
+                string lastSeen = lastSeenUnix.ToString("HH:mm:ss");
+
+                arrivalList.Add(new airportArrivals
+                {
+                    icao24 = (string)obj[1],
+                    firstSeen = firstSeen,
+                    estDepartureAirport = (string)obj[3],
+                    lastSeen = lastSeen,
+                    estArrivalAirport = (string)obj[5],
+                    callsign = (string)obj[6],
+                });
+            }
+            return arrivalList;
+
+        }
+
+        //public static async Task<List<airplanesPath>> getPaths()
+        //{
+
+        //}
     }
 }
 

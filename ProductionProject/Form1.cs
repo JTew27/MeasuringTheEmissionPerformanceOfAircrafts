@@ -13,10 +13,12 @@ namespace ProductionProject
 {
     public partial class Form1 : Form
     {
+        private HttpClient _httpClient = new HttpClient();
 
         private flightsInfo flights;
         private List<flightsInfo> flightList;
         private List<airportDepartures> departureList;
+        private List<airportArrivals> arrivalList;
 
         private flightsMap flightsMap;
 
@@ -71,19 +73,20 @@ namespace ProductionProject
                 flightsMap.drawAirport();
 
                 //drawDetectArea();
-                departureList = await apiWAuthorisation.GetDepartures();
+
+               // departureList = await apiWAuthorisation.GetDepartures();
+                dataGridView2.DataSource = null;
+                dataGridView2.DataSource = departureList;
+
+                arrivalList = await apiWAuthorisation.GetArrivals();
+                dataGridView3.DataSource = null;
+                dataGridView3.DataSource = arrivalList;
             }
 
             catch (Exception er)
             {
                 Debug.WriteLine("Error: " + er.Message);
             }
-        }
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-
-
         }
 
 
