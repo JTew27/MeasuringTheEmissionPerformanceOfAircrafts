@@ -31,35 +31,42 @@
             components = new System.ComponentModel.Container();
             Refresh = new Button();
             dataGridView1 = new DataGridView();
-            flightsInfoBindingSource = new BindingSource(components);
-            aPIBindingSource = new BindingSource(components);
-            gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            splitContainer1 = new SplitContainer();
-            dataGridView3 = new DataGridView();
-            airportArrivalsBindingSource = new BindingSource(components);
-            dataGridView2 = new DataGridView();
-            airportDeparturesBindingSource = new BindingSource(components);
-            ShowDetectBox = new CheckBox();
-            button1 = new Button();
             icao24DataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             callsign = new DataGridViewTextBoxColumn();
             origincountryDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             lastcontactDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ongroundDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
             category = new DataGridViewTextBoxColumn();
+            Velocity = new DataGridViewTextBoxColumn();
+            baro_altitude = new DataGridViewTextBoxColumn();
+            vertical_rate = new DataGridViewTextBoxColumn();
+            geo_altitude = new DataGridViewTextBoxColumn();
+            flightsInfoBindingSource = new BindingSource(components);
+            aPIBindingSource = new BindingSource(components);
+            gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
+            splitContainer1 = new SplitContainer();
+            textBox1 = new TextBox();
+            dataGridView3 = new DataGridView();
+            icao24DataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            firstSeenDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            estDepartureAirportDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            lastSeenDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            callsignDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            airportArrivalsBindingSource = new BindingSource(components);
+            dataGridView2 = new DataGridView();
             icao24DataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             firstSeenDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             estDepartureAirportDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             lastSeenDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             estArrivalAirportDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             callsignDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            icao24DataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            firstSeenDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            estDepartureAirportDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            lastSeenDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            estArrivalAirportDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            callsignDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            airportDeparturesBindingSource = new BindingSource(components);
+            ShowDetectBox = new CheckBox();
+            button1 = new Button();
+            printDialog1 = new PrintDialog();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -75,9 +82,10 @@
             // 
             // Refresh
             // 
+            Refresh.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             Refresh.BackColor = Color.FromArgb(128, 255, 128);
             Refresh.BackgroundImageLayout = ImageLayout.None;
-            Refresh.Location = new Point(871, 744);
+            Refresh.Location = new Point(871, 879);
             Refresh.Name = "Refresh";
             Refresh.Size = new Size(133, 42);
             Refresh.TabIndex = 1;
@@ -90,17 +98,113 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = true;
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.BackgroundColor = SystemColors.ActiveCaption;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn, callsign, origincountryDataGridViewTextBoxColumn, lastcontactDataGridViewTextBoxColumn, ongroundDataGridViewCheckBoxColumn, category });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn, callsign, origincountryDataGridViewTextBoxColumn, lastcontactDataGridViewTextBoxColumn, ongroundDataGridViewCheckBoxColumn, category, Velocity, baro_altitude, vertical_rate, geo_altitude });
             dataGridView1.DataSource = flightsInfoBindingSource;
-            dataGridView1.Location = new Point(3, 3);
+            dataGridView1.Location = new Point(3, 84);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(855, 279);
+            dataGridView1.Size = new Size(852, 370);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            // 
+            // icao24DataGridViewTextBoxColumn
+            // 
+            icao24DataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            icao24DataGridViewTextBoxColumn.DataPropertyName = "icao24";
+            icao24DataGridViewTextBoxColumn.DividerWidth = 1;
+            icao24DataGridViewTextBoxColumn.HeaderText = "icao24 Code";
+            icao24DataGridViewTextBoxColumn.MinimumWidth = 8;
+            icao24DataGridViewTextBoxColumn.Name = "icao24DataGridViewTextBoxColumn";
+            icao24DataGridViewTextBoxColumn.ReadOnly = true;
+            icao24DataGridViewTextBoxColumn.Width = 136;
+            // 
+            // callsign
+            // 
+            callsign.DataPropertyName = "callsign";
+            callsign.HeaderText = "callsign";
+            callsign.MinimumWidth = 8;
+            callsign.Name = "callsign";
+            callsign.ReadOnly = true;
+            callsign.Width = 150;
+            // 
+            // origincountryDataGridViewTextBoxColumn
+            // 
+            origincountryDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            origincountryDataGridViewTextBoxColumn.DataPropertyName = "origin_country";
+            origincountryDataGridViewTextBoxColumn.HeaderText = "Country of Origin";
+            origincountryDataGridViewTextBoxColumn.MinimumWidth = 8;
+            origincountryDataGridViewTextBoxColumn.Name = "origincountryDataGridViewTextBoxColumn";
+            origincountryDataGridViewTextBoxColumn.ReadOnly = true;
+            origincountryDataGridViewTextBoxColumn.Width = 127;
+            // 
+            // lastcontactDataGridViewTextBoxColumn
+            // 
+            lastcontactDataGridViewTextBoxColumn.DataPropertyName = "last_contact";
+            lastcontactDataGridViewTextBoxColumn.FillWeight = 90F;
+            lastcontactDataGridViewTextBoxColumn.HeaderText = "Last Contact";
+            lastcontactDataGridViewTextBoxColumn.MinimumWidth = 8;
+            lastcontactDataGridViewTextBoxColumn.Name = "lastcontactDataGridViewTextBoxColumn";
+            lastcontactDataGridViewTextBoxColumn.ReadOnly = true;
+            lastcontactDataGridViewTextBoxColumn.Width = 150;
+            // 
+            // ongroundDataGridViewCheckBoxColumn
+            // 
+            ongroundDataGridViewCheckBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            ongroundDataGridViewCheckBoxColumn.DataPropertyName = "on_ground";
+            ongroundDataGridViewCheckBoxColumn.HeaderText = "on ground";
+            ongroundDataGridViewCheckBoxColumn.MinimumWidth = 8;
+            ongroundDataGridViewCheckBoxColumn.Name = "ongroundDataGridViewCheckBoxColumn";
+            ongroundDataGridViewCheckBoxColumn.ReadOnly = true;
+            ongroundDataGridViewCheckBoxColumn.Width = 93;
+            // 
+            // category
+            // 
+            category.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            category.DataPropertyName = "category";
+            category.HeaderText = "category";
+            category.MinimumWidth = 8;
+            category.Name = "category";
+            category.Width = 117;
+            // 
+            // Velocity
+            // 
+            Velocity.DataPropertyName = "velocity";
+            Velocity.HeaderText = "velocity";
+            Velocity.MinimumWidth = 8;
+            Velocity.Name = "Velocity";
+            Velocity.ReadOnly = true;
+            Velocity.Width = 150;
+            // 
+            // baro_altitude
+            // 
+            baro_altitude.DataPropertyName = "baro_altitude";
+            baro_altitude.HeaderText = "baro_altitude";
+            baro_altitude.MinimumWidth = 8;
+            baro_altitude.Name = "baro_altitude";
+            baro_altitude.ReadOnly = true;
+            baro_altitude.Width = 150;
+            // 
+            // vertical_rate
+            // 
+            vertical_rate.DataPropertyName = "vertical_rate";
+            vertical_rate.HeaderText = "vertical_rate";
+            vertical_rate.MinimumWidth = 8;
+            vertical_rate.Name = "vertical_rate";
+            vertical_rate.ReadOnly = true;
+            vertical_rate.Width = 150;
+            // 
+            // geo_altitude
+            // 
+            geo_altitude.DataPropertyName = "geo_altitude";
+            geo_altitude.HeaderText = "geo_altitude";
+            geo_altitude.MinimumWidth = 8;
+            geo_altitude.Name = "geo_altitude";
+            geo_altitude.ReadOnly = true;
+            geo_altitude.Width = 150;
             // 
             // flightsInfoBindingSource
             // 
@@ -112,6 +216,7 @@
             // 
             // gMapControl1
             // 
+            gMapControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             gMapControl1.AutoSize = true;
             gMapControl1.Bearing = 0F;
             gMapControl1.CanDragMap = true;
@@ -134,14 +239,16 @@
             gMapControl1.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             gMapControl1.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             gMapControl1.ShowTileGridLines = false;
-            gMapControl1.Size = new Size(919, 720);
+            gMapControl1.Size = new Size(919, 879);
             gMapControl1.TabIndex = 6;
             gMapControl1.Zoom = 0D;
             gMapControl1.Load += gMapControl1_Load;
             // 
             // splitContainer1
             // 
-            splitContainer1.Location = new Point(2, -2);
+            splitContainer1.AllowDrop = true;
+            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer1.Location = new Point(2, 12);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -150,29 +257,93 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.BackColor = SystemColors.ControlDark;
+            splitContainer1.Panel2.Controls.Add(label3);
+            splitContainer1.Panel2.Controls.Add(label2);
+            splitContainer1.Panel2.Controls.Add(label1);
+            splitContainer1.Panel2.Controls.Add(textBox1);
             splitContainer1.Panel2.Controls.Add(dataGridView3);
             splitContainer1.Panel2.Controls.Add(dataGridView2);
             splitContainer1.Panel2.Controls.Add(dataGridView1);
             splitContainer1.Panel2.Paint += splitContainer1_Panel2_Paint;
-            splitContainer1.Size = new Size(1764, 726);
-            splitContainer1.SplitterDistance = 925;
+            splitContainer1.Size = new Size(1784, 861);
+            splitContainer1.SplitterDistance = 948;
             splitContainer1.TabIndex = 7;
+            // 
+            // textBox1
+            // 
+            textBox1.BackColor = Color.Azure;
+            textBox1.Cursor = Cursors.IBeam;
+            textBox1.ForeColor = SystemColors.MenuHighlight;
+            textBox1.Location = new Point(317, 30);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(248, 31);
+            textBox1.TabIndex = 10;
+            textBox1.Text = "Enter Airport";
+            textBox1.TextAlign = HorizontalAlignment.Center;
             // 
             // dataGridView3
             // 
             dataGridView3.AllowUserToAddRows = false;
             dataGridView3.AllowUserToDeleteRows = false;
+            dataGridView3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             dataGridView3.AutoGenerateColumns = false;
             dataGridView3.BackgroundColor = SystemColors.Menu;
             dataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView3.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn2, firstSeenDataGridViewTextBoxColumn1, estDepartureAirportDataGridViewTextBoxColumn1, lastSeenDataGridViewTextBoxColumn1, estArrivalAirportDataGridViewTextBoxColumn1, callsignDataGridViewTextBoxColumn1, arrivalAirportCandidatesCountDataGridViewTextBoxColumn1 });
+            dataGridView3.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn2, firstSeenDataGridViewTextBoxColumn1, estDepartureAirportDataGridViewTextBoxColumn1, lastSeenDataGridViewTextBoxColumn1, callsignDataGridViewTextBoxColumn1 });
             dataGridView3.DataSource = airportArrivalsBindingSource;
-            dataGridView3.Location = new Point(429, 299);
+            dataGridView3.Location = new Point(448, 502);
             dataGridView3.Name = "dataGridView3";
             dataGridView3.RowHeadersWidth = 62;
+            dataGridView3.RowTemplate.Resizable = DataGridViewTriState.True;
             dataGridView3.ShowCellToolTips = false;
-            dataGridView3.Size = new Size(403, 263);
+            dataGridView3.Size = new Size(381, 356);
             dataGridView3.TabIndex = 9;
+            // 
+            // icao24DataGridViewTextBoxColumn2
+            // 
+            icao24DataGridViewTextBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            icao24DataGridViewTextBoxColumn2.DataPropertyName = "icao24";
+            icao24DataGridViewTextBoxColumn2.HeaderText = "icao24";
+            icao24DataGridViewTextBoxColumn2.MinimumWidth = 8;
+            icao24DataGridViewTextBoxColumn2.Name = "icao24DataGridViewTextBoxColumn2";
+            icao24DataGridViewTextBoxColumn2.Width = 8;
+            // 
+            // firstSeenDataGridViewTextBoxColumn1
+            // 
+            firstSeenDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            firstSeenDataGridViewTextBoxColumn1.DataPropertyName = "firstSeen";
+            firstSeenDataGridViewTextBoxColumn1.HeaderText = "firstSeen";
+            firstSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            firstSeenDataGridViewTextBoxColumn1.Name = "firstSeenDataGridViewTextBoxColumn1";
+            firstSeenDataGridViewTextBoxColumn1.Width = 116;
+            // 
+            // estDepartureAirportDataGridViewTextBoxColumn1
+            // 
+            estDepartureAirportDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            estDepartureAirportDataGridViewTextBoxColumn1.DataPropertyName = "estDepartureAirport";
+            estDepartureAirportDataGridViewTextBoxColumn1.HeaderText = "Airport Departed";
+            estDepartureAirportDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            estDepartureAirportDataGridViewTextBoxColumn1.Name = "estDepartureAirportDataGridViewTextBoxColumn1";
+            estDepartureAirportDataGridViewTextBoxColumn1.Width = 183;
+            // 
+            // lastSeenDataGridViewTextBoxColumn1
+            // 
+            lastSeenDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            lastSeenDataGridViewTextBoxColumn1.DataPropertyName = "lastSeen";
+            lastSeenDataGridViewTextBoxColumn1.HeaderText = "lastSeen";
+            lastSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            lastSeenDataGridViewTextBoxColumn1.Name = "lastSeenDataGridViewTextBoxColumn1";
+            lastSeenDataGridViewTextBoxColumn1.Width = 113;
+            // 
+            // callsignDataGridViewTextBoxColumn1
+            // 
+            callsignDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            callsignDataGridViewTextBoxColumn1.DataPropertyName = "callsign";
+            callsignDataGridViewTextBoxColumn1.HeaderText = "callsign";
+            callsignDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            callsignDataGridViewTextBoxColumn1.Name = "callsignDataGridViewTextBoxColumn1";
+            callsignDataGridViewTextBoxColumn1.Width = 8;
             // 
             // airportArrivalsBindingSource
             // 
@@ -183,6 +354,7 @@
             dataGridView2.AllowUserToAddRows = false;
             dataGridView2.AllowUserToDeleteRows = false;
             dataGridView2.AllowUserToResizeColumns = false;
+            dataGridView2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView2.AutoGenerateColumns = false;
             dataGridView2.BackgroundColor = SystemColors.Info;
             dataGridView2.ColumnHeadersHeight = 34;
@@ -190,11 +362,67 @@
             dataGridView2.Columns.AddRange(new DataGridViewColumn[] { icao24DataGridViewTextBoxColumn1, firstSeenDataGridViewTextBoxColumn, estDepartureAirportDataGridViewTextBoxColumn, lastSeenDataGridViewTextBoxColumn, estArrivalAirportDataGridViewTextBoxColumn, callsignDataGridViewTextBoxColumn });
             dataGridView2.DataSource = airportDeparturesBindingSource;
             dataGridView2.GridColor = SystemColors.MenuHighlight;
-            dataGridView2.Location = new Point(3, 299);
+            dataGridView2.Location = new Point(3, 502);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersWidth = 62;
-            dataGridView2.Size = new Size(420, 263);
+            dataGridView2.RowTemplate.DefaultCellStyle.BackColor = Color.White;
+            dataGridView2.RowTemplate.Resizable = DataGridViewTriState.True;
+            dataGridView2.ShowEditingIcon = false;
+            dataGridView2.Size = new Size(442, 356);
             dataGridView2.TabIndex = 8;
+            // 
+            // icao24DataGridViewTextBoxColumn1
+            // 
+            icao24DataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            icao24DataGridViewTextBoxColumn1.DataPropertyName = "icao24";
+            icao24DataGridViewTextBoxColumn1.HeaderText = "icao24";
+            icao24DataGridViewTextBoxColumn1.MinimumWidth = 8;
+            icao24DataGridViewTextBoxColumn1.Name = "icao24DataGridViewTextBoxColumn1";
+            // 
+            // firstSeenDataGridViewTextBoxColumn
+            // 
+            firstSeenDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            firstSeenDataGridViewTextBoxColumn.DataPropertyName = "firstSeen";
+            firstSeenDataGridViewTextBoxColumn.HeaderText = "Est Take Off Time";
+            firstSeenDataGridViewTextBoxColumn.MinimumWidth = 8;
+            firstSeenDataGridViewTextBoxColumn.Name = "firstSeenDataGridViewTextBoxColumn";
+            firstSeenDataGridViewTextBoxColumn.Width = 184;
+            // 
+            // estDepartureAirportDataGridViewTextBoxColumn
+            // 
+            estDepartureAirportDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            estDepartureAirportDataGridViewTextBoxColumn.DataPropertyName = "estDepartureAirport";
+            estDepartureAirportDataGridViewTextBoxColumn.HeaderText = "estDepartureAirport";
+            estDepartureAirportDataGridViewTextBoxColumn.MinimumWidth = 8;
+            estDepartureAirportDataGridViewTextBoxColumn.Name = "estDepartureAirportDataGridViewTextBoxColumn";
+            estDepartureAirportDataGridViewTextBoxColumn.Width = 206;
+            // 
+            // lastSeenDataGridViewTextBoxColumn
+            // 
+            lastSeenDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            lastSeenDataGridViewTextBoxColumn.DataPropertyName = "lastSeen";
+            lastSeenDataGridViewTextBoxColumn.HeaderText = "lastSeen";
+            lastSeenDataGridViewTextBoxColumn.MinimumWidth = 8;
+            lastSeenDataGridViewTextBoxColumn.Name = "lastSeenDataGridViewTextBoxColumn";
+            lastSeenDataGridViewTextBoxColumn.Width = 113;
+            // 
+            // estArrivalAirportDataGridViewTextBoxColumn
+            // 
+            estArrivalAirportDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            estArrivalAirportDataGridViewTextBoxColumn.DataPropertyName = "estArrivalAirport";
+            estArrivalAirportDataGridViewTextBoxColumn.HeaderText = "estArrivalAirport";
+            estArrivalAirportDataGridViewTextBoxColumn.MinimumWidth = 8;
+            estArrivalAirportDataGridViewTextBoxColumn.Name = "estArrivalAirportDataGridViewTextBoxColumn";
+            estArrivalAirportDataGridViewTextBoxColumn.Width = 177;
+            // 
+            // callsignDataGridViewTextBoxColumn
+            // 
+            callsignDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            callsignDataGridViewTextBoxColumn.DataPropertyName = "callsign";
+            callsignDataGridViewTextBoxColumn.HeaderText = "callsign";
+            callsignDataGridViewTextBoxColumn.MinimumWidth = 8;
+            callsignDataGridViewTextBoxColumn.Name = "callsignDataGridViewTextBoxColumn";
+            callsignDataGridViewTextBoxColumn.Width = 106;
             // 
             // airportDeparturesBindingSource
             // 
@@ -202,8 +430,9 @@
             // 
             // ShowDetectBox
             // 
+            ShowDetectBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             ShowDetectBox.AutoSize = true;
-            ShowDetectBox.Location = new Point(12, 730);
+            ShowDetectBox.Location = new Point(12, 887);
             ShowDetectBox.Name = "ShowDetectBox";
             ShowDetectBox.Size = new Size(197, 29);
             ShowDetectBox.TabIndex = 7;
@@ -213,177 +442,56 @@
             // 
             // button1
             // 
-            button1.Location = new Point(224, 726);
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button1.Location = new Point(224, 883);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 6;
             button1.Text = "Flight Path ";
             button1.UseVisualStyleBackColor = true;
             // 
-            // icao24DataGridViewTextBoxColumn
+            // printDialog1
             // 
-            icao24DataGridViewTextBoxColumn.DataPropertyName = "icao24";
-            icao24DataGridViewTextBoxColumn.DividerWidth = 1;
-            icao24DataGridViewTextBoxColumn.HeaderText = "icao24 Code";
-            icao24DataGridViewTextBoxColumn.MinimumWidth = 8;
-            icao24DataGridViewTextBoxColumn.Name = "icao24DataGridViewTextBoxColumn";
-            icao24DataGridViewTextBoxColumn.ReadOnly = true;
-            icao24DataGridViewTextBoxColumn.Width = 130;
+            printDialog1.UseEXDialog = true;
             // 
-            // callsign
+            // label1
             // 
-            callsign.DataPropertyName = "callsign";
-            callsign.HeaderText = "callsign";
-            callsign.MinimumWidth = 8;
-            callsign.Name = "callsign";
-            callsign.ReadOnly = true;
+            label1.AutoSize = true;
+            label1.BackColor = SystemColors.GradientInactiveCaption;
+            label1.Location = new Point(8, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(156, 25);
+            label1.TabIndex = 13;
+            label1.Text = "Current Flight Info";
             // 
-            // origincountryDataGridViewTextBoxColumn
+            // label2
             // 
-            origincountryDataGridViewTextBoxColumn.DataPropertyName = "origin_country";
-            origincountryDataGridViewTextBoxColumn.HeaderText = "Country of Origin";
-            origincountryDataGridViewTextBoxColumn.MinimumWidth = 8;
-            origincountryDataGridViewTextBoxColumn.Name = "origincountryDataGridViewTextBoxColumn";
-            origincountryDataGridViewTextBoxColumn.ReadOnly = true;
-            origincountryDataGridViewTextBoxColumn.Width = 150;
+            label2.AutoSize = true;
+            label2.BackColor = SystemColors.Info;
+            label2.Location = new Point(8, 468);
+            label2.Name = "label2";
+            label2.Size = new Size(160, 25);
+            label2.TabIndex = 14;
+            label2.Text = "Airport Departures";
             // 
-            // lastcontactDataGridViewTextBoxColumn
+            // label3
             // 
-            lastcontactDataGridViewTextBoxColumn.DataPropertyName = "last_contact";
-            lastcontactDataGridViewTextBoxColumn.FillWeight = 90F;
-            lastcontactDataGridViewTextBoxColumn.HeaderText = "Last Contact";
-            lastcontactDataGridViewTextBoxColumn.MinimumWidth = 8;
-            lastcontactDataGridViewTextBoxColumn.Name = "lastcontactDataGridViewTextBoxColumn";
-            lastcontactDataGridViewTextBoxColumn.ReadOnly = true;
-            lastcontactDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // ongroundDataGridViewCheckBoxColumn
-            // 
-            ongroundDataGridViewCheckBoxColumn.DataPropertyName = "on_ground";
-            ongroundDataGridViewCheckBoxColumn.HeaderText = "on ground";
-            ongroundDataGridViewCheckBoxColumn.MinimumWidth = 8;
-            ongroundDataGridViewCheckBoxColumn.Name = "ongroundDataGridViewCheckBoxColumn";
-            ongroundDataGridViewCheckBoxColumn.ReadOnly = true;
-            ongroundDataGridViewCheckBoxColumn.Width = 150;
-            // 
-            // category
-            // 
-            category.DataPropertyName = "category";
-            category.HeaderText = "category";
-            category.MinimumWidth = 8;
-            category.Name = "category";
-            category.Width = 150;
-            // 
-            // icao24DataGridViewTextBoxColumn1
-            // 
-            icao24DataGridViewTextBoxColumn1.DataPropertyName = "icao24";
-            icao24DataGridViewTextBoxColumn1.HeaderText = "icao24";
-            icao24DataGridViewTextBoxColumn1.MinimumWidth = 8;
-            icao24DataGridViewTextBoxColumn1.Name = "icao24DataGridViewTextBoxColumn1";
-            icao24DataGridViewTextBoxColumn1.Width = 80;
-            // 
-            // firstSeenDataGridViewTextBoxColumn
-            // 
-            firstSeenDataGridViewTextBoxColumn.DataPropertyName = "firstSeen";
-            firstSeenDataGridViewTextBoxColumn.HeaderText = "Est Take Off Time";
-            firstSeenDataGridViewTextBoxColumn.MinimumWidth = 8;
-            firstSeenDataGridViewTextBoxColumn.Name = "firstSeenDataGridViewTextBoxColumn";
-            firstSeenDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // estDepartureAirportDataGridViewTextBoxColumn
-            // 
-            estDepartureAirportDataGridViewTextBoxColumn.DataPropertyName = "estDepartureAirport";
-            estDepartureAirportDataGridViewTextBoxColumn.HeaderText = "estDepartureAirport";
-            estDepartureAirportDataGridViewTextBoxColumn.MinimumWidth = 8;
-            estDepartureAirportDataGridViewTextBoxColumn.Name = "estDepartureAirportDataGridViewTextBoxColumn";
-            estDepartureAirportDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // lastSeenDataGridViewTextBoxColumn
-            // 
-            lastSeenDataGridViewTextBoxColumn.DataPropertyName = "lastSeen";
-            lastSeenDataGridViewTextBoxColumn.HeaderText = "lastSeen";
-            lastSeenDataGridViewTextBoxColumn.MinimumWidth = 8;
-            lastSeenDataGridViewTextBoxColumn.Name = "lastSeenDataGridViewTextBoxColumn";
-            lastSeenDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // estArrivalAirportDataGridViewTextBoxColumn
-            // 
-            estArrivalAirportDataGridViewTextBoxColumn.DataPropertyName = "estArrivalAirport";
-            estArrivalAirportDataGridViewTextBoxColumn.HeaderText = "estArrivalAirport";
-            estArrivalAirportDataGridViewTextBoxColumn.MinimumWidth = 8;
-            estArrivalAirportDataGridViewTextBoxColumn.Name = "estArrivalAirportDataGridViewTextBoxColumn";
-            estArrivalAirportDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // callsignDataGridViewTextBoxColumn
-            // 
-            callsignDataGridViewTextBoxColumn.DataPropertyName = "callsign";
-            callsignDataGridViewTextBoxColumn.HeaderText = "callsign";
-            callsignDataGridViewTextBoxColumn.MinimumWidth = 8;
-            callsignDataGridViewTextBoxColumn.Name = "callsignDataGridViewTextBoxColumn";
-            callsignDataGridViewTextBoxColumn.Width = 150;
-            // 
-            // icao24DataGridViewTextBoxColumn2
-            // 
-            icao24DataGridViewTextBoxColumn2.DataPropertyName = "icao24";
-            icao24DataGridViewTextBoxColumn2.HeaderText = "icao24";
-            icao24DataGridViewTextBoxColumn2.MinimumWidth = 8;
-            icao24DataGridViewTextBoxColumn2.Name = "icao24DataGridViewTextBoxColumn2";
-            icao24DataGridViewTextBoxColumn2.Width = 80;
-            // 
-            // firstSeenDataGridViewTextBoxColumn1
-            // 
-            firstSeenDataGridViewTextBoxColumn1.DataPropertyName = "firstSeen";
-            firstSeenDataGridViewTextBoxColumn1.HeaderText = "firstSeen";
-            firstSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            firstSeenDataGridViewTextBoxColumn1.Name = "firstSeenDataGridViewTextBoxColumn1";
-            firstSeenDataGridViewTextBoxColumn1.Width = 150;
-            // 
-            // estDepartureAirportDataGridViewTextBoxColumn1
-            // 
-            estDepartureAirportDataGridViewTextBoxColumn1.DataPropertyName = "estDepartureAirport";
-            estDepartureAirportDataGridViewTextBoxColumn1.HeaderText = "estDepartureAirport";
-            estDepartureAirportDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            estDepartureAirportDataGridViewTextBoxColumn1.Name = "estDepartureAirportDataGridViewTextBoxColumn1";
-            estDepartureAirportDataGridViewTextBoxColumn1.Width = 150;
-            // 
-            // lastSeenDataGridViewTextBoxColumn1
-            // 
-            lastSeenDataGridViewTextBoxColumn1.DataPropertyName = "lastSeen";
-            lastSeenDataGridViewTextBoxColumn1.HeaderText = "lastSeen";
-            lastSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            lastSeenDataGridViewTextBoxColumn1.Name = "lastSeenDataGridViewTextBoxColumn1";
-            lastSeenDataGridViewTextBoxColumn1.Width = 150;
-            // 
-            // estArrivalAirportDataGridViewTextBoxColumn1
-            // 
-            estArrivalAirportDataGridViewTextBoxColumn1.DataPropertyName = "estArrivalAirport";
-            estArrivalAirportDataGridViewTextBoxColumn1.HeaderText = "estArrivalAirport";
-            estArrivalAirportDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            estArrivalAirportDataGridViewTextBoxColumn1.Name = "estArrivalAirportDataGridViewTextBoxColumn1";
-            estArrivalAirportDataGridViewTextBoxColumn1.Width = 150;
-            // 
-            // callsignDataGridViewTextBoxColumn1
-            // 
-            callsignDataGridViewTextBoxColumn1.DataPropertyName = "callsign";
-            callsignDataGridViewTextBoxColumn1.HeaderText = "callsign";
-            callsignDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            callsignDataGridViewTextBoxColumn1.Name = "callsignDataGridViewTextBoxColumn1";
-            callsignDataGridViewTextBoxColumn1.Width = 150;
-            // 
-            // arrivalAirportCandidatesCountDataGridViewTextBoxColumn1
-            // 
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1.DataPropertyName = "arrivalAirportCandidatesCount";
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1.HeaderText = "arrivalAirportCandidatesCount";
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1.MinimumWidth = 8;
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1.Name = "arrivalAirportCandidatesCountDataGridViewTextBoxColumn1";
-            arrivalAirportCandidatesCountDataGridViewTextBoxColumn1.Width = 150;
+            label3.AutoSize = true;
+            label3.BackColor = SystemColors.ControlLightLight;
+            label3.Location = new Point(448, 468);
+            label3.Name = "label3";
+            label3.Size = new Size(195, 25);
+            label3.TabIndex = 15;
+            label3.Text = "Airport Arrivals (24 hrs)";
             // 
             // Form1
             // 
+            AcceptButton = Refresh;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(1791, 798);
+            ClientSize = new Size(1791, 933);
             Controls.Add(splitContainer1);
             Controls.Add(button1);
             Controls.Add(Refresh);
@@ -396,6 +504,7 @@
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView3).EndInit();
@@ -419,24 +528,31 @@
         private BindingSource airportDeparturesBindingSource;
         private DataGridView dataGridView3;
         private BindingSource airportArrivalsBindingSource;
+        private TextBox textBox1;
         private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn callsign;
         private DataGridViewTextBoxColumn origincountryDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn lastcontactDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn ongroundDataGridViewCheckBoxColumn;
         private DataGridViewTextBoxColumn category;
-        private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn firstSeenDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn estDepartureAirportDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn estArrivalAirportDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn arrivalAirportCandidatesCountDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn Velocity;
+        private DataGridViewTextBoxColumn baro_altitude;
+        private DataGridViewTextBoxColumn vertical_rate;
+        private DataGridViewTextBoxColumn geo_altitude;
         private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn firstSeenDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn estDepartureAirportDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn estArrivalAirportDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn firstSeenDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn estDepartureAirportDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn1;
+        private PrintDialog printDialog1;
+        private Label label3;
+        private Label label2;
+        private Label label1;
     }
 }

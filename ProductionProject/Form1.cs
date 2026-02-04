@@ -19,6 +19,7 @@ namespace ProductionProject
         private List<flightsInfo> flightList;
         private List<airportDepartures> departureList;
         private List<airportArrivals> arrivalList;
+        private List<flightsPath> flightsPath;
 
         private flightsMap flightsMap;
 
@@ -61,7 +62,9 @@ namespace ProductionProject
         {
             try
             {
-                flightList = await apiWAuthorisation.FetchFlightDataAsync();
+                using var client = new HttpClient();
+
+                flightList = await apiWAuthorisation.GetStatesAsync(client);
                 Debug.WriteLine("API was called");
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = flightList;
@@ -74,13 +77,15 @@ namespace ProductionProject
 
                 //drawDetectArea();
 
-               // departureList = await apiWAuthorisation.GetDepartures();
+                departureList = await apiWAuthorisation.GetDepartures(client);
                 dataGridView2.DataSource = null;
                 dataGridView2.DataSource = departureList;
 
-                arrivalList = await apiWAuthorisation.GetArrivals();
+                arrivalList = await apiWAuthorisation.GetArrivals(client);
                 dataGridView3.DataSource = null;
                 dataGridView3.DataSource = arrivalList;
+
+                flightsPath = await apiWAuthorisation.GetFlightPaths(client);
             }
 
             catch (Exception er)
