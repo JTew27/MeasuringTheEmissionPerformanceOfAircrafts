@@ -21,7 +21,8 @@ namespace ProductionProject
         private List<airportArrivals> arrivalList;
         private List<flightsPath> flightsPath;
 
-        private flightsMap flightsMap;
+        private flightsMap flightsMap;  
+        private FlightFuelConsumption flightFuelConsumption = new FlightFuelConsumption();
 
         public string json;
         Bitmap map;
@@ -50,6 +51,8 @@ namespace ProductionProject
 
             splitContainer1.Panel1.Controls.Add(gmap);
             gMapControl1.Dock = DockStyle.Fill;
+            gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
+            gMapControl1.OnPolygonClick += gMapControl1_OnPolygonClick;
 
 
             redPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png");
@@ -146,9 +149,17 @@ namespace ProductionProject
         {
         }
 
-        private void gMapControl_OnPolygonClick(GMapPolygon LdsAirport, MouseEventArgs e)
+        private void gMapControl1_OnPolygonClick(GMapPolygon LdsAirport, MouseEventArgs e)
         {
             MessageBox.Show("You clicked on polygon: " + LdsAirport.Name);
+        }
+
+        private void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            MessageBox.Show("You clicked on marker: " + item.ToolTipText);
+            var flight = item.Tag as flightsInfo;
+            //call flight fuel consumption class to get fuel consumption for selected flight
+            flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {

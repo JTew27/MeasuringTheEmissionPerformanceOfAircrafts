@@ -123,8 +123,10 @@ namespace ProductionProject
                     true_track = (double)(obj[10] ?? 0),//10
                     velocity = (float)(obj[9] ),//9 only appears some of the time
 
-                    //geo_altitude = (float)(obj[13] ),//13 both pront cannot convert null to single
-                    //baro_altitude = (float)(obj[7]),//7 
+                    
+                    geo_altitude = obj[13].Value<float?>() ?? 0f,//13 both throw cannot convert null to single
+                    baro_altitude = obj[7].Value<float?>() ?? 0f,//7 
+                    vertical_rate = obj[11].Value<float?>() ?? 0f,//11
 
                     category = (int)(obj[17]??0),//17 default to 0 as this is not always given so causes index out of range error
                 });
