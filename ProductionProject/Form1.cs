@@ -21,7 +21,7 @@ namespace ProductionProject
         private List<airportArrivals> arrivalList;
         private List<flightsPath> flightsPath;
 
-        private flightsMap flightsMap;  
+        private flightsMap flightsMap;
         private FlightFuelConsumption flightFuelConsumption = new FlightFuelConsumption();
 
         public string json;
@@ -34,6 +34,7 @@ namespace ProductionProject
         //GMap.NET.WindowsForms.GMapControl gmap;
 
         private System.Windows.Forms.Timer apiTimer;
+        private System.Windows.Forms.Timer clock;
 
         private Image redPlaneIcon;
 
@@ -45,6 +46,11 @@ namespace ProductionProject
             apiTimer.Interval = 10000; // 10 seconds
             apiTimer.Tick += apiTimer_Tick;
             apiTimer.Start();
+
+            clock= new System.Windows.Forms.Timer();
+            clock.Interval = 1000; // 1 second
+            clock.Tick += clockTick;
+            clock.Start();
 
 
             this.Load += Form1_Load;
@@ -159,7 +165,7 @@ namespace ProductionProject
             MessageBox.Show("You clicked on marker: " + item.ToolTipText);
             var flight = item.Tag as flightsInfo;
             //call flight fuel consumption class to get fuel consumption for selected flight
-            flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate);
+            flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
@@ -182,6 +188,14 @@ namespace ProductionProject
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+        private void label4_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void clockTick(object sender, EventArgs e)
+        {
+            label4.Text = DateTime.Now.ToString("HH:mm:ss");
         }
     }
 }

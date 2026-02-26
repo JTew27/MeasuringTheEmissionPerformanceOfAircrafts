@@ -38,13 +38,13 @@ namespace ProductionProject
             map.Overlays.Add(aircraftOverlay);
             map.Overlays.Add(airportOverlay);
 
-            GMapMarker markerT = new GMarkerGoogle(new PointLatLng(52.7888, -1.2095), new Bitmap("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png"));
-            markerT.ToolTipText = "Hello There";
+           // GMapMarker markerT = new GMarkerGoogle(new PointLatLng(52.7888, -1.2095), new Bitmap("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png"));
+            //markerT.ToolTipText = "Hello There";
             // GMapMarker marker1 = new GMarkerGoogle(new PointLatLng(53.7888, -1.2090), new Bitmap("C:\\Users\\ianct\\source\\repos\\ProductionProject\\PlaneBlueStripeTopView.jpg"));
 
 
 
-            aircraftOverlay.Markers.Add(markerT);
+            //aircraftOverlay.Markers.Add(markerT);
             // aircraftOverlay.Markers.Add(marker1);
 
             this.map = map;
@@ -59,15 +59,15 @@ namespace ProductionProject
                 if (flight.latitude != 0.0 && flight.longitude != 0.0)
                 {
 
-                    var marker = aircraftOverlay.Markers.OfType<flightMarker>().FirstOrDefault(m => (string)m.Tag == flight.icao24);
+                    var marker = aircraftOverlay.Markers.OfType<flightMarker>().FirstOrDefault(m => ((flightsInfo)m.Tag).icao24 == flight.icao24);
 
                     if (marker == null)
                     {
                         marker = new flightMarker(new PointLatLng(flight.latitude, flight.longitude), redPlaneIcon,
                             (float)flight.true_track)
                         {
-                            Tag = flight.icao24,
-                            ToolTipText = flight.callsign
+                            Tag = flight,
+                            ToolTipText = ($"{flight.callsign}at {flight.last_contact}")
 
                         };
 
@@ -79,11 +79,18 @@ namespace ProductionProject
                     {
                         marker.Position = new PointLatLng(flight.latitude, flight.longitude);
                         marker.planeDirection = (float)flight.true_track;
-                        marker.ToolTipText = flight.callsign;
+                        marker.ToolTipText = ($"{flight.callsign}at {flight.last_contact}");
+                        marker.Tag = flight;
                     }
                 }
-               
             }
+                long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                var expiredMarkers = aircraftOverlay.Markers.OfType<flightMarker>().Where(m => time - ((flightsInfo)m.Tag).lastContactUnix > 30).ToList();
+                foreach (var expiredMarker in expiredMarkers)
+                {
+                    aircraftOverlay.Markers.Remove(expiredMarker);
+                }   
+            
             map.Refresh();
         }
 

@@ -45,6 +45,9 @@
             aPIBindingSource = new BindingSource(components);
             gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             splitContainer1 = new SplitContainer();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             textBox1 = new TextBox();
             dataGridView3 = new DataGridView();
             icao24DataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -64,9 +67,7 @@
             ShowDetectBox = new CheckBox();
             button1 = new Button();
             printDialog1 = new PrintDialog();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -258,6 +259,7 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = SystemColors.ControlDark;
+            splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(label3);
             splitContainer1.Panel2.Controls.Add(label2);
             splitContainer1.Panel2.Controls.Add(label1);
@@ -270,12 +272,42 @@
             splitContainer1.SplitterDistance = 948;
             splitContainer1.TabIndex = 7;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = SystemColors.ControlLightLight;
+            label3.Location = new Point(448, 468);
+            label3.Name = "label3";
+            label3.Size = new Size(195, 25);
+            label3.TabIndex = 15;
+            label3.Text = "Airport Arrivals (24 hrs)";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = SystemColors.Info;
+            label2.Location = new Point(8, 468);
+            label2.Name = "label2";
+            label2.Size = new Size(160, 25);
+            label2.TabIndex = 14;
+            label2.Text = "Airport Departures";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = SystemColors.GradientInactiveCaption;
+            label1.Location = new Point(8, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(156, 25);
+            label1.TabIndex = 13;
+            label1.Text = "Current Flight Info";
+            // 
             // textBox1
             // 
             textBox1.BackColor = Color.Azure;
             textBox1.Cursor = Cursors.IBeam;
             textBox1.ForeColor = SystemColors.MenuHighlight;
-            textBox1.Location = new Point(317, 30);
+            textBox1.Location = new Point(507, 25);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(248, 31);
             textBox1.TabIndex = 10;
@@ -454,35 +486,15 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // label1
+            // label4
             // 
-            label1.AutoSize = true;
-            label1.BackColor = SystemColors.GradientInactiveCaption;
-            label1.Location = new Point(8, 48);
-            label1.Name = "label1";
-            label1.Size = new Size(156, 25);
-            label1.TabIndex = 13;
-            label1.Text = "Current Flight Info";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = SystemColors.Info;
-            label2.Location = new Point(8, 468);
-            label2.Name = "label2";
-            label2.Size = new Size(160, 25);
-            label2.TabIndex = 14;
-            label2.Text = "Airport Departures";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(448, 468);
-            label3.Name = "label3";
-            label3.Size = new Size(195, 25);
-            label3.TabIndex = 15;
-            label3.Text = "Airport Arrivals (24 hrs)";
+            label4.AutoSize = true;
+            label4.Location = new Point(218, 28);
+            label4.Name = "label4";
+            label4.Size = new Size(59, 25);
+            label4.TabIndex = 16;
+            label4.Text = "label4";
+            label4.Click += label4_Click;
             // 
             // Form1
             // 
@@ -554,5 +566,6 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private Label label4;
     }
 }

@@ -16,15 +16,16 @@ namespace ProductionProject
         public string origin_country { get; set; }
         public string time_position { get; set; }
         public string last_contact { get; set; }
+        public long lastContactUnix { get; set; }
         public double longitude { get; set; }
         public double latitude { get; set; }
-        public double baro_altitude { get; set; }
+        public float baro_altitude { get; set; }
         public bool on_ground { get; set; }
         public double velocity { get; set; }
         public double true_track { get; set; }
         public double vertical_rate { get; set; }
         public List<int> sensors { get; set; }
-        public double geo_altitude { get; set; }
+        public float geo_altitude { get; set; }
         public string squawk { get; set; }
         public bool spi { get; set; }
         public int position_source { get; set; }

@@ -117,6 +117,7 @@ namespace ProductionProject
                     origin_country = (string)obj[2],//2
                     time_position = timePos,//3
                     last_contact = lastContact,//4
+                    lastContactUnix = (long)obj[4],//4 for calculating expired markers
                     longitude = (double)(obj[5] ?? 0),//5
                     latitude = (double)(obj[6] ?? 0),//6
                     on_ground = (bool)(obj[8] ?? false),//8
