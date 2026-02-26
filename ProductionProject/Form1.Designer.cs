@@ -45,6 +45,7 @@
             aPIBindingSource = new BindingSource(components);
             gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             splitContainer1 = new SplitContainer();
+            label4 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
@@ -67,7 +68,7 @@
             ShowDetectBox = new CheckBox();
             button1 = new Button();
             printDialog1 = new PrintDialog();
-            label4 = new Label();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -259,6 +260,7 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = SystemColors.ControlDark;
+            splitContainer1.Panel2.Controls.Add(button2);
             splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(label3);
             splitContainer1.Panel2.Controls.Add(label2);
@@ -271,6 +273,18 @@
             splitContainer1.Size = new Size(1784, 861);
             splitContainer1.SplitterDistance = 948;
             splitContainer1.TabIndex = 7;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = SystemColors.ActiveCaptionText;
+            label4.ForeColor = Color.SpringGreen;
+            label4.Location = new Point(8, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(59, 25);
+            label4.TabIndex = 16;
+            label4.Text = "label4";
+            label4.Click += label4_Click;
             // 
             // label3
             // 
@@ -307,11 +321,11 @@
             textBox1.BackColor = Color.Azure;
             textBox1.Cursor = Cursors.IBeam;
             textBox1.ForeColor = SystemColors.MenuHighlight;
-            textBox1.Location = new Point(507, 25);
+            textBox1.Location = new Point(197, 3);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(248, 31);
             textBox1.TabIndex = 10;
-            textBox1.Text = "Enter Airport";
+            textBox1.Text = "Search Location";
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
             // dataGridView3
@@ -486,15 +500,15 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // label4
+            // button2
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(218, 28);
-            label4.Name = "label4";
-            label4.Size = new Size(59, 25);
-            label4.TabIndex = 16;
-            label4.Text = "label4";
-            label4.Click += label4_Click;
+            button2.Location = new Point(451, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(67, 31);
+            button2.TabIndex = 17;
+            button2.Text = "GO";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // Form1
             // 
@@ -567,5 +581,6 @@
         private Label label2;
         private Label label1;
         private Label label4;
+        private Button button2;
     }
 }

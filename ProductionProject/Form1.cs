@@ -13,7 +13,7 @@ namespace ProductionProject
 {
     public partial class Form1 : Form
     {
-        private HttpClient _httpClient = new HttpClient();
+        private HttpClient client = new HttpClient();
 
         private flightsInfo flights;
         private List<flightsInfo> flightList;
@@ -37,6 +37,10 @@ namespace ProductionProject
         private System.Windows.Forms.Timer clock;
 
         private Image redPlaneIcon;
+        
+        
+
+        public string userSearch = "EGCC";
 
         public Form1() // constructor
         {
@@ -47,7 +51,7 @@ namespace ProductionProject
             apiTimer.Tick += apiTimer_Tick;
             apiTimer.Start();
 
-            clock= new System.Windows.Forms.Timer();
+            clock = new System.Windows.Forms.Timer();
             clock.Interval = 1000; // 1 second
             clock.Tick += clockTick;
             clock.Start();
@@ -71,7 +75,7 @@ namespace ProductionProject
         {
             try
             {
-                using var client = new HttpClient();
+                
 
                 flightList = await apiWAuthorisation.GetStatesAsync(client);
                 Debug.WriteLine("API was called");
@@ -90,7 +94,7 @@ namespace ProductionProject
                 dataGridView2.DataSource = null;
                 dataGridView2.DataSource = departureList;
 
-                arrivalList = await apiWAuthorisation.GetArrivals(client);
+                arrivalList = await apiWAuthorisation.GetArrivals(client, userSearch);
                 dataGridView3.DataSource = null;
                 dataGridView3.DataSource = arrivalList;
 
@@ -196,6 +200,17 @@ namespace ProductionProject
         private void clockTick(object sender, EventArgs e)
         {
             label4.Text = DateTime.Now.ToString("HH:mm:ss");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Invalidate();
+            String userSearch = textBox1.Text.Trim();
+            Debug.WriteLine("Search Button Clicked Parameter:"+userSearch);
+            apiWAuthorisation.GetArrivals(client, userSearch);
+            dataGridView3.DataSource = null;
+            dataGridView3.DataSource = arrivalList;
+
         }
     }
 }

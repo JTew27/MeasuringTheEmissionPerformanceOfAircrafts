@@ -90,7 +90,12 @@ namespace ProductionProject
 
             await Authorise(client);
 
-            var url = "https://opensky-network.org/api/states/all?extended=1&lamin=53.6&lomin=-2.0&lamax=54.0&lomax=0.0";
+            double lamin = 53.6;
+            double lomin = -2.0;
+            double lamax = 54.0;
+            double lomax = 0.0;
+
+            var url = "https://opensky-network.org/api/states/all?extended=1"+ $"&lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
 
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -179,7 +184,7 @@ namespace ProductionProject
             return departureList;
         }
 
-        public static async Task<List<airportArrivals>> GetArrivals(HttpClient client)
+        public static async Task<List<airportArrivals>> GetArrivals(HttpClient client, string userSearch)
         {
             await Authorise(client);
             //EGNM - Leeds ICAO
@@ -190,8 +195,8 @@ namespace ProductionProject
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             long begin = end - 86400; // last 24 hours
 
-            Debug.WriteLine("Retrieving current flight arrivals ");
-            var url = "https://opensky-network.org/api/flights/arrival" + $"?airport={airport}&begin={begin}&end={end}";
+            Debug.WriteLine("Retrieving current flight arrivals for "+ userSearch);
+            var url = "https://opensky-network.org/api/flights/arrival" + $"?airport={userSearch}&begin={begin}&end={end}";
 
 
 
