@@ -90,7 +90,7 @@ namespace ProductionProject
 
                 //drawDetectArea();
 
-                departureList = await apiWAuthorisation.GetDepartures(client);
+                departureList = await apiWAuthorisation.GetDepartures(client, userSearch);
                 dataGridView2.DataSource = null;
                 dataGridView2.DataSource = departureList;
 
@@ -202,15 +202,23 @@ namespace ProductionProject
             clockLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private async void button2_Click(object sender, EventArgs e)
+        private async void submitButton_Click(object sender, EventArgs e)
         {
             Invalidate();
 
-            String userSearch = textBox1.Text.Trim();
+            String userSearch = entryBox.Text.Trim();
             Debug.WriteLine("Search Button Clicked Parameter:" + userSearch);
+
             arrivalList = await apiWAuthorisation.GetArrivals(client, userSearch);
+            departureList = await apiWAuthorisation.GetDepartures(client, userSearch);
+
             dataGridView3.DataSource = null;
             dataGridView3.DataSource = arrivalList;
+           
+            dataGridView2.DataSource = null;
+            dataGridView2.DataSource = departureList;
+
+            departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
         }

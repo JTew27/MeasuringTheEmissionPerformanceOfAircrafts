@@ -45,12 +45,12 @@
             aPIBindingSource = new BindingSource(components);
             gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             splitContainer1 = new SplitContainer();
-            button2 = new Button();
+            submitButton = new Button();
             clockLabel = new Label();
             arrivalLabel = new Label();
             departureLabel = new Label();
             label1 = new Label();
-            textBox1 = new TextBox();
+            entryBox = new TextBox();
             dataGridView3 = new DataGridView();
             icao24DataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             firstSeenDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -260,12 +260,12 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = SystemColors.ControlDark;
-            splitContainer1.Panel2.Controls.Add(button2);
+            splitContainer1.Panel2.Controls.Add(submitButton);
             splitContainer1.Panel2.Controls.Add(clockLabel);
             splitContainer1.Panel2.Controls.Add(arrivalLabel);
             splitContainer1.Panel2.Controls.Add(departureLabel);
             splitContainer1.Panel2.Controls.Add(label1);
-            splitContainer1.Panel2.Controls.Add(textBox1);
+            splitContainer1.Panel2.Controls.Add(entryBox);
             splitContainer1.Panel2.Controls.Add(dataGridView3);
             splitContainer1.Panel2.Controls.Add(dataGridView2);
             splitContainer1.Panel2.Controls.Add(dataGridView1);
@@ -274,15 +274,15 @@
             splitContainer1.SplitterDistance = 948;
             splitContainer1.TabIndex = 7;
             // 
-            // button2
+            // submitButton
             // 
-            button2.Location = new Point(451, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(67, 31);
-            button2.TabIndex = 17;
-            button2.Text = "GO";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            submitButton.Location = new Point(451, 3);
+            submitButton.Name = "submitButton";
+            submitButton.Size = new Size(67, 31);
+            submitButton.TabIndex = 17;
+            submitButton.Text = "GO";
+            submitButton.UseVisualStyleBackColor = true;
+            submitButton.Click += submitButton_Click;
             // 
             // clockLabel
             // 
@@ -326,17 +326,17 @@
             label1.TabIndex = 13;
             label1.Text = "Current Flight Info";
             // 
-            // textBox1
+            // entryBox
             // 
-            textBox1.BackColor = Color.Azure;
-            textBox1.Cursor = Cursors.IBeam;
-            textBox1.ForeColor = SystemColors.MenuHighlight;
-            textBox1.Location = new Point(197, 3);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(248, 31);
-            textBox1.TabIndex = 10;
-            textBox1.Text = "Search Location";
-            textBox1.TextAlign = HorizontalAlignment.Center;
+            entryBox.BackColor = Color.Azure;
+            entryBox.Cursor = Cursors.IBeam;
+            entryBox.ForeColor = SystemColors.MenuHighlight;
+            entryBox.Location = new Point(197, 3);
+            entryBox.Name = "entryBox";
+            entryBox.Size = new Size(248, 31);
+            entryBox.TabIndex = 10;
+            entryBox.Text = "Search Location";
+            entryBox.TextAlign = HorizontalAlignment.Center;
             // 
             // dataGridView3
             // 
@@ -554,7 +554,7 @@
         private BindingSource airportDeparturesBindingSource;
         private DataGridView dataGridView3;
         private BindingSource airportArrivalsBindingSource;
-        private TextBox textBox1;
+        private TextBox entryBox;
         private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn callsign;
         private DataGridViewTextBoxColumn origincountryDataGridViewTextBoxColumn;
@@ -581,6 +581,6 @@
         private Label departureLabel;
         private Label label1;
         private Label clockLabel;
-        private Button button2;
+        private Button submitButton;
     }
 }

@@ -141,7 +141,7 @@ namespace ProductionProject
             return flightList;
         }
 
-        public static async Task<List<airportDepartures>> GetDepartures(HttpClient client)
+        public static async Task<List<airportDepartures>> GetDepartures(HttpClient client, string userSearch)
         {
             //
             string airport = "EGCC";
@@ -152,7 +152,7 @@ namespace ProductionProject
 
             await Authorise(client);
             Debug.WriteLine("Retrieving current flight departures ");
-            var url = "https://opensky-network.org/api/flights/departure" + $"?airport={airport}&begin={begin}&end={end}";
+            var url = "https://opensky-network.org/api/flights/departure" + $"?airport={userSearch}&begin={begin}&end={end}";
 
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
