@@ -45,9 +45,10 @@
             aPIBindingSource = new BindingSource(components);
             gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
             splitContainer1 = new SplitContainer();
-            label4 = new Label();
-            label3 = new Label();
-            label2 = new Label();
+            button2 = new Button();
+            clockLabel = new Label();
+            arrivalLabel = new Label();
+            departureLabel = new Label();
             label1 = new Label();
             textBox1 = new TextBox();
             dataGridView3 = new DataGridView();
@@ -68,7 +69,6 @@
             ShowDetectBox = new CheckBox();
             button1 = new Button();
             printDialog1 = new PrintDialog();
-            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -261,9 +261,9 @@
             // 
             splitContainer1.Panel2.BackColor = SystemColors.ControlDark;
             splitContainer1.Panel2.Controls.Add(button2);
-            splitContainer1.Panel2.Controls.Add(label4);
-            splitContainer1.Panel2.Controls.Add(label3);
-            splitContainer1.Panel2.Controls.Add(label2);
+            splitContainer1.Panel2.Controls.Add(clockLabel);
+            splitContainer1.Panel2.Controls.Add(arrivalLabel);
+            splitContainer1.Panel2.Controls.Add(departureLabel);
             splitContainer1.Panel2.Controls.Add(label1);
             splitContainer1.Panel2.Controls.Add(textBox1);
             splitContainer1.Panel2.Controls.Add(dataGridView3);
@@ -274,37 +274,47 @@
             splitContainer1.SplitterDistance = 948;
             splitContainer1.TabIndex = 7;
             // 
-            // label4
+            // button2
             // 
-            label4.AutoSize = true;
-            label4.BackColor = SystemColors.ActiveCaptionText;
-            label4.ForeColor = Color.SpringGreen;
-            label4.Location = new Point(8, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(59, 25);
-            label4.TabIndex = 16;
-            label4.Text = "label4";
-            label4.Click += label4_Click;
+            button2.Location = new Point(451, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(67, 31);
+            button2.TabIndex = 17;
+            button2.Text = "GO";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
-            // label3
+            // clockLabel
             // 
-            label3.AutoSize = true;
-            label3.BackColor = SystemColors.ControlLightLight;
-            label3.Location = new Point(448, 468);
-            label3.Name = "label3";
-            label3.Size = new Size(195, 25);
-            label3.TabIndex = 15;
-            label3.Text = "Airport Arrivals (24 hrs)";
+            clockLabel.AutoSize = true;
+            clockLabel.BackColor = SystemColors.ActiveCaptionText;
+            clockLabel.ForeColor = Color.SpringGreen;
+            clockLabel.Location = new Point(8, 0);
+            clockLabel.Name = "clockLabel";
+            clockLabel.Size = new Size(59, 25);
+            clockLabel.TabIndex = 16;
+            clockLabel.Text = "label4";
+            clockLabel.Click += label4_Click;
             // 
-            // label2
+            // arrivalLabel
             // 
-            label2.AutoSize = true;
-            label2.BackColor = SystemColors.Info;
-            label2.Location = new Point(8, 468);
-            label2.Name = "label2";
-            label2.Size = new Size(160, 25);
-            label2.TabIndex = 14;
-            label2.Text = "Airport Departures";
+            arrivalLabel.AutoSize = true;
+            arrivalLabel.BackColor = SystemColors.ControlLightLight;
+            arrivalLabel.Location = new Point(448, 468);
+            arrivalLabel.Name = "arrivalLabel";
+            arrivalLabel.Size = new Size(195, 25);
+            arrivalLabel.TabIndex = 15;
+            arrivalLabel.Text = "Airport Arrivals (24 hrs)";
+            // 
+            // departureLabel
+            // 
+            departureLabel.AutoSize = true;
+            departureLabel.BackColor = SystemColors.Info;
+            departureLabel.Location = new Point(8, 468);
+            departureLabel.Name = "departureLabel";
+            departureLabel.Size = new Size(160, 25);
+            departureLabel.TabIndex = 14;
+            departureLabel.Text = "Airport Departures";
             // 
             // label1
             // 
@@ -500,16 +510,6 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // button2
-            // 
-            button2.Location = new Point(451, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(67, 31);
-            button2.TabIndex = 17;
-            button2.Text = "GO";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
             // Form1
             // 
             AcceptButton = Refresh;
@@ -577,10 +577,10 @@
         private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn1;
         private PrintDialog printDialog1;
-        private Label label3;
-        private Label label2;
+        private Label arrivalLabel;
+        private Label departureLabel;
         private Label label1;
-        private Label label4;
+        private Label clockLabel;
         private Button button2;
     }
 }

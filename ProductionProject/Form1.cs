@@ -199,17 +199,19 @@ namespace ProductionProject
 
         private void clockTick(object sender, EventArgs e)
         {
-            label4.Text = DateTime.Now.ToString("HH:mm:ss");
+            clockLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             Invalidate();
+
             String userSearch = textBox1.Text.Trim();
-            Debug.WriteLine("Search Button Clicked Parameter:"+userSearch);
-            apiWAuthorisation.GetArrivals(client, userSearch);
+            Debug.WriteLine("Search Button Clicked Parameter:" + userSearch);
+            arrivalList = await apiWAuthorisation.GetArrivals(client, userSearch);
             dataGridView3.DataSource = null;
             dataGridView3.DataSource = arrivalList;
+            arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
         }
     }
