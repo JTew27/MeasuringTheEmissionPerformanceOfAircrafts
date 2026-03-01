@@ -232,18 +232,15 @@ namespace ProductionProject
         }
 
 
-        public static async Task<List<flightsPath>> GetFlightPaths(HttpClient client)
+        public static async Task<List<flightsPath>> GetFlightPath(HttpClient client, string icao)
         {
             await Authorise(client);
 
-            string icao24 = "4d2007";
-
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long time = end - 600; // last 2 hours
+            long time = end - 1200; // last 4 hours
 
-            Debug.WriteLine("Retrieving current flight tracks ");
-            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao24}&time={time}";
-
+            Debug.WriteLine("Retrieving current flight tracks for "+icao);
+            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time={time}";
 
 
             var response = await client.GetAsync(url);
@@ -251,24 +248,37 @@ namespace ProductionProject
             string responseJson = await response.Content.ReadAsStringAsync();
 
             JObject obj = JObject.Parse(responseJson);
-            Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
+            //Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
+
 
             List<flightsPath> flightPathList = new List<flightsPath>();
 
+            JArray pathArray = (JArray)obj["path"];
 
-            foreach (JArray o in obj["path"])
+            foreach (JArray p in pathArray)
             {
-                flightPathList.Add(new flightsPath
-                {
+               var point = new flightsPath
+               {
                     icao24 = (string)obj["icao24"],
                     startTime = (int)obj["startTime"],
                     endTime = (int)obj["endTime"],
                     callsign = (string)obj["callsign"],
-                    //path = (JArray)obj["path"],
-                });
+                  // path = (JArray)obj["path"],
+
+                    time = (long)p[0],
+                    latitude = (float)p[1],
+                    longitude = (float)p[2],
+                    baro_altitude = (float)p[3],
+                    true_track = (float)p[4],
+                    on_ground = (bool)p[5],
+                };
+                flightPathList.Add(point);
+                //Debug.WriteLine($"Point:{point.time}\nLatitude:{point.latitude}\nLongitude:{point.longitude}\n");
             }
+         
             return flightPathList;
 
+          
         }
 
     }

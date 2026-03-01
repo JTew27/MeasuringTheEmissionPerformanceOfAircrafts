@@ -12,8 +12,14 @@ namespace ProductionProject
         public int startTime { get; set; }
         public int endTime { get; set; }
         public string callsign { get; set; }
-        public string estDepartureAirport { get; set; }
-        public string estArrivalAirport { get; set; }
-        public List<double[]> path { get; set; }
+        
+        public long time { get; set; }
+        public float latitude { get; set; }
+        public float longitude { get; set; }
+        public float baro_altitude { get; set; }
+
+        public float true_track { get; set; }
+        public bool on_ground { get; set; }
     }
+
 }

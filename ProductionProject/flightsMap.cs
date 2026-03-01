@@ -82,6 +82,8 @@ namespace ProductionProject
                         marker.ToolTipText = ($"{flight.callsign}at {flight.last_contact}");
                         marker.Tag = flight;
                     }
+
+                   
                 }
             }
                 long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -127,22 +129,13 @@ namespace ProductionProject
             airportOverlay.Polygons.Add(detectArea);
             detectArea.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
         }
-        public void flightPath(List<flightsInfo> flights)
+        public void flightPath(List<flightsPath> path)
         {
-
-            foreach (var flight in flights)
+            foreach (var point in path)
             {
-                if (flight.latitude != 0.0 && flight.longitude != 0.0)
+                if (point.latitude != 0.0 && point.longitude != 0.0)
                 {
-
-
-                    List<PointLatLng> points = new List<PointLatLng>();
-                    PointLatLng startPoint = new PointLatLng(flight.latitude, flight.longitude);
-                    points.Add(new PointLatLng(flight.latitude, flight.longitude));
-                    //points.Add(new PointLatLng(flight.latitude + 0.01, flight.longitude + 0.01)); // Example next point
-                    GMapRoute route = new GMapRoute(points, flight.callsign);
-                    route.Stroke = new Pen(Color.Blue, 2);
-                    aircraftOverlay.Routes.Add(route);
+                   new PointLatLng(point.latitude, point.longitude);
                 }
 
             }

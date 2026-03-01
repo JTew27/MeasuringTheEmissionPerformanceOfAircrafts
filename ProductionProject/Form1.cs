@@ -56,6 +56,10 @@ namespace ProductionProject
             clock.Tick += clockTick;
             clock.Start();
 
+            flightInfoLabel.Text = "Live Flight Data for: " + userSearch;
+            departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
+            arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
+
 
             this.Load += Form1_Load;
 
@@ -75,7 +79,7 @@ namespace ProductionProject
         {
             try
             {
-                
+
 
                 flightList = await apiWAuthorisation.GetStatesAsync(client);
                 Debug.WriteLine("API was called");
@@ -85,7 +89,6 @@ namespace ProductionProject
                 // map = new Bitmap("leedsMapDemo.png");
 
                 flightsMap.updateFlights(flightList);
-                flightsMap.flightPath(flightList);
                 flightsMap.drawAirport();
 
                 //drawDetectArea();
@@ -98,7 +101,6 @@ namespace ProductionProject
                 dataGridView3.DataSource = null;
                 dataGridView3.DataSource = arrivalList;
 
-                flightsPath = await apiWAuthorisation.GetFlightPaths(client);
             }
 
             catch (Exception er)
@@ -149,12 +151,7 @@ namespace ProductionProject
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            flightsMap.flightPath(flightList);
-
-            Debug.WriteLine("Button Clicked");
-        }
+     
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
         }
@@ -164,12 +161,15 @@ namespace ProductionProject
             MessageBox.Show("You clicked on polygon: " + LdsAirport.Name);
         }
 
-        private void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        private async void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
             MessageBox.Show("You clicked on marker: " + item.ToolTipText);
             var flight = item.Tag as flightsInfo;
             //call flight fuel consumption class to get fuel consumption for selected flight
             flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
+            string icao = flight.icao24;
+            await apiWAuthorisation.GetFlightPath(client, icao);
+            flightsMap.flightPath(flightsPath);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
