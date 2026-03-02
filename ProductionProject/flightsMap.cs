@@ -19,6 +19,7 @@ namespace ProductionProject
         private GMapControl map;
         public GMapOverlay aircraftOverlay;
         public GMapOverlay airportOverlay;
+        public GMapOverlay pathOverlay;
 
         private Image redPlaneIcon;
 
@@ -34,6 +35,7 @@ namespace ProductionProject
 
             aircraftOverlay = new GMapOverlay("aircrafts");
             airportOverlay = new GMapOverlay("airports");
+            pathOverlay = new GMapOverlay("flightPath");
 
             map.Overlays.Add(aircraftOverlay);
             map.Overlays.Add(airportOverlay);
@@ -131,14 +133,33 @@ namespace ProductionProject
         }
         public void flightPath(List<flightsPath> path)
         {
+            Debug.WriteLine("Attempting to draw flight path");
+            pathOverlay.Routes.Clear();
+            pathOverlay.Markers.Clear();
+
+            List<PointLatLng> points = new List<PointLatLng>();
+
             foreach (var point in path)
             {
                 if (point.latitude != 0.0 && point.longitude != 0.0)
                 {
-                   new PointLatLng(point.latitude, point.longitude);
+                   points.Add(new PointLatLng(point.latitude, point.longitude));
                 }
 
             }
+
+            Debug.WriteLine($"Path points count: {points.Count}");
+
+
+            if (points.Count > 1)
+            {
+                GMapRoute route = new GMapRoute(points, "Flight Path");
+                route.Stroke = new System.Drawing.Pen(System.Drawing.Color.Red, 2);
+                pathOverlay.Routes.Add(route);
+            }
+
+            
+            map.Overlays.Add(pathOverlay);
             map.Refresh();
         }
     }

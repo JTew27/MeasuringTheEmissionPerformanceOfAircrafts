@@ -159,7 +159,7 @@ namespace ProductionProject
             string responseJson = await response.Content.ReadAsStringAsync();
 
             var parsed = JArray.Parse(responseJson);
-            Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
+            //Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
 
             List<airportDepartures> departureList = new List<airportDepartures>();
 
@@ -205,7 +205,7 @@ namespace ProductionProject
             string responseJson = await response.Content.ReadAsStringAsync();
 
             var parsed = JArray.Parse(responseJson);
-            Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
+            //Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
 
             List<airportArrivals> arrivalList = new List<airportArrivals>();
 
@@ -232,23 +232,34 @@ namespace ProductionProject
         }
 
 
-        public static async Task<List<flightsPath>> GetFlightPath(HttpClient client, string icao)
+        public static async Task<List<flightsPath>> GetFlightPath(HttpClient client, string icao, long last_contact)
         {
             await Authorise(client);
 
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long time = end - 1200; // last 4 hours
+            long time = end - 14400; // last 4 hours
 
             Debug.WriteLine("Retrieving current flight tracks for "+icao);
-            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time={time}";
+            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time={last_contact}";
 
 
             var response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Failed to call:{response.StatusCode}");
+            }
             string responseJson = await response.Content.ReadAsStringAsync();
 
+
+            if (string.IsNullOrEmpty(responseJson))
+            {
+                Debug.WriteLine("Response content is empty.");
+                return new List<flightsPath>();
+            }
             JObject obj = JObject.Parse(responseJson);
-            //Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
+            Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
 
 
             List<flightsPath> flightPathList = new List<flightsPath>();
@@ -259,18 +270,18 @@ namespace ProductionProject
             {
                var point = new flightsPath
                {
-                    icao24 = (string)obj["icao24"],
-                    startTime = (int)obj["startTime"],
-                    endTime = (int)obj["endTime"],
-                    callsign = (string)obj["callsign"],
+                    icao24 = (string)obj["icao24"] ?? "",
+                    startTime = (int)(obj["startTime"] ?? 0),
+                    endTime = (int)(obj["endTime"] ?? 0),
+                    callsign = (string)obj["callsign"] ?? "",
                   // path = (JArray)obj["path"],
 
-                    time = (long)p[0],
-                    latitude = (float)p[1],
-                    longitude = (float)p[2],
-                    baro_altitude = (float)p[3],
-                    true_track = (float)p[4],
-                    on_ground = (bool)p[5],
+                    time = (long)(p[0] ?? 0),
+                    latitude = (float)(p[1] ?? 0.0),
+                    longitude = (float)(p[2] ?? 0.0),
+                    baro_altitude = (float)(p[3] ?? 0.0),
+                    true_track = (float)(p[4] ?? 0.0),
+                    on_ground = (bool)(p[5] ?? false),
                 };
                 flightPathList.Add(point);
                 //Debug.WriteLine($"Point:{point.time}\nLatitude:{point.latitude}\nLongitude:{point.longitude}\n");

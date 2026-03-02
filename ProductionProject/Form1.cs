@@ -168,8 +168,9 @@ namespace ProductionProject
             //call flight fuel consumption class to get fuel consumption for selected flight
             flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
             string icao = flight.icao24;
-            await apiWAuthorisation.GetFlightPath(client, icao);
-            flightsMap.flightPath(flightsPath);
+            long last_contact = flight.lastContactUnix;
+            await apiWAuthorisation.GetFlightPath(client, icao, last_contact);
+            //flightsMap.flightPath(flightsPath);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
