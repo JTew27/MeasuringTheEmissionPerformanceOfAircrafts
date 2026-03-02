@@ -148,14 +148,23 @@ namespace ProductionProject
 
             }
 
-            Debug.WriteLine($"Path points count: {points.Count}");
+            //Debug.WriteLine($"Path points count: {points.Count}");
 
 
             if (points.Count > 1)
             {
                 GMapRoute route = new GMapRoute(points, "Flight Path");
-                route.Stroke = new System.Drawing.Pen(System.Drawing.Color.Red, 2);
+                route.Stroke = new System.Drawing.Pen(System.Drawing.Color.Blue, 2);
                 pathOverlay.Routes.Add(route);
+
+                var startMarker = new GMarkerGoogle(points.First(), GMarkerGoogleType.green_dot);
+                startMarker.ToolTipText = "Start piont";
+                pathOverlay.Markers.Add(startMarker);
+
+                var endMarker = new GMarkerGoogle(points.Last(), GMarkerGoogleType.red_dot);
+                endMarker.ToolTipText = "End Point";
+                pathOverlay.Markers.Add(endMarker);
+                
             }
 
             

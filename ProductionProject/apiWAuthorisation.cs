@@ -240,7 +240,7 @@ namespace ProductionProject
             long time = end - 14400; // last 4 hours
 
             Debug.WriteLine("Retrieving current flight tracks for "+icao);
-            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time={last_contact}";
+            var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time=0";
 
 
             var response = await client.GetAsync(url);
@@ -259,7 +259,7 @@ namespace ProductionProject
                 return new List<flightsPath>();
             }
             JObject obj = JObject.Parse(responseJson);
-            Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
+            //Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
 
 
             List<flightsPath> flightPathList = new List<flightsPath>();

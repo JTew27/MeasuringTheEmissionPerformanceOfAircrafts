@@ -8,7 +8,7 @@ namespace ProductionProject
 {
     public class flightsPath
     {
-        public string icao24 { get; set; }
+        public string icao24 { get; set; } 
         public int startTime { get; set; }
         public int endTime { get; set; }
         public string callsign { get; set; }

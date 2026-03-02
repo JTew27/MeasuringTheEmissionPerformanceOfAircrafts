@@ -169,8 +169,8 @@ namespace ProductionProject
             flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
             string icao = flight.icao24;
             long last_contact = flight.lastContactUnix;
-            await apiWAuthorisation.GetFlightPath(client, icao, last_contact);
-            //flightsMap.flightPath(flightsPath);
+            flightsPath = await apiWAuthorisation.GetFlightPath(client, icao, last_contact);
+            flightsMap.flightPath(flightsPath);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
