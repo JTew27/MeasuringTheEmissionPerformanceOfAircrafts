@@ -1,13 +1,14 @@
 ﻿using GMap.NET;
+using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GMap.NET.MapProviders;
-using GMap.NET.WindowsForms.Markers;
+using static GMap.NET.Entity.OpenStreetMapGraphHopperRouteEntity;
 
 namespace ProductionProject
 {
@@ -25,6 +26,7 @@ namespace ProductionProject
         private Image redPlaneIcon;
 
         public List<PointLatLng> points = new List<PointLatLng>();
+        private string trackedIcao = null;
 
         public flightsMap(GMapControl map, Image redPlaneIcon)
         {
@@ -65,6 +67,7 @@ namespace ProductionProject
 
                     var marker = aircraftOverlay.Markers.OfType<flightMarker>().FirstOrDefault(m => ((flightsInfo)m.Tag).icao24 == flight.icao24);
 
+                    //if there is no marker for the flight already one is created
                     if (marker == null)
                     {
                         marker = new flightMarker(new PointLatLng(flight.latitude, flight.longitude), redPlaneIcon,
@@ -76,30 +79,38 @@ namespace ProductionProject
                         };
 
                         aircraftOverlay.Markers.Add(marker);
-                        points.Add(new PointLatLng(flight.latitude, flight.longitude));
+                        //points.Add(new PointLatLng(flight.latitude, flight.longitude));
                         Debug.WriteLine($"ICAO: {marker.Tag}, Lat: {marker.Position.Lat}, Lng: {marker.Position.Lng}");
                     }
 
+                    //update existing matker
                     else
                     {
                         marker.Position = new PointLatLng(flight.latitude, flight.longitude);
                         marker.planeDirection = (float)flight.true_track;
                         marker.ToolTipText = ($"{flight.callsign}at {flight.last_contact}");
                         marker.Tag = flight;
-                    }
 
-                   
+                        //update flight path if the flight object is the one that has been clicked
+                        if (trackedIcao == flight.icao24)
+                        {
+                            points.Add(marker.Position);
+
+                        }
+                        //flightPath();
+                    }
                 }
-            }
                 long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 var expiredMarkers = aircraftOverlay.Markers.OfType<flightMarker>().Where(m => time - ((flightsInfo)m.Tag).lastContactUnix > 30).ToList();
                 foreach (var expiredMarker in expiredMarkers)
                 {
                     aircraftOverlay.Markers.Remove(expiredMarker);
-                }   
-            
-            map.Refresh();
+                }
+
+                map.Refresh();
+            }
         }
+            
 
         public void drawAirport()
         {
@@ -136,6 +147,7 @@ namespace ProductionProject
         }
         public void flightPath(List<flightsPath> path)
         {
+            points.Clear();
             Debug.WriteLine("Attempting to draw flight path");
             pathOverlay.Routes.Clear();
             pathOverlay.Markers.Clear();
@@ -164,9 +176,9 @@ namespace ProductionProject
                 startMarker.ToolTipText = "Start piont";
                 pathOverlay.Markers.Add(startMarker);
 
-                var endMarker = new GMarkerGoogle(points.Last(), GMarkerGoogleType.red_dot);
-                endMarker.ToolTipText = "End Point";
-                pathOverlay.Markers.Add(endMarker);
+                //var endMarker = new GMarkerGoogle(points.Last(), GMarkerGoogleType.red_dot);
+                //endMarker.ToolTipText = "End Point";
+                //pathOverlay.Markers.Add(endMarker);
                 
             }
 

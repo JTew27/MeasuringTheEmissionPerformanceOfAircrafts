@@ -36,17 +36,19 @@ namespace ProductionProject
         {
             Matrix temp = g.Transform;
 
-            g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
-            //g.RotateTransform(-Overlay.Control.Bearing); 
-            g.RotateTransform(planeDirection);
-
+           
             float baseZoom = 12f;
             float scale = (float)Math.Pow(1.1, Overlay.Control.Zoom - baseZoom);
 
             int scaledWidth = (int)(PlaneIcon.Width * scale);
             int scaledHeight = (int)(PlaneIcon.Height * scale);
 
+            Size = new Size(scaledWidth, scaledHeight); // Set the size of the marker
+            Offset = new Point(-scaledWidth / 2, -scaledHeight / 2);
 
+            g.TranslateTransform(LocalPosition.X + Size.Width/2, LocalPosition.Y + Size.Height /2);
+            g.RotateTransform(-Overlay.Control.Bearing);
+            g.RotateTransform(planeDirection);
             g.DrawImage(PlaneIcon, -scaledWidth /2, -scaledHeight / 2, scaledWidth, scaledHeight);
             g.Transform = temp;
 
