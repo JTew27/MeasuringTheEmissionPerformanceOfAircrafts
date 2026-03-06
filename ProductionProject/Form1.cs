@@ -36,9 +36,10 @@ namespace ProductionProject
         private System.Windows.Forms.Timer apiTimer;
         private System.Windows.Forms.Timer clock;
 
-        private Image redPlaneIcon;
+        public Image redPlaneIcon;
         
-        
+
+
 
         public string userSearch = "EGCC";
 
@@ -161,12 +162,21 @@ namespace ProductionProject
             MessageBox.Show("You clicked on polygon: " + LdsAirport.Name);
         }
 
-        private async void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        private async void gMapControl1_OnMarkerClick(GMapMarker aircraft, MouseEventArgs e)
         {
-            MessageBox.Show("You clicked on marker: " + item.ToolTipText);
-            var flight = item.Tag as flightsInfo;
+            // change marker icon to red plane when clicked
+            Image selectedPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/redSelectedPlane.png");
+            var marker = aircraft as flightMarker;
+            
+            if (marker != null) {
+                marker.PlaneIcon = selectedPlaneIcon;
+                gMapControl1.Refresh(); 
+            }
+
+            MessageBox.Show("You clicked on marker: " + aircraft.ToolTipText);
+            var flight = aircraft.Tag as flightsInfo;
             //call flight fuel consumption class to get fuel consumption for selected flight
-            flightFuelConsumption.CalculateFuelConsumption(item.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
+            flightFuelConsumption.CalculateFuelConsumption(aircraft.ToolTipText, flight.velocity, flight.baro_altitude, flight.geo_altitude, flight.vertical_rate, flight.category);
             string icao = flight.icao24;
             long last_contact = flight.lastContactUnix;
             flightsPath = await apiWAuthorisation.GetFlightPath(client, icao, last_contact);

@@ -14,7 +14,7 @@ namespace ProductionProject
 {
     public class flightMarker : GMapMarker
     {
-        private readonly Image PlaneIcon;
+        public Image PlaneIcon;
         public float planeDirection { get; set; } //true_track passed which is the degree the plane is heading
 
         public flightMarker(PointLatLng position, Image planeIcon, float planeDirection) : base(position)

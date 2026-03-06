@@ -16,6 +16,7 @@ namespace ProductionProject
     {
 
 
+
         private GMapControl map;
         public GMapOverlay aircraftOverlay;
         public GMapOverlay airportOverlay;
@@ -23,6 +24,7 @@ namespace ProductionProject
 
         private Image redPlaneIcon;
 
+        public List<PointLatLng> points = new List<PointLatLng>();
 
         public flightsMap(GMapControl map, Image redPlaneIcon)
         {
@@ -74,6 +76,7 @@ namespace ProductionProject
                         };
 
                         aircraftOverlay.Markers.Add(marker);
+                        points.Add(new PointLatLng(flight.latitude, flight.longitude));
                         Debug.WriteLine($"ICAO: {marker.Tag}, Lat: {marker.Position.Lat}, Lng: {marker.Position.Lng}");
                     }
 
@@ -137,7 +140,7 @@ namespace ProductionProject
             pathOverlay.Routes.Clear();
             pathOverlay.Markers.Clear();
 
-            List<PointLatLng> points = new List<PointLatLng>();
+            
 
             foreach (var point in path)
             {
