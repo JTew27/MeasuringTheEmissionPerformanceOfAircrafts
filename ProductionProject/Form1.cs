@@ -164,12 +164,22 @@ namespace ProductionProject
 
         private async void gMapControl1_OnMarkerClick(GMapMarker aircraft, MouseEventArgs e)
         {
+            var selectedMarker = aircraft as flightMarker;
+
+            foreach (var marker in flightsMap.aircraftOverlay.Markers)
+            {
+                var flightMarker = marker as flightMarker;
+                if (flightMarker != null)
+                {
+                    flightMarker.PlaneIcon = redPlaneIcon; // reset all markers to default icon
+                }
+            }
             // change marker icon to red plane when clicked
             Image selectedPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/redSelectedPlane.png");
-            var marker = aircraft as flightMarker;
-            
-            if (marker != null) {
-                marker.PlaneIcon = selectedPlaneIcon;
+
+
+            if (selectedMarker != null) {
+                selectedMarker.PlaneIcon = selectedPlaneIcon;
                 gMapControl1.Refresh(); 
             }
 
@@ -180,7 +190,9 @@ namespace ProductionProject
             string icao = flight.icao24;
             long last_contact = flight.lastContactUnix;
             flightsPath = await apiWAuthorisation.GetFlightPath(client, icao, last_contact);
-            flightsMap.flightPath(flightsPath);
+            flightsMap.points.Clear();
+            flightsMap.trackedIcao = flight.icao24;
+            flightsMap.flightPath(flightsPath, flight.icao24);
         }
         private void gMapControl1_Load(object sender, EventArgs e)
         {
