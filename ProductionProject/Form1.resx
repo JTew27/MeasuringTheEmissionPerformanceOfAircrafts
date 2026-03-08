@@ -126,23 +126,8 @@
   <metadata name="flightsInfoBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>388, 17</value>
   </metadata>
-  <metadata name="callsign.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="category.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="flightsInfoBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>388, 17</value>
-  </metadata>
   <metadata name="aPIBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>183, 17</value>
-  </metadata>
-  <metadata name="airportArrivalsBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>971, 17</value>
-  </metadata>
-  <metadata name="airportDeparturesBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>650, 17</value>
   </metadata>
   <metadata name="airportArrivalsBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>971, 17</value>
@@ -154,6 +139,81 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>66</value>
+    <value>25</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAHyAAAAEAIAAoEAAAFgAAACgAAAAfAAAAQAAAAAEAIAAAAAAAgA8AAMEOAADBDgAAAAAAAAAA
+        AADhzp3/tI0n/6p+Cf+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/
+        DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/qn4J/7WO
+        KP/QvYz/69GO/93Hjv+yiiH/qn4K/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/
+        DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/qn4K/7OL
+        Iv/Js3r/m4E+/+bEbv/r0Iv/3ceO/7KKIf+rfgv/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/
+        DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q38M/6t/DP+rfwz/q34L/7OL
+        Iv/JtHv/mH44/35dBv/mxW//5sRu/+vRjP/j0J//1Lhx/9S4cP/UuHD/1Lhw/9S4cP/UuHD/1Lhw/9S4
+        cP/VuW//17ps/9e7bP/Xumz/17ts/9e7bP/WuW7/1Lhw/9S4cP/UuHD/1Lhw/9S4cP/UuHD/1Lhw/9W5
+        cv/VwpH/moA7/39dBv+AXwn/5sVv/+bFb//nx3T/7tec/9ytM//aqSr/2qkq/9qpKv/aqSr/2qkq/9yq
+        KP/cqij/xppA/599bf9/ZpH/c12e/3pil/+UdXn/vJNM/9moLP/dqyf/2qkq/9qpKv/aqSr/2qkq/9qp
+        Kv/drjX/zrd8/4JiD/+AXwn/gF8J/+bFb//mxW//58d1/+zUlP/XoRj/1Z0O/9WdDv/VnQ7/1Z0O/9ef
+        C//AjiX/blGC/zorvP9JNav/ZkuK/3RWe/9sUIP/UTuj/zkqvf9YQZr/rH87/9aeDP/VnQ3/1Z0O/9Wd
+        Dv/VnQ7/2aMa/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fHdf/s1JT/16IZ/9WeD//Vng//1Z4P/9af
+        Dv+lekX/PCy7/1tDmf+tgTz/vYwq/6Z7Q/+YcVT/oHdL/7iIMP+4iS//dVZ7/zQnxP+FY2n/05wS/9We
+        D//Vng//1Z4P/9mkG//NtHT/g2MR/4BfCf+AXwn/5sVv/+bFb//nx3X/7NSU/9eiGf/Vng//1Z4P/9We
+        D//Vng//gF9v/4dkZ//Ajyb/cVR//zssvf9DMbT/UDuk/0k2rf86K73/WUKa/7GEN/+kekb/aU6I/8qW
+        G//Wng7/1Z4P/9WeD//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bFb//mxW//58d1/+zUlP/Xohn/1Z4P/9We
+        D//Vng//1Z4P/9SdEP/GkyD/Sziq/1U/oP+sfz7/vo0p/7aHMv+8jCv/uYku/3RWff83KcD/qn4//9We
+        D//Vng//1Z4P/9WeD//Vng//2aQb/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fHdf/s1JT/16IZ/9We
+        D//Vng//1Z4P/9WeD//Wng7/zJgZ/6N5R/++jSn/dVZ8/z4uuf89Lbr/PCy8/19GlP+2hzL/qn5A/76N
+        Kf/Wnw7/1Z4P/9WeD//Vng//1Z4P/9mkG//NtHT/g2MR/4BfCf+AXwn/5sVv/+bFb//nx3X/7NSU/9ei
+        Gf/Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//aogr/lW9X/1ZAnv+pfUH/vIwr/7SFNP9qT4f/c1Z9/9af
+        Dv/Wnw7/1Z4P/9WeD//Vng//1Z4P/9WeD//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bFb//mxW//58d1/+zU
+        lP/Xohn/1Z4P/9WeD//Vng//1qAT/9WeD//Vng//1Z4P/9CaFP/PmRj/gWBv/0IxtP9mTIz/x5Qg/8+a
+        Fv/Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//Vng//2aQb/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fH
+        df/s1JT/16IZ/9WeD//Vng//1Z4P/9WeEP/Vng//1Z4P/9afD/+6ig//o3kT/4NhWv+YcFP/gWBk/6J4
+        Hv+sfw7/1J0P/9WeD//Vng//1Z4P/9WeD//Vng//1Z4P/9mkG//NtHT/g2MR/4BfCf+AXwn/5sVv/+bF
+        b//nx3X/7NSU/9eiGf/Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//Wnw//uIgP/25REP9zVA3/jGcM/3xb
+        Df9oTA//nnUQ/9WeD//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bF
+        b//mxW//58d1/+zUlP/Xohn/1Z4P/9WeD//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD/+2hw//dFYQ/19G
+        EP9oTRD/oXcP/9GbD//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//Vng//2aQb/820dP+DYxH/gF8J/4Bf
+        Cf/mxW//5sVv/+fHdf/s1JT/16IZ/9WeD//Vng//1Z4P/9WeD//Wnw//1Z4P/9WeD//Vng//2KAP/6Z7
+        D/9gRhD/iGQQ/9SdD//Vng//1Z4P/9WeD//Wnw//1p4P/9WeD//Vng//1Z4P/9mkG//NtHT/g2MR/4Bf
+        Cf+AXwn/5sVv/+bFb//nx3X/7NSU/9eiGf/Vng//1Z4P/9aeD//Llg//vo0P/9OdD//Xnw//1Z4P/9eg
+        D/+rfg//YEcQ/4tnEP/Vng//1Z4P/9afD//Wng//xZIP/8KQD//Vng//1Z4P/9WeD//ZpBv/zbR0/4Nj
+        Ef+AXwn/gF8J/+bFb//mxW//58d1/+zUlP/Xohn/1Z4P/9WeD//Xnw//uYkP/29REP+NaBD/uYkP/9Oc
+        D//ZoQ//q34P/2BHEP+LZxD/1p4P/9aeD//EkQ//m3MP/3BTEP+ccw//158P/9WeD//Vng//2aQb/820
+        dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fHdf/s1JT/16IZ/9WeD//Vng//1p8P/8qVD/+HYxD/YUgQ/2hN
+        EP+KZhD/uYkP/6d7D/9gRxD/imYQ/8GPD/+YcRD/cFMQ/2BGEP91VhD/uIkP/9afD//Vng//1Z4P/9mk
+        G//NtHT/g2MR/4BfCf+AXwn/5sVv/+bFb//nx3X/7NSU/9eiGf/Vng//1Z4P/9WeD//Wng//z5kP/6J4
+        EP9tURD/X0YQ/2lNEP9yVBD/YkgQ/21QEP9vUhD/YEYQ/2VKEP+PahD/xpIP/9aeD//Vng//1Z4P/9We
+        D//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bFb//mxW//58d1/+zUlP/Xohn/1Z4P/9WeD//Vng//1Z4P/9ae
+        D//Wng//vIsP/4JgEP9iSBD/YEcQ/2JIEP9hRxD/YEYQ/3RVEP+rfw//0pwP/9afD//Vng//1Z4P/9We
+        D//Vng//2aQb/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fHdf/s1JT/16IZ/9WeD//Vng//1Z4P/9We
+        D//Vng//1Z4P/9afD//OmA//nnUP/2xQEP9hSBD/ZUoQ/4tnEP/DkQ//1p8P/9WeD//Vng//1Z4P/9We
+        D//Vng//1Z4P/9mkG//NtHT/g2MR/4BfCf+AXwn/5sVv/+bFb//nx3X/7NSU/9eiGf/Vng//1Z4P/9We
+        D//Vng//1Z4P/9WeD//Vng//1p4P/9afD/+hdw//YEcQ/4RiEP/Qmg//1p8P/9WeD//Vng//1Z4P/9We
+        D//Vng//1Z4P/9WeD//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bFb//mxW//58d1/+zUlP/Xohn/1Z4P/9We
+        D//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//XoA//q38P/2BHEP+MZxD/1Z4P/9WeD//Vng//1Z4P/9We
+        D//Vng//1Z4P/9WeD//Vng//2aQb/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fHdf/s1JT/16IZ/9We
+        D//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//Vng//16AP/6t+D/9gRxD/i2cQ/9WeD//Vng//1Z4P/9We
+        D//Vng//1Z4P/9WeD//Vng//1Z4P/9mkG//NtHT/g2MR/4BfCf+AXwn/5sVv/+bFb//nx3X/7NSU/9ei
+        Gf/Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//Vng//1Z4P/9egD/+qfg//YEcQ/4tnEP/Vng//1Z4P/9We
+        D//Vng//1Z4P/9WeD//Vng//1Z4P/9WeD//ZpBv/zbR0/4NjEf+AXwn/gF8J/+bFb//mxW//58d1/+zU
+        lP/XoRf/1Z0N/9WdDf/VnQ3/1Z0N/9WdDf/VnQ3/1Z0N/9WdDf/Xng3/soMN/2FHDv+TbA3/1p0N/9Wd
+        Df/VnQ3/1Z0N/9WdDf/VnQ3/1Z0N/9WdDf/VnQ3/2aMZ/820dP+DYxH/gF8J/4BfCf/mxW//5sVv/+fH
+        dP/v2J//3rE+/9ytNf/crTX/3K01/9ytNf/crTX/3K01/9ytNf/crTX/3a01/9OmNf+bfTb/wpo1/92u
+        Nf/crTX/3K01/9ytNf/crTX/3K01/9ytNf/crTX/3K01/9+yQP/PuYD/gmIP/4BfCf+AXwn/5sVv/+bF
+        bv/s05L/79um/+nMgv/pzIL/6cyC/+nMgv/pzIL/6cyC/+nMgv/pzIL/6cyC/+nMgv/pzIL/6cyC/+nM
+        gv/pzIL/6cyC/+nMgv/pzIL/6cyC/+nMgv/pzIL/6cyC/+nMgv/qzYP/5NCb/6CHRv9/XQf/gF8J/+bE
+        bv/s05H/7daa/9+1Sf/dsDz/3bA9/92wPf/dsD3/3bA9/92wPf/dsD3/3bA9/92wPf/dsD3/3bA9/92w
+        Pf/dsD3/3bA9/92wPf/dsD3/3bA9/92wPf/dsD3/3bA9/92wPf/dsD3/3bA8/+C2Sv/fyIv/n4VE/39d
+        Bv/t1JX/7daa/9+2Sv/dsD3/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92x
+        Pv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsD3/4LdL/97G
+        iv+jikv/79ul/+C3Tf/dsDz/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92x
+        Pv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92xPv/dsT7/3bE+/92w
+        PP/guE7/48+Z/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA
+</value>
+  </data>
 </root>

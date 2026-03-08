@@ -26,7 +26,7 @@ namespace ProductionProject
         private Image redPlaneIcon;
 
         public List<PointLatLng> points = new List<PointLatLng>();
-        private string trackedIcao = null;
+        public string trackedIcao = null;
 
         public flightsMap(GMapControl map, Image redPlaneIcon)
         {
@@ -92,19 +92,22 @@ namespace ProductionProject
                         marker.Tag = flight;
 
                         //update flight path if the flight object is the one that has been clicked
-                        if (trackedIcao == flight.icao24)
+                        if (trackedIcao != null && trackedIcao == flight.icao24)
                         {
                             points.Add(marker.Position);
-
+                            pathOverlay.Routes.Clear();
+                            GMapRoute route = new GMapRoute(points, "Flight Path");
+                            route.Stroke = new System.Drawing.Pen(System.Drawing.Color.Blue, 2);
+                            pathOverlay.Routes.Add(route);
+                            map.Refresh();
                         }
-                        //flightPath();
                     }
                 }
                 long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 var expiredMarkers = aircraftOverlay.Markers.OfType<flightMarker>().Where(m => time - ((flightsInfo)m.Tag).lastContactUnix > 30).ToList();
                 foreach (var expiredMarker in expiredMarkers)
                 {
-                    aircraftOverlay.Markers.Remove(expiredMarker);
+                    aircraftOverlay.Markers.Remove(expiredMarker); 
                 }
 
                 map.Refresh();
@@ -145,7 +148,7 @@ namespace ProductionProject
             airportOverlay.Polygons.Add(detectArea);
             detectArea.Fill = new SolidBrush(Color.FromArgb(50, Color.Red));
         }
-        public void flightPath(List<flightsPath> path)
+        public void flightPath(List<flightsPath> path, string trackedIcao)
         {
             points.Clear();
             Debug.WriteLine("Attempting to draw flight path");
@@ -173,7 +176,7 @@ namespace ProductionProject
                 pathOverlay.Routes.Add(route);
 
                 var startMarker = new GMarkerGoogle(points.First(), GMarkerGoogleType.green_dot);
-                startMarker.ToolTipText = "Start piont";
+                startMarker.ToolTipText = "Flight Origin";
                 pathOverlay.Markers.Add(startMarker);
 
                 //var endMarker = new GMarkerGoogle(points.Last(), GMarkerGoogleType.red_dot);
