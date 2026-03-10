@@ -1,10 +1,13 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,8 +43,7 @@ namespace ProductionProject
         {
 
 
-            string path = @"C:\Users\ianct\Downloads\aircraft-database-complete-2025-08.csv";
-
+            string path = @"C:\Users\ianct\source\repos\ProductionProject\aircraft-database-complete-2025-08.csv";
             using (var reader = new StreamReader(path))
             using (var aircraftDatabase = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -51,7 +53,7 @@ namespace ProductionProject
 
                 while (aircraftDatabase.Read())
                 {
-                    string id = aircraftDatabase.GetField("'icao24'");
+                    string id = aircraftDatabase.GetField("'icao24'")?.Trim('\'');
 
                     if (id == icao24.Trim())
                     {
