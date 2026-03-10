@@ -100,13 +100,22 @@ namespace ProductionProject
                     else if (!(id == typecode.Trim()))
                     {
                         //default estimate fuel flow
+                        string fuelFlowTakeOff = "0.937564901";
+                        string fuelFlowCruise = "1.976761168";
+                        string fuelFlowApproach = "1.395479484";
+
+                        Debug.WriteLine($"");
+                        Debug.WriteLine($"Fuel Flow: TakeOff- {fuelFlowTakeOff}, Cruise- {fuelFlowCruise}, Approach- {fuelFlowApproach} for {id} typecode ");
+                        break;
                     }
-                   
+
                 }
             }
              
             return null;
         }
+
+
     }
 
 
