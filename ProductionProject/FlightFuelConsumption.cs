@@ -10,6 +10,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ProductionProject
 {
@@ -35,13 +36,13 @@ namespace ProductionProject
             int category = this.fInfo.category;
 
             string typecode = GetTypecodeByIcao(icao24);
-            Debug.WriteLine($"Typecode: {typecode}");
+            //Debug.WriteLine($"Typecode: {typecode}");
         }
 
 
         public string GetTypecodeByIcao(string icao24)
         {
-
+           
 
             string path = @"C:\Users\ianct\source\repos\ProductionProject\aircraft-database-complete-2025-08.csv";
             using (var reader = new StreamReader(path))
@@ -59,7 +60,8 @@ namespace ProductionProject
                     {
                         string typecode = aircraftDatabase.GetField("'typecode'")?.Trim('\'');
                         Debug.WriteLine($"typecode: {typecode} for {id} icao number ");
-                        return typecode;
+                        GetFuelFLowData(typecode);
+                        //return typecode;
                     }
                    // string typecode = aircraftDatabase.GetField("'typecode'");
 
@@ -68,8 +70,44 @@ namespace ProductionProject
                
             }
 
+           
             return null;
 
         }
+
+        public string GetFuelFLowData(string typecode)
+        {
+            Debug.WriteLine($"Retrieving Fuel FLow Data for {typecode}");
+
+            string path = @"C:\Users\ianct\source\repos\ProductionProject\AircraftTypeEngineFuelFlowData.csv"; 
+            using (var reader = new StreamReader(path))
+            using (var fuelFlowData = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                fuelFlowData.Read();
+                fuelFlowData.ReadHeader();
+                while (fuelFlowData.Read())
+                {
+                    string id = fuelFlowData.GetField("typecode")?.Trim();
+                    if (id == typecode.Trim())
+                    {
+                        string fuelFlowTakeOff = fuelFlowData.GetField("Fuel Flow T/O (kg/sec)")?.Trim();
+                        string fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim();
+                        string fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim();
+                        Debug.WriteLine($"Fuel Flow: TakeOff- {fuelFlowTakeOff}, Cruise- {fuelFlowCruise}, Approach- {fuelFlowApproach} for {id} typecode ");
+
+                        return fuelFlowTakeOff;
+                    }
+                    else if (!(id == typecode.Trim()))
+                    {
+                        //default estimate fuel flow
+                    }
+                   
+                }
+            }
+             
+            return null;
+        }
     }
+
+
 }
