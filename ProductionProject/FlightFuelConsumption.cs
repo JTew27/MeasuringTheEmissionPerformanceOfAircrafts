@@ -99,7 +99,7 @@ namespace ProductionProject
                     }
                     else if (!(id == typecode.Trim()))
                     {
-                        //default estimate fuel flow
+                        //default estimate fyel flow
                         string fuelFlowTakeOff = "0.937564901";
                         string fuelFlowCruise = "1.976761168";
                         string fuelFlowApproach = "1.395479484";
@@ -115,7 +115,29 @@ namespace ProductionProject
             return null;
         }
 
+        public double calculatecCurrentFuelFlow(string typecode, double verticalRate, string icao24, string fuelFlowTakeOff, string fuelFlowCruise, string fuelFlowApproach)
+        {
 
+            double.TryParse(fuelFlowTakeOff, out double ffTakeOff);
+            double.TryParse(fuelFlowCruise, out double ffCruise);
+            double.TryParse(fuelFlowApproach, out double ffApproach);
+
+            if (verticalRate < -0.5) //cruise
+            {
+
+            }
+
+            if (verticalRate > 0.5) //takeoff
+            {
+            }
+
+            else
+            {
+
+            }
+
+            return 0.0;
+        }
     }
 
 
