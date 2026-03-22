@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,7 +19,6 @@ namespace ProductionProject
     public class FlightFuelConsumption
     {
         flightsInfo fInfo;
-
 
 
         public FlightFuelConsumption(flightsInfo fInfo)
@@ -36,7 +36,10 @@ namespace ProductionProject
             int category = this.fInfo.category;
 
             string typecode = GetTypecodeByIcao(icao24);
-            //Debug.WriteLine($"Typecode: {typecode}");
+            fuelData data = GetFuelFLowData(typecode);
+            double fuelFlow = calculatecCurrentFuelFlow(data);
+            //Debug.WriteLine($"Typecode: {typecode}");  
+
         }
 
 
@@ -52,7 +55,7 @@ namespace ProductionProject
                 aircraftDatabase.Read();
                 aircraftDatabase.ReadHeader();
 
-                while (aircraftDatabase.Read())
+                while (aircraftDatabase.Read()) 
                 {
                     string id = aircraftDatabase.GetField("'icao24'")?.Trim('\'');
 
@@ -60,8 +63,8 @@ namespace ProductionProject
                     {
                         string typecode = aircraftDatabase.GetField("'typecode'")?.Trim('\'');
                         Debug.WriteLine($"typecode: {typecode} for {id} icao number ");
-                        GetFuelFLowData(typecode);
-                        //return typecode;
+                        //GetFuelFLowData(typecode);
+                        return typecode;
                     }
                    // string typecode = aircraftDatabase.GetField("'typecode'");
 
@@ -75,11 +78,20 @@ namespace ProductionProject
 
         }
 
-        public string GetFuelFLowData(string typecode)
+        public fuelData GetFuelFLowData(string typecode)
         {
             Debug.WriteLine($"Retrieving Fuel FLow Data for {typecode}");
 
-            string path = @"C:\Users\ianct\source\repos\ProductionProject\AircraftTypeEngineFuelFlowData.csv"; 
+            var defaultD = new fuelData
+            {
+                //default estimate fyel flow
+                fuelFlowTakeOff = "0.937564901",
+                fuelFlowCruise = "1.976761168",
+                fuelFlowApproach = "1.395479484",
+            };
+
+
+            string path = @"C:\Users\ianct\source\repos\ProductionProject\AircraftTypeEngineFuelFlowData.csv";
             using (var reader = new StreamReader(path))
             using (var fuelFlowData = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -90,53 +102,65 @@ namespace ProductionProject
                     string id = fuelFlowData.GetField("typecode")?.Trim();
                     if (id == typecode.Trim())
                     {
-                        string fuelFlowTakeOff = fuelFlowData.GetField("Fuel Flow T/O (kg/sec)")?.Trim();
-                        string fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim();
-                        string fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim();
-                        Debug.WriteLine($"Fuel Flow: TakeOff- {fuelFlowTakeOff}, Cruise- {fuelFlowCruise}, Approach- {fuelFlowApproach} for {id} typecode ");
+                        var data = new fuelData
+                        {
+                            fuelFlowTakeOff = fuelFlowData.GetField("Fuel Flow T/O (kg/sec)")?.Trim(),
+                            fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim(),
+                            fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim(),
+                            engineCount = fuelFlowData.GetField("Engine Number")?.Trim(),
 
-                        return fuelFlowTakeOff;
+
+                        };
+                        Debug.WriteLine($"DB Fuel Flow: TakeOff- {data.fuelFlowTakeOff}, Cruise- {data.fuelFlowCruise}, Approach- {data.fuelFlowApproach} for {id} typecode ");
+                        //  calculatecCurrentFuelFlow(data);
+                        return data;
                     }
-                    else if (!(id == typecode.Trim()))
-                    {
-                        //default estimate fyel flow
-                        string fuelFlowTakeOff = "0.937564901";
-                        string fuelFlowCruise = "1.976761168";
-                        string fuelFlowApproach = "1.395479484";
-
-                        Debug.WriteLine($"");
-                        Debug.WriteLine($"Fuel Flow: TakeOff- {fuelFlowTakeOff}, Cruise- {fuelFlowCruise}, Approach- {fuelFlowApproach} for {id} typecode ");
-                        break;
-                    }
-
                 }
             }
-             
-            return null;
+            Debug.WriteLine($"default: no data in db for this typecode:{typecode}");
+            return defaultD;
         }
 
-        public double calculatecCurrentFuelFlow(string typecode, double verticalRate, string icao24, string fuelFlowTakeOff, string fuelFlowCruise, string fuelFlowApproach)
+        public double calculatecCurrentFuelFlow(fuelData data) 
         {
+            
+            double.TryParse(data.fuelFlowTakeOff, out double ffTakeOff);
+            double.TryParse(data.fuelFlowCruise, out double ffCruise);
+            double.TryParse(data.fuelFlowApproach, out double ffApproach);
+            double.TryParse(data.engineCount, out double engine);
 
-            double.TryParse(fuelFlowTakeOff, out double ffTakeOff);
-            double.TryParse(fuelFlowCruise, out double ffCruise);
-            double.TryParse(fuelFlowApproach, out double ffApproach);
+            double fuelFlowPerEngine;
 
-            if (verticalRate < -0.5) //cruise
+            string icao24 = this.fInfo.icao24;
+            string callsign = this.fInfo.callsign;
+
+            double verticalRate = fInfo.vertical_rate;
+
+            double velocity = fInfo.velocity;
+
+
+
+            Debug.WriteLine($"Vertical Rate: {verticalRate} m/s for: {callsign}");
+
+            if (verticalRate < -2.0) 
             {
-
+                fuelFlowPerEngine = ffApproach;
             }
 
-            if (verticalRate > 0.5) //takeoff
+            else if (verticalRate > 0.5) 
             {
+                fuelFlowPerEngine = ffTakeOff;
             }
 
-            else
+            else 
             {
-
+                fuelFlowPerEngine = ffCruise;   
             }
 
-            return 0.0;
+            double fuelFlow = fuelFlowPerEngine * engine;
+
+            Debug.WriteLine($"Fuel Flow: {fuelFlowPerEngine} kg/sec for: {icao24} with callsign: {callsign}");
+            return fuelFlow;
         }
     }
 
