@@ -12,39 +12,74 @@ using System.Net.Http.Headers;
 
 namespace ProductionProject
 {
+    /// <summary>
+    /// All API calls are called here with first authorising my opensky usr account to get a Oauth2 
+    /// temporary access token which is then used in the header of the API calls in order for it to be valid
+    /// to receive general flight info, airport specifc departures and arrivals and a specifc flight path.
+    /// All endpoints provides a different feature for the web app. 
+    /// </summary>
 
     public class apiWAuthorisation
     {
         private static HttpClient _httpClient = new HttpClient();
+
+        // temporary token used as a bearer token in each header of API endpoint calls
         private static Token cachedToken;
-        public static async Task<List<flightsInfo>> FetchFlightDataAsync()
+
+        /// <summary>
+        /// part of older implmentation when there was only one API call
+        /// Called in Form1 originally to first authorise credentials then call the API endpoint to get the current
+        /// flight states. Since been updated to call authroisation directly in each method 
+        /// using await before calling the API to have a valid token to pass
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static async Task<List<flightsInfo>> FetchFlightDataAsync(HttpClient client)
         {
-            using HttpClient client = new HttpClient();
+          
             //Token token = await getToken(client);
             return await GetStatesAsync(client);
 
         }
 
+        /// <summary>
+        /// Called at the start of each endpoint call method to ensure there is a valid token before
+        /// sending a request. This bearer tokem is then passed in the header of each HttpClient request 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         private static async Task Authorise(HttpClient client)
         {
             Token token = await getToken(client);
 
+            // set the bearer token in the header of the client for valid API calls
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
         }
+
+        /// <summary>
+        /// Retrieves a temporary Oauth2 token from the opensky auth server endpoint if current token has expired
+        /// </summary>
+        /// <param name="client">The HttpCLient c# library used to make http requests</param>
+        /// <returns></returns>
         public static async Task<Token> getToken(HttpClient client)
         {
+            //checks if the current token is still valid and returns it
+            //checks if the token is not not null and has not expired by comparing the
+            //current time to the expriration time received on the token
             if (cachedToken != null && cachedToken.ExpirationTime > DateTime.UtcNow)
             {
                 return cachedToken;
             }
 
+            //opensky authroisation that needs to be called as REST API documentation says 
             string baseAddress = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
 
             string grant_type = "client_credentials";
             string client_id = "jtew-api-client";
             string REMOVED = "etSfC0ftIAQLzCN4L4GcI5aPQ3IdlijA";
 
-
+            ///request body is stored as a dictionary with each key being credtionals to be passed in the header of 
+            /// the POST request to the auth server endpoint to get the token
             var requestBody = new Dictionary<string, string>
      {
          { "grant_type", grant_type },
@@ -52,14 +87,18 @@ namespace ProductionProject
          { "REMOVED", REMOVED }
      };
 
+            //POST request is sent to the token endpoint with the requst body of opensky credentials
             HttpResponseMessage response = await client.PostAsync(baseAddress, new FormUrlEncodedContent(requestBody));
-            response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();// throws an exception if the response status code is not 200-299
 
+            ///response content is read as a string and then deserialized into a Token object using the Newtonsoft.Json library
             string responseJson = await response.Content.ReadAsStringAsync();
             Token token = JsonConvert.DeserializeObject<Token>(responseJson);
 
+            //expiration time is calculated by taking the current time and adding the expires_in value from the token response
             token.ExpirationTime = DateTime.UtcNow.AddSeconds(token.ExpiresIn - 30);
 
+            //store the temporary token so it can be caled when the start of the method runs again with each new request 
             cachedToken = token;
 
             return token;
@@ -67,15 +106,21 @@ namespace ProductionProject
 
         }
 
+        /// <summary>
+        /// Oauth2 access token classs to store the access token, token type, expires in and expiration time
+        /// for the token to be used in the header of API calls
+        /// </summary>
 
         public class Token
         {
-
+            //the bearer token passed in
             [JsonProperty("access_token")]
             public string AccessToken { get; set; }
 
+            //the type of token received from the auth server
             [JsonProperty("token_type")]
             public string TokenType { get; set; }
+
 
             [JsonProperty("expires_in")]
             public int ExpiresIn { get; set; }
@@ -130,7 +175,7 @@ namespace ProductionProject
                     velocity = (float)(obj[9] ),//9 only appears some of the time
 
                     
-                    geo_altitude = obj[13].Value<float?>() ?? 0f,//13 both throw cannot convert null to single
+                    geo_altitude = obj[13].Value<float?>() ?? 0f,//13
                     baro_altitude = obj[7].Value<float?>() ?? 0f,//7 
                     vertical_rate = obj[11].Value<float?>() ?? 0f,//11
 
@@ -143,14 +188,12 @@ namespace ProductionProject
 
         public static async Task<List<airportDepartures>> GetDepartures(HttpClient client, string userSearch)
         {
+            await Authorise(client);
             //
             string airport = "EGCC";
 
-
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             long begin = end - 7200; // last 2 hours
-
-            await Authorise(client);
             Debug.WriteLine("Retrieving current flight departures ");
             var url = "https://opensky-network.org/api/flights/departure" + $"?airport={userSearch}&begin={begin}&end={end}";
 
@@ -189,8 +232,7 @@ namespace ProductionProject
             await Authorise(client);
             //EGNM - Leeds ICAO
             string airport = "EGCC";
-            
-
+          
 
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             long begin = end - 86400; // last 24 hours
@@ -201,6 +243,7 @@ namespace ProductionProject
 
 
             var response = await client.GetAsync(url);
+            
             response.EnsureSuccessStatusCode();
             string responseJson = await response.Content.ReadAsStringAsync();
 
