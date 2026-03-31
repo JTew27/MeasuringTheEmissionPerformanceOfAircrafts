@@ -12,8 +12,9 @@ using CsvHelper.Configuration.Attributes;
 
 namespace ProductionProject
 {
-    public partial class Form1 : Form
+    public partial class FlightMainForm : Form
     {
+        //instantiating required classes and function at the top of the class 
         private HttpClient client = new HttpClient();
 
         private flightsInfo flights;
@@ -36,15 +37,17 @@ namespace ProductionProject
         private System.Windows.Forms.Timer clock;
 
         public Image redPlaneIcon;
-        
+        public Image selectedPlaneIcon;
 
+        public string userSearch = "EGCC";//defualt parameter to use for displaying arrivals and departures for an airport (manchester) when the program starts which can be changed with search box and button
 
-
-        public string userSearch = "EGCC";//defualt parameter to use when the program starts which can be changed with search box and button
-
-        public Form1() // constructor to instantiate form and set up timers and map
+        public FlightMainForm() // constructor to instantiate form and set up timers and map linking to the form interface
         {
             InitializeComponent();
+
+            //defines the marker icon used to replace a basic marker
+            redPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png");
+
 
             //instantiate a timer at 10 second intervals to call API and update flight data every 10 seconds using the system timer class
             apiTimer = new System.Windows.Forms.Timer();
@@ -66,7 +69,7 @@ namespace ProductionProject
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
 
-            this.Load += Form1_Load;
+            this.Load += FlightMainForm_Load;
 
             //defines the split contatiner and adds the gMap to the left panel of the split container and sets up the map properties and event handlers
             splitContainer1.Panel1.Controls.Add(gmap);
@@ -74,20 +77,15 @@ namespace ProductionProject
             gMapControl1.Zoom = 2;
             gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
             gMapControl1.OnPolygonClick += gMapControl1_OnPolygonClick;
-
-            //defines the marker icon used to replace a basic marker
-            redPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/RedPlaneTopView.png");
-
-           
-
+         
         }
 
         /// <summary>
-        /// When the program runs this will update the user interface with the relevant information from the firs APi endpoint calls 
+        /// When the program runs for the first time this will update the user interface with the relevant information from the firs APi endpoint calls 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Form1_Load(object sender, EventArgs e)
+        private async void FlightMainForm_Load(object sender, EventArgs e)
         {
             try
             {
@@ -115,7 +113,7 @@ namespace ProductionProject
 
             catch (Exception er)
             {
-                Debug.WriteLine("Error: " + er.Message);
+                Debug.WriteLine("Error in Form1_load: " + er.Message);
             }
         }
 
@@ -136,13 +134,13 @@ namespace ProductionProject
 
             catch (Exception er)
             {
-                Debug.WriteLine("Error: " + er.Message);
+                Debug.WriteLine("Refresh_Click Error: " + er.Message);
             }
 
         }
 
         /// <summary>
-        /// handles the real time aspect with this method being called routinely 
+        /// handles the real time aspect with this method being called routinely to update information
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -166,7 +164,7 @@ namespace ProductionProject
             }
             catch (Exception er)
             {
-                Debug.WriteLine("Error: " + er.Message);
+                Debug.WriteLine("Timer Error: " + er.Message);
             }
         }
 
@@ -203,8 +201,9 @@ namespace ProductionProject
                         flightMarker.PlaneIcon = redPlaneIcon; // reset all markers to default icon
                     }
                 }
+
                 // change marker icon to red plane when clicked
-                Image selectedPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/redSelectedPlane.png");
+                selectedPlaneIcon = Image.FromFile("C:/Users/ianct/source/repos/ProductionProject/redSelectedPlane.png");
 
 
                 if (selectedMarker != null)
@@ -224,6 +223,9 @@ namespace ProductionProject
                 flightsMap.points.Clear();
                 flightsMap.trackedIcao = flight.icao24;
                 flightsMap.flightPath(flightsPath, flight.icao24);
+
+                gMapControl1.Zoom = 7;
+                gMapControl1.Refresh();
             }
         }
         private void gMapControl1_Load(object sender, EventArgs e)
@@ -231,6 +233,12 @@ namespace ProductionProject
 
         }
 
+        /// <summary>
+        /// When the selection box is ticked then it will call the drawing box method in the flightsMap class to draw 
+        /// a box around the area of the map based off manual coordinates 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowDetectBox_CheckedChanged(object sender, EventArgs e)
         {
             if (ShowDetectBox.Checked)
@@ -244,10 +252,45 @@ namespace ProductionProject
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
 
+
+            //foreach(var marker in flightsMap.aircraftOverlay.Markers)
+
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var selectedFlight = dataGridView1.SelectedRows[0].DataBoundItem as flightsInfo;
+
+                if (selectedFlight != null)
+                {
+                    string selectedIcao = selectedFlight.icao24;
+                    SelectedMarker(selectedIcao);
+                }
+
+            }
         }
+
+        private void SelectedMarker(string selectedIcao)
+        {
+            var marker = flightsMap.aircraftOverlay.Markers
+        .OfType<flightMarker>()
+        .FirstOrDefault(m => ((flightsInfo)m.Tag).icao24 == selectedIcao);
+
+            if (marker != null)
+            {
+                gMapControl1.Position = marker.Position;
+                gMapControl1.Zoom = 12;
+                gMapControl1.Refresh();
+            }
+        }
+         
+        
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
         private void label4_Click(object sender, EventArgs e)
         {
         }
