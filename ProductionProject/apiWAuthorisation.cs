@@ -185,19 +185,34 @@ namespace ProductionProject
             return flightList; 
         }
 
+        /// <summary>
+        /// Retrievs departures of passed in icaocode of an airport entered by the user from the opensky API endpoint 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="userSearch"></param>
+        /// <returns></returns>
         public static async Task<List<airportDepartures>> GetDepartures(HttpClient client, string userSearch)
         {
-            await Authorise(client);
-            //
-            string airport = "EGCC";
 
+            //ensure there is a valid Oauth2 token before making a request
+            await Authorise(client);
+            
+            //define time window
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long begin = end - 7200; // last 2 hours
+            long begin = end - 28800; // last 2 hours
             Debug.WriteLine("Retrieving current flight departures ");
             var url = "https://opensky-network.org/api/flights/departure" + $"?airport={userSearch}&begin={begin}&end={end}";
 
             var response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to retrieve Departure for airport: {userSearch}. Please check the ICAO code and try again.\n API Response: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             string responseJson = await response.Content.ReadAsStringAsync();
 
             var parsed = JArray.Parse(responseJson);
@@ -225,36 +240,46 @@ namespace ProductionProject
             }
             return departureList;
         }
-
+        /// <summary>
+        /// Attempts to retreve the arrivals of an airports based off the airports icao code entered by the user
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="userSearch"></param>
+        /// <returns></returns>
         public static async Task<List<airportArrivals>> GetArrivals(HttpClient client, string userSearch)
         {
             await Authorise(client);
             //EGNM - Leeds ICAO
-            string airport = "EGCC";
-          
-
+            //EGCC - Manchester ICAO
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long begin = end - 86400; // last 24 hours
+            long begin = end - 86400; // last 8 hours
 
             Debug.WriteLine("Retrieving current flight arrivals for "+ userSearch);
             var url = "https://opensky-network.org/api/flights/arrival" + $"?airport={userSearch}&begin={begin}&end={end}";
-
-
-
             var response = await client.GetAsync(url);
-            
-            response.EnsureSuccessStatusCode();
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to retrieve arrivals for airport: {userSearch}. Please check the ICAO code and try again.\n API Response: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             string responseJson = await response.Content.ReadAsStringAsync();
 
             var parsed = JArray.Parse(responseJson);
             //Debug.WriteLine(parsed.ToString(Newtonsoft.Json.Formatting.Indented));
-
             List<airportArrivals> arrivalList = new List<airportArrivals>();
 
             foreach (JObject obj in parsed)
             {
-                DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj["firstSeen"] ?? 0));
-                DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds((long)(obj["lastSeen"] ?? 0));
+                long firstSeenJson = obj["firstSeen"]?.Value<long?>() ?? 0;
+                long lastSeenJson = obj["lastSeen"]?.Value<long?>() ?? 0;
+
+                DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds(firstSeenJson); 
+                DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds(lastSeenJson);
 
                 string firstSeen = firstSeenUnix.ToString("HH:mm:ss ddd,dd");
                 string lastSeen = lastSeenUnix.ToString("HH:mm:ss ddd,dd");
@@ -279,7 +304,7 @@ namespace ProductionProject
             await Authorise(client);
 
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long time = end - 14400; // last 4 hours
+            long time = end - 86400; // last 8 hours
 
             Debug.WriteLine("Retrieving current flight tracks for "+icao);
             var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time=0";
