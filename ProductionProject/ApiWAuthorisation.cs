@@ -198,12 +198,14 @@ namespace ProductionProject
             
             //define time window
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long begin = end - 28800; // last 2 hours
+            long begin = end - 86400; 
             //API rewuest URL with passsed in airport ICAO
             Debug.WriteLine("Retrieving current flight departures ");
             var url = "https://opensky-network.org/api/flights/departure" + $"?airport={userSearch}&begin={begin}&end={end}";
             //Send HTTP GET request
             var response = await client.GetAsync(url);
+            //throws an exception if the entered parameter is not a valid ICAO code for an airport or if there is an issue with
+            //the API call and shows a message box with the error message
             try
             {
                 response.EnsureSuccessStatusCode();
@@ -259,7 +261,9 @@ namespace ProductionProject
 
             //define time window for API request
             long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long begin = end - 28800; // last 8 hours
+            long begin = end - 86400; 
+            //86400 seconds in 24 hours
+            //28800 seconds in 8 hours 
 
             Debug.WriteLine("Retrieving current flight arrivals for "+ userSearch);
             //request URL with passed in search parameter
@@ -311,53 +315,62 @@ namespace ProductionProject
 
         }
 
-
+        /// <summary>
+        /// Calling the flights endpoint which provides a track history of a list of 15 min interval points of a flights journey
+        /// so that it can be drawn as a line 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="icao"></param>
+        /// <param name="last_contact"></param>
+        /// <returns></returns>
         public static async Task<List<flightsPath>> GetFlightPath(HttpClient client, string icao, long last_contact)
         {
+            //ensure there is a valid Oauth2 token before making a request
             await Authorise(client);
 
-
-            long end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long time = end - 86400; // last 8 hours
-
+            //define url endpoint that is being called - time = 0 returns the most recent points
             Debug.WriteLine("Retrieving current flight tracks for "+icao);
             var url = "https://opensky-network.org/api/tracks/all" + $"?icao24={icao}&time=0";
-
-
+            //Send HTTP GET request
             var response = await client.GetAsync(url);
-            //response.EnsureSuccessStatusCode();
-
+            //error handling to catch failed API calls
             if (!response.IsSuccessStatusCode)
             {
                 Debug.WriteLine($"Failed to call:{response.StatusCode}");
             }
+            //read JSON repsonse
             string responseJson = await response.Content.ReadAsStringAsync();
 
-
+            //handle empty response meaning there is no track data available
             if (string.IsNullOrEmpty(responseJson))
             {
                 Debug.WriteLine("Response content is empty.");
                 return new List<flightsPath>();
             }
+            // parse JSON object
             JObject obj = JObject.Parse(responseJson);
             //Debug.WriteLine(obj.ToString(Newtonsoft.Json.Formatting.Indented));
 
-
+            //List to store the flight path points created from the API response
             List<flightsPath> flightPathList = new List<flightsPath>();
-
+            //extract the path array from the JSON object which contains the track points of the
+            //flight and loop through each point to create a flightsPath object with
+            //the relevant fields for each point and add it to the list to be returned
             JArray pathArray = (JArray)obj["path"];
-
+            //iterate throught each flight point
             foreach (JArray p in pathArray)
             {
                var point = new flightsPath
                {
+                   //general flight info that are the same for each point
                     icao24 = (string)obj["icao24"] ?? "",
                     startTime = (int)(obj["startTime"] ?? 0),
                     endTime = (int)(obj["endTime"] ?? 0),
                     callsign = (string)obj["callsign"] ?? "",
-                  // path = (JArray)obj["path"],
+                   // path = (JArray)obj["path"],
 
-                    time = (long)(p[0] ?? 0),
+                   //unique point info that changes for each point in the path array
+                   time = (long)(p[0] ?? 0),
                     latitude = (float)(p[1] ?? 0.0),
                     longitude = (float)(p[2] ?? 0.0),
                     baro_altitude = (float)(p[3] ?? 0.0),
@@ -367,7 +380,6 @@ namespace ProductionProject
                 flightPathList.Add(point);
                 //Debug.WriteLine($"Point:{point.time}\nLatitude:{point.latitude}\nLongitude:{point.longitude}\n");
             }
-         
             return flightPathList;
 
           
