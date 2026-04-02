@@ -20,6 +20,11 @@ namespace ProductionProject
     {
         flightsInfo fInfo;
 
+        /// <summary>
+        /// Constructor method takes the flightinfo object to extract relevant flight data like the 
+        /// icao24 address so look up process can start on event click
+        /// </summary>
+        /// <param name="fInfo"></param>
 
         public FlightFuelConsumption(flightsInfo fInfo)
         {
@@ -34,31 +39,36 @@ namespace ProductionProject
             double geoAltitude = this.fInfo.geo_altitude;
             double verticalRate = this.fInfo.vertical_rate;
             int category = this.fInfo.category;
+            bool onGround = this.fInfo.on_ground;
 
             string typecode = GetTypecodeByIcao(icao24);
             fuelData data = GetFuelFLowData(typecode);
-            double fuelFlow = calculatecCurrentFuelFlow(data);
+            double fuelFlow = CalculatecCurrentFuelFlow(data,icao24,callsign,speed,verticalRate,onGround, baroAltitude);
             //Debug.WriteLine($"Typecode: {typecode}");  
 
         }
 
-
+        /// <summary>
+        /// Search Opensky aircraft database CSV by recieved icao24 address to find the corresponding typecode for that aircraft
+        /// </summary>
+        /// <param name="icao24"></param>
+        /// <returns></returns>
         public string GetTypecodeByIcao(string icao24)
         {
-           
-
             string path = @"C:\Users\ianct\source\repos\ProductionProject\aircraft-database-complete-2025-08.csv";
+            //use of CSV helper library to read the CSV file and search for the matching icao24 address to retrieve the typecode for that aircraft
             using (var reader = new StreamReader(path))
             using (var aircraftDatabase = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
-
+                //built in csv functions to read the file and its headers before iterating through the rows to find the matching icao24 address 
                 aircraftDatabase.Read();
                 aircraftDatabase.ReadHeader();
 
-                while (aircraftDatabase.Read()) 
+                while (aircraftDatabase.Read())
                 {
+                    //strip surrounding single quotes as they were causing problems with finding a match
                     string id = aircraftDatabase.GetField("'icao24'")?.Trim('\'');
-
+                    //return typecode if there is a match very rare there isnt a match since the database is huge
                     if (id == icao24.Trim())
                     {
                         string typecode = aircraftDatabase.GetField("'typecode'")?.Trim('\'');
@@ -66,22 +76,22 @@ namespace ProductionProject
                         //GetFuelFLowData(typecode);
                         return typecode;
                     }
-                   // string typecode = aircraftDatabase.GetField("'typecode'");
-
-                   
+                    // string typecode = aircraftDatabase.GetField("'typecode'");
                 }
-               
             }
-
-           
+            //not found
             return null;
-
         }
-
+        /// <summary>
+        /// Search custom fuel daatabase CSV at the moment contains most common aircraft typecodes and their fuel flow data for takeoff, cruise
+        /// and approach phases of flight. 
+        /// since havent added every typecode there is a default fuel flow data object that OpenAP also used 
+        /// <param name="typecode"></param>
+        /// <returns></returns>
         public fuelData GetFuelFLowData(string typecode)
         {
             Debug.WriteLine($"Retrieving Fuel FLow Data for {typecode}");
-
+            //default values utilised if typcode is not matched in database
             var defaultD = new fuelData
             {
                 //default estimate fyel flow
@@ -90,7 +100,7 @@ namespace ProductionProject
                 fuelFlowApproach = "1.395479484",
             };
 
-
+            //same use of CSV helper library to read first then iterate through to match
             string path = @"C:\Users\ianct\source\repos\ProductionProject\AircraftTypeEngineFuelFlowData.csv";
             using (var reader = new StreamReader(path))
             using (var fuelFlowData = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -104,6 +114,7 @@ namespace ProductionProject
                     {
                         var data = new fuelData
                         {
+                            //if there is a typecode match return that rows data and store it in a fuelData object jsut as any other return of data 
                             fuelFlowTakeOff = fuelFlowData.GetField("Fuel Flow T/O (kg/sec)")?.Trim(),
                             fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim(),
                             fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim(),
@@ -115,33 +126,35 @@ namespace ProductionProject
                         //  calculatecCurrentFuelFlow(data);
                         return data;
                     }
+                   
                 }
             }
             Debug.WriteLine($"default: no data in db for this typecode:{typecode}");
             return defaultD;
         }
-
-        public double calculatecCurrentFuelFlow(fuelData data) 
+        /// <summary>
+        /// Determine fuel phase to utilise the correct fuel flow coefficient from the fuel data object 
+        /// calculate the fuel flow by multiplying the fuel flow per engine by the number of engines and return that value when called
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public double CalculatecCurrentFuelFlow(fuelData data, string icao24, string callsign, double verticalRate, double velocity, bool onGround, double baroAltitide ) 
         {
-            
+            //parse the fuel flow data from string to double to be able to do calculations with it
             double.TryParse(data.fuelFlowTakeOff, out double ffTakeOff);
             double.TryParse(data.fuelFlowCruise, out double ffCruise);
             double.TryParse(data.fuelFlowApproach, out double ffApproach);
             double.TryParse(data.engineCount, out double engine);
 
             double fuelFlowPerEngine;
-
-            string icao24 = this.fInfo.icao24;
-            string callsign = this.fInfo.callsign;
-
-            double verticalRate = fInfo.vertical_rate;
-
-            double velocity = fInfo.velocity;
-
-
-
+            //determing flight phase based of the specifc flights vertical rate 
             Debug.WriteLine($"Vertical Rate: {verticalRate} m/s for: {callsign}");
 
+            if (onGround == true)
+            {
+                MessageBox.Show($"Unable to calculate Insantaenous Fuel Flow: Flight:{callsign} is currently grounded");
+            }
+            else if ()
             if (verticalRate < -2.0) 
             {
                 fuelFlowPerEngine = ffApproach;
@@ -157,9 +170,11 @@ namespace ProductionProject
                 fuelFlowPerEngine = ffCruise;   
             }
 
+            //calulate and return 
             double fuelFlow = fuelFlowPerEngine * engine;
 
             Debug.WriteLine($"Fuel Flow: {fuelFlowPerEngine} kg/sec for: {icao24} with callsign: {callsign}");
+            MessageBox.Show($"Fuel Flow: {fuelFlowPerEngine} \nkg/sec for: {icao24} \ncallsign: {callsign}");
             return fuelFlow;
         }
     }
