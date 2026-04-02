@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Net.Http.Headers;
 
 
 namespace ProductionProject
@@ -22,7 +23,6 @@ namespace ProductionProject
     public class apiWAuthorisation
     {
         private static HttpClient _httpClient = new HttpClient();
-
         // temporary token used as a bearer token in each header of API endpoint calls
         private static Token cachedToken;
 
@@ -148,13 +148,13 @@ namespace ProductionProject
             //splits the JSON array into each a seperate object for each flight where each field can be defined correctly based off Documentation
             foreach (JArray obj in parsed["states"])
             {
-
+                TimeZoneInfo uk = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
                 // converts the time_position and last_contact fields from unix time to a readbale format
                 DateTimeOffset timePosUnix = DateTimeOffset.FromUnixTimeSeconds((long)obj[3]);
-                string timePos = timePosUnix.ToString("HH:mm:ss");
+                string timePos = TimeZoneInfo.ConvertTime(timePosUnix, uk).ToString("HH:mm:ss");
 
                 DateTimeOffset lastContactUnix = DateTimeOffset.FromUnixTimeSeconds((long)obj[4]);
-                string lastContact = lastContactUnix.ToString("HH:mm:ss");
+                string lastContact = TimeZoneInfo.ConvertTime(lastContactUnix, uk).ToString("HH:mm:ss");
 
 
                 flightList.Add(new flightsInfo//index in api doc
@@ -224,15 +224,16 @@ namespace ProductionProject
             List<airportDepartures> departureList = new List<airportDepartures>();
             foreach (JObject obj in parsed)
             {
-                // converts the firstSeen and lastSeen fields from unix time to a readbale format
+                TimeZoneInfo uk = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
+                // converts the firstSeen and lastSeen fields from unix time to a readable format
                 long firstSeenJson = obj["firstSeen"]?.Value<long?>() ?? 0;
                 long lastSeenJson = obj["lastSeen"]?.Value<long?>() ?? 0;
                 DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds(firstSeenJson);
                 DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds(lastSeenJson);
+                
 
-
-                string firstSeen = firstSeenUnix.ToString("HH:mm:ss");
-                string lastSeen = lastSeenUnix.ToString("HH:mm:ss");
+                string firstSeen = TimeZoneInfo.ConvertTime(firstSeenUnix, uk).ToString("HH:mm:ss");
+                string lastSeen = TimeZoneInfo.ConvertTime(lastSeenUnix, uk).ToString("HH:mm:ss");
                 //Json fields to departure object class
                 departureList.Add(new airportDepartures
                 {
@@ -290,15 +291,16 @@ namespace ProductionProject
             //splits the JSON array into each a seperate object for each flight where each field can be defined correctly based off Documentation
             foreach (JObject obj in parsed)
             {
+                TimeZoneInfo uk = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
                 // converts the firstSeen and lastSeen fields from unix time to a readbale format
-                long firstSeenJson = obj["firstSeen"]?.Value<long?>() ?? 0;
+                long firstSeenJson = obj["firstSeen"]?.Value<long?>() ?? 0; 
                 long lastSeenJson = obj["lastSeen"]?.Value<long?>() ?? 0;
 
                 DateTimeOffset firstSeenUnix = DateTimeOffset.FromUnixTimeSeconds(firstSeenJson); 
                 DateTimeOffset lastSeenUnix = DateTimeOffset.FromUnixTimeSeconds(lastSeenJson);
 
-                string firstSeen = firstSeenUnix.ToString("HH:mm:ss ddd,dd");
-                string lastSeen = lastSeenUnix.ToString("HH:mm:ss ddd,dd");
+                string firstSeen = TimeZoneInfo.ConvertTime(firstSeenUnix, uk).ToString("HH:mm:ss ddd,dd");
+                string lastSeen = TimeZoneInfo.ConvertTime(lastSeenUnix, uk).ToString("HH:mm:ss ddd,dd");
 
                 //Json fields to arrival object class
                 arrivalList.Add(new airportArrivals
