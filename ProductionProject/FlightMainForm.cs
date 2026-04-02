@@ -64,7 +64,7 @@ namespace ProductionProject
             flightsMap = new flightsMap(gMapControl1, redPlaneIcon);
 
             //set up label text to show user what data they are looking at based on the search parameter
-            flightInfoLabel.Text = "Live Flight Data for: " + userSearch;
+            flightInfoLabel.Text = "Live Flight Data for Yorkshire ";
             departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
@@ -251,17 +251,21 @@ namespace ProductionProject
                 flightsMap.drawAirports();
             }
         }
-
+        /// <summary>
+        /// When a specifc flight row is selected this event calls the SelectedMarker method to find the marker for the selected flight and then centers the map on it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-
-
             //foreach(var marker in flightsMap.aircraftOverlay.Markers)
-
+            //checks if there is a selected row in the datagrid and if so it gets the icao24 of the selected flight and passes it to the SelectedMarker
             if (dataGridView1.SelectedRows.Count > 0)
             {
+                // Get the selected flight from the DataGridView
                 var selectedFlight = dataGridView1.SelectedRows[0].DataBoundItem as flightsInfo;
 
+                // Check if the selected flight is not null
                 if (selectedFlight != null)
                 {
                     string selectedIcao = selectedFlight.icao24;
@@ -271,12 +275,19 @@ namespace ProductionProject
             }
         }
 
+        /// <summary>
+        /// search aircraft overlay to identify the matching marker to reposition map and zoom on this marker
+        /// </summary>
+        /// <param name="selectedIcao"></param>
         private void SelectedMarker(string selectedIcao)
         {
+            //use a LINQ query to find the marker in the aircraft overlay that has a tag with a
+            //matching icao24 to the selected flight and then centers the map on this marker and zooms in
             var marker = flightsMap.aircraftOverlay.Markers
         .OfType<flightMarker>()
         .FirstOrDefault(m => ((flightsInfo)m.Tag).icao24 == selectedIcao);
 
+            // If a matching marker is found, center the map on it and zoom in
             if (marker != null)
             {
                 gMapControl1.Position = marker.Position;
@@ -300,22 +311,31 @@ namespace ProductionProject
             clockLabel.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
+        /// <summary>
+        /// event of when button is pressed textbox is read and used as parameter for the API calls to get arrivals and departures
+        /// for the airport specified in the search box and then updates the data grid tables and labels with the new information
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void submitButton_Click(object sender, EventArgs e)
         {
             Invalidate();
-
+            //trim the input
             String userSearch = entryBox.Text.Trim();
             Debug.WriteLine("Search Button Clicked Parameter:" + userSearch);
 
+            //call api endpoints with passed in parameter 
             arrivalList = await apiWAuthorisation.GetArrivals(client, userSearch);
             departureList = await apiWAuthorisation.GetDepartures(client, userSearch);
 
+            //clears each datagrid before updating the data source to refresh with new info
             dataGridView3.DataSource = null;
             dataGridView3.DataSource = arrivalList;
            
             dataGridView2.DataSource = null;
             dataGridView2.DataSource = departureList;
 
+            //corects label text to show user what they are looking at based on the search parameter
             departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
