@@ -76,6 +76,11 @@ namespace ProductionProject
                         return typecode;
                     }
                     // string typecode = aircraftDatabase.GetField("'typecode'");
+                    if (id == null)
+                    {
+                        string typecode = "Default";
+                        Debug.WriteLine($"No match for icao24: {icao24} in aircraft database");
+                    }
                 }
             }
             //not found
@@ -97,6 +102,7 @@ namespace ProductionProject
                 fuelFlowTakeOff = "0.937564901",
                 fuelFlowCruise = "1.976761168",
                 fuelFlowApproach = "1.395479484",
+                fuelFlowIdle = "0.113",
             };
 
             //same use of CSV helper library to read first then iterate through to match
@@ -117,17 +123,22 @@ namespace ProductionProject
                             fuelFlowTakeOff = fuelFlowData.GetField("Fuel Flow T/O (kg/sec)")?.Trim(),
                             fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim(),
                             fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim(),
+                            fuelFlowIdle = fuelFlowData.GetField("Fuel Flow Idle (kg/sec)")?.Trim(),
                             engineCount = fuelFlowData.GetField("Engine Number")?.Trim(),
                         };
                         Debug.WriteLine($"DB Fuel Flow: TakeOff- {data.fuelFlowTakeOff}, Cruise- {data.fuelFlowCruise}, Approach- {data.fuelFlowApproach} for {id} typecode ");
                         //  calculatecCurrentFuelFlow(data);
                         return data;
                     }
-                   
+                    else if (id == null)
+                    {
+                        return defaultD;
+
+                    }
                 }
+                Debug.WriteLine($"default: no data in db for this typecode:{typecode}");
+                return defaultD;
             }
-            Debug.WriteLine($"default: no data in db for this typecode:{typecode}");
-            return defaultD;
         }
         /// <summary>
         /// Determine fuel phase to utilise the correct fuel flow coefficient from the fuel data object 
@@ -142,6 +153,7 @@ namespace ProductionProject
             double.TryParse(data.fuelFlowCruise, out double ffCruise);
             double.TryParse(data.fuelFlowApproach, out double ffApproach);
             double.TryParse(data.engineCount, out double engine);
+            double.TryParse(data.fuelFlowIdle, out double ffIdle);
 
             double fuelFlowPerEngine = 0;
             //determing flight phase based of the specifc flights vertical rate 
@@ -149,8 +161,7 @@ namespace ProductionProject
 
             if (onGround == true)
             {
-                MessageBox.Show($"Unable to calculate Insantaenous Fuel Flow: Flight:{callsign} is currently grounded");
-                return 0;
+                fuelFlowPerEngine = ffIdle;
             }
             if (baroAltitude < 1500)
             {

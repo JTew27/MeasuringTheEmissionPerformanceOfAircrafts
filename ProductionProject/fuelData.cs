@@ -11,5 +11,7 @@ namespace ProductionProject
         public string fuelFlowCruise { get; set; }
         public string fuelFlowApproach { get; set; }
         public string engineCount { get; set; }
+
+        public string fuelFlowIdle { get; set; }
     }
 }
