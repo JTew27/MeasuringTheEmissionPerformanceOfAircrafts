@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
@@ -25,10 +26,8 @@ namespace ProductionProject
         /// icao24 address so look up process can start on event click
         /// </summary>
         /// <param name="fInfo"></param>
-
         public FlightFuelConsumption(flightsInfo fInfo)
         {
-
             this.fInfo = fInfo;
 
             //flight info from api that could be useful
@@ -119,8 +118,6 @@ namespace ProductionProject
                             fuelFlowCruise = fuelFlowData.GetField("Fuel Flow C/O (kg/sec)")?.Trim(),
                             fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim(),
                             engineCount = fuelFlowData.GetField("Engine Number")?.Trim(),
-
-
                         };
                         Debug.WriteLine($"DB Fuel Flow: TakeOff- {data.fuelFlowTakeOff}, Cruise- {data.fuelFlowCruise}, Approach- {data.fuelFlowApproach} for {id} typecode ");
                         //  calculatecCurrentFuelFlow(data);
@@ -138,7 +135,7 @@ namespace ProductionProject
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public double CalculatecCurrentFuelFlow(fuelData data, string icao24, string callsign, double verticalRate, double velocity, bool onGround, double baroAltitide ) 
+        public double CalculatecCurrentFuelFlow(fuelData data, string icao24, string callsign, double verticalRate, double velocity, bool onGround, double baroAltitude ) 
         {
             //parse the fuel flow data from string to double to be able to do calculations with it
             double.TryParse(data.fuelFlowTakeOff, out double ffTakeOff);
@@ -146,33 +143,45 @@ namespace ProductionProject
             double.TryParse(data.fuelFlowApproach, out double ffApproach);
             double.TryParse(data.engineCount, out double engine);
 
-            double fuelFlowPerEngine;
+            double fuelFlowPerEngine = 0;
             //determing flight phase based of the specifc flights vertical rate 
             Debug.WriteLine($"Vertical Rate: {verticalRate} m/s for: {callsign}");
 
             if (onGround == true)
             {
                 MessageBox.Show($"Unable to calculate Insantaenous Fuel Flow: Flight:{callsign} is currently grounded");
+                return 0;
             }
-            else if ()
-            if (verticalRate < -2.0) 
+            if (baroAltitude < 1500)
             {
-                fuelFlowPerEngine = ffApproach;
+                if (verticalRate < 0)
+                {
+                    fuelFlowPerEngine = ffApproach;
+                }
+                else
+                {
+                    fuelFlowPerEngine = ffTakeOff;
+                }
             }
-
-            else if (verticalRate > 0.5) 
+            else
             {
-                fuelFlowPerEngine = ffTakeOff;
+                // Above 1500m — classify by vertical rate thresholds
+                // Thresholds derived from ADS-B vertical rate interpretation (Sun, 2021)
+                if (verticalRate < -2.0)
+                {
+                    fuelFlowPerEngine = ffApproach;
+                }
+                else if (verticalRate > 0.5)
+                {
+                    fuelFlowPerEngine = ffTakeOff;
+                }
+                else
+                {
+                    fuelFlowPerEngine = ffCruise;
+                }
             }
-
-            else 
-            {
-                fuelFlowPerEngine = ffCruise;   
-            }
-
             //calulate and return 
             double fuelFlow = fuelFlowPerEngine * engine;
-
             Debug.WriteLine($"Fuel Flow: {fuelFlowPerEngine} kg/sec for: {icao24} with callsign: {callsign}");
             MessageBox.Show($"Fuel Flow: {fuelFlowPerEngine} \nkg/sec for: {icao24} \ncallsign: {callsign}");
             return fuelFlow;
