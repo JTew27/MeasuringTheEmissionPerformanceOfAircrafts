@@ -77,7 +77,7 @@ namespace ProductionProject
             gMapControl1.Zoom = 2;
             gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
             gMapControl1.OnPolygonClick += gMapControl1_OnPolygonClick;
-         
+
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace ProductionProject
         {
             try
             {
-                
+
                 //call the states endpoint for flight information so that the interface can be updated with relevant information
                 flightList = await apiWAuthorisation.GetStatesAsync(client);
                 Debug.WriteLine("API was called");
@@ -99,7 +99,7 @@ namespace ProductionProject
                 flightsMap.drawAirports();
                 // map = new Bitmap("leedsMapDemo.png");
                 //drawDetectArea();
-                
+
                 //calls the departure and arrival endpoint to update the data grid table when the program runs
                 departureList = await apiWAuthorisation.GetDepartures(client, userSearch);
                 dataGridView2.DataSource = null;
@@ -160,6 +160,15 @@ namespace ProductionProject
 
                 flightsMap.updateFlights(flightList);
 
+                if (flightsMap.trackedIcao != null)
+                {
+                    var trackedFlight = flightList.FirstOrDefault(f => f.icao24 == flightsMap.trackedIcao);
+                    if (trackedFlight != null)
+                    {
+                        var fuelConsumption = new FlightFuelConsumption(trackedFlight);
+                        updateFuelInfo(trackedFlight, fuelConsumption);
+                    }
+                }
 
             }
             catch (Exception er)
@@ -168,7 +177,7 @@ namespace ProductionProject
             }
         }
 
-     
+
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
         }
@@ -212,10 +221,9 @@ namespace ProductionProject
                     gMapControl1.Refresh();
                 }
 
-                MessageBox.Show("You clicked on marker: " + aircraft.ToolTipText);
+                //MessageBox.Show("You clicked on marker: " + aircraft.ToolTipText);
                 var flight = aircraft.Tag as flightsInfo;
                 //call flight fuel consumption class to get fuel consumption for selected flight
-                var fuelConsumption = new FlightFuelConsumption(flight);
 
                 string icao = flight.icao24;
                 long last_contact = flight.lastContactUnix;
@@ -223,7 +231,9 @@ namespace ProductionProject
                 flightsMap.points.Clear();
                 flightsMap.trackedIcao = flight.icao24;
                 flightsMap.flightPath(flightsPath, flight.icao24);
+                var fuelConsumption = new FlightFuelConsumption(flight);
 
+                updateFuelInfo(flight, fuelConsumption);
                 gMapControl1.Zoom = 7;
                 gMapControl1.Refresh();
             }
@@ -295,8 +305,8 @@ namespace ProductionProject
                 gMapControl1.Refresh();
             }
         }
-         
-        
+
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -331,13 +341,55 @@ namespace ProductionProject
             //clears each datagrid before updating the data source to refresh with new info
             dataGridView3.DataSource = null;
             dataGridView3.DataSource = arrivalList;
-           
+
             dataGridView2.DataSource = null;
             dataGridView2.DataSource = departureList;
 
             //corects label text to show user what they are looking at based on the search parameter
             departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
+
+        }
+
+        private void updateFuelInfo(flightsInfo flight, FlightFuelConsumption fuelConsumption)
+        {
+            IcaoLabelInfo.Text = flight.icao24;
+            CallsignLabelInfo.Text = flight.callsign;
+            FuelFlowLabelInfo.Text = fuelConsumption.fuelFlow.ToString("F2") + " kg/h";
+            FlightPhaseInfoLabel.Text = fuelConsumption.flightPhase;
+            EngineCountLabelInfo.Text = fuelConsumption.fuelData.engineCount.ToString();
+            TypecodeLabelInfo.Text = fuelConsumption.typecode;
+
+
+        }
+
+        private void entryBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void arrivalLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }
