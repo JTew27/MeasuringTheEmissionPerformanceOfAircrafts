@@ -17,7 +17,7 @@ Icao Code,Aircraft,typecode,Engine Id,Fuel Flow T/O (kg/sec),Fuel Flow C/O (kg/s
 ,,E145,,,,,,
 ,,Default,Default,0.937564901,1.976761168,1.395479484,0.113,2
 ,,B744,PW PW4056,2.449,1.981,0.647,0.1981,4
-,,,,,,,,
+,,GLID,NONE,0,0,0,0,0
 ,,,,,,,,
 ,,,,,,,,
 ,,,,,,,,
