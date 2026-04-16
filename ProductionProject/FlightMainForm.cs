@@ -8,6 +8,7 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using CsvHelper.Configuration.Attributes;
+using ProductionProject.Visualisation;
 
 
 namespace ProductionProject
@@ -389,6 +390,11 @@ namespace ProductionProject
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void departureLabel_Click(object sender, EventArgs e)
         {
 
         }
