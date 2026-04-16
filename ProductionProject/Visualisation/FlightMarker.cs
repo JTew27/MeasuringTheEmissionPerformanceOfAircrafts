@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 
 
 
-namespace ProductionProject
+namespace ProductionProject.Visualisation
 {
     public class flightMarker : GMapMarker //Inherits from GMapMarker, which is a class from the GMap.NET library used to represent markers on a map.
     {

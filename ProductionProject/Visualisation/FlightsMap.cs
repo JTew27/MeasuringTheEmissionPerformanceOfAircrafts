@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static GMap.NET.Entity.OpenStreetMapGraphHopperRouteEntity;
 
-namespace ProductionProject
+namespace ProductionProject.Visualisation
 {
 
     public class flightsMap
@@ -64,39 +64,46 @@ namespace ProductionProject
         }
 
         /// <summary>
-        /// by using the flightInfo object which contains all the relevant data for a flight to be displaed on the map, the method checks if a marker for the flight already exists and either creates a new one or updates the existing one. 
+        /// by using the flightInfo object which contains all the relevant data for a flight to be displaed on the map, the method checks if a marker for the flight already exists and 
+        /// either creates a new one or updates the existing one. 
         /// It also removes markers for flights that have not been updated for over 30 seconds to keep the map current.
         /// </summary>
         /// <param name="flights"></param>
         public void updateFlights(List<flightsInfo> flights)
         {
+            Debug.WriteLine($"updateFlights called with {flights.Count} flights");
+            Debug.WriteLine($"aircraftOverlay markers before: {aircraftOverlay.Markers.Count}");
             //ensures the flight has valid longitue and latitude data passed in from the flightInfo object
             foreach (var flight in flights)
             {
                 if (flight.latitude != 0.0 && flight.longitude != 0.0)
                 {
-                    //checks if a marker for a flight already exists by checking the icaco number field in the flight object matches whats already in aircraft overlay
+
+                    //LINQ query using lambda expression to check if a marker for a flight already exists by checking the icaco number field in
+                    //the flight object matches whats already in aircraft overlay
                     var marker = aircraftOverlay.Markers.OfType<flightMarker>().FirstOrDefault(m => ((flightsInfo)m.Tag).icao24 == flight.icao24);
 
                     //if there is no marker for the flight already one is created
                     if (marker == null)
                     {
+                        Debug.WriteLine($"Creating marker for {flight.icao24}");
                         marker = new flightMarker(new PointLatLng(flight.latitude, flight.longitude), redPlaneIcon,
                             (float)flight.true_track)
                         {
-                            Tag = flight,
-                            ToolTipText = ($"{flight.callsign}at {flight.last_contact}")
-
+                            Tag = flight,// gMap function tag to store the flight object in the marker so it can be accessed later when updating the marker or removing it from the map
+                            ToolTipText = ($"{flight.callsign}at {flight.last_contact}") // text that appears when the user hovers over the marker
                         };
 
-                        aircraftOverlay.Markers.Add(marker);
+                        aircraftOverlay.Markers.Add(marker); // adds the marker to the aircraft overlay so it will be displayed on the map
                         //points.Add(new PointLatLng(flight.latitude, flight.longitude));
-                        Debug.WriteLine($"ICAO: {marker.Tag}, Lat: {marker.Position.Lat}, Lng: {marker.Position.Lng}");
+                        Debug.WriteLine($"ICAO: {marker.Tag}, Lat: {marker.Position.Lat}, Lng: {marker.Position.Lng}"); //used to ensure coordinates matched
                     }
 
                     //update existing matker
                     else
                     {
+                        //Debug.WriteLine($"Updating marker for {flight.icao24}");
+                        //all gMapfunctions to update the marker position, direction and tooltip text with the new data from the flight object
                         marker.Position = new PointLatLng(flight.latitude, flight.longitude);
                         marker.planeDirection = (float)flight.true_track;
                         marker.ToolTipText = ($"{flight.callsign}at {flight.last_contact}");
@@ -114,16 +121,37 @@ namespace ProductionProject
                         }
                     }
                 }
-                //remove markers that have not been updated for tjhe last 30 seconds to keep the map current
-                long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                var expiredMarkers = aircraftOverlay.Markers.OfType<flightMarker>().Where(m => time - ((flightsInfo)m.Tag).lastContactUnix > 30).ToList();
+
+                
+            }
+            Debug.WriteLine($"aircraftOverlay markers after update: {aircraftOverlay.Markers.Count}");
+            //remove markers that have not been updated for the last 30 seconds to keep the map current
+            // long time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            long time = flights.Max(f => f.lastContactUnix);
+
+            var expiredMarkers = aircraftOverlay.Markers.OfType<flightMarker>().ToList();
+                
+               // Where(m => time - ((flightsInfo)m.Tag).lastContactUnix > 30).ToList();
+
+           
                 foreach (var expiredMarker in expiredMarkers)
                 {
-                    aircraftOverlay.Markers.Remove(expiredMarker); 
+                var flight = (flightsInfo)expiredMarker.Tag;
+                if (flight.on_ground && time - flight.lastContactUnix > 180)
+                {
+                    aircraftOverlay.Markers.Remove(expiredMarker);
+                }
+                else if (!flight.on_ground && time - flight.lastContactUnix > 30)
+                {
+                    aircraftOverlay.Markers.Remove(expiredMarker);
+                }
                 }
 
-                map.Refresh();
-            }
+          //  Debug.WriteLine($"Expired markers: {expiredMarkers.Count}");
+           // Debug.WriteLine($"aircraftOverlay markers after expiry: {aircraftOverlay.Markers.Count}");
+
+            map.Refresh();
+
         }
             
 
@@ -220,14 +248,13 @@ namespace ProductionProject
             pathOverlay.Markers.Clear();
 
             
-            //creates a new GMap point for each point in the flight path object
+            //creates a new GMap point for each point in the flight path object to keep the flight path up to date as the flight updates from the states endpoint instead of just the tracks endpoint
             foreach (var point in path)
             {
                 if (point.latitude != 0.0 && point.longitude != 0.0)
                 {
                    points.Add(new PointLatLng(point.latitude, point.longitude));
                 }
-
             }
 
             //Debug.WriteLine($"Path points count: {points.Count}");
@@ -240,6 +267,8 @@ namespace ProductionProject
                 route.Stroke = new System.Drawing.Pen(System.Drawing.Color.Blue, 2);
                 pathOverlay.Routes.Add(route);
 
+                //gets the very first marker point which is likely to be the flights origin airport or just next to it 
+                //this point is indicated with a marker to show the distance 
                 var startMarker = new GMarkerGoogle(points.First(), GMarkerGoogleType.green_dot);
                 startMarker.ToolTipText = "Flight Origin";
                 pathOverlay.Markers.Add(startMarker);
@@ -250,7 +279,6 @@ namespace ProductionProject
                 
             }
 
-            
             map.Overlays.Add(pathOverlay);
             map.Refresh();
         }

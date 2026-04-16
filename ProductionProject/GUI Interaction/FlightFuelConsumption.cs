@@ -21,6 +21,12 @@ namespace ProductionProject
     {
         flightsInfo fInfo;
 
+        public double fuelFlow { get; private set; }
+        public string flightPhase {  get; private set; }
+        public string typecode { get; private set; }
+        public fuelData fuelData { get; private set; }
+
+        int counter = 0;
         /// <summary>
         /// Constructor method takes the flightinfo object to extract relevant flight data like the 
         /// icao24 address so look up process can start on event click
@@ -40,9 +46,9 @@ namespace ProductionProject
             int category = this.fInfo.category;
             bool onGround = this.fInfo.on_ground;
 
-            string typecode = GetTypecodeByIcao(icao24);
-            fuelData data = GetFuelFLowData(typecode);
-            double fuelFlow = CalculatecCurrentFuelFlow(data,icao24,callsign,speed,verticalRate,onGround, baroAltitude);
+            typecode = GetTypecodeByIcao(icao24);
+            this.fuelData = GetFuelFLowData(typecode);
+            fuelFlow = CalculatecCurrentFuelFlow(this.fuelData,icao24,callsign,speed,verticalRate,onGround, baroAltitude, typecode);
             //Debug.WriteLine($"Typecode: {typecode}");  
 
         }
@@ -73,18 +79,23 @@ namespace ProductionProject
                         string typecode = aircraftDatabase.GetField("'typecode'")?.Trim('\'');
                         Debug.WriteLine($"typecode: {typecode} for {id} icao number ");
                         //GetFuelFLowData(typecode);
+                        //string manufacturer = aircraftDatabase.GetField("'manufacturerIcao'")?.Trim('\'');
+
+                        if (string.IsNullOrEmpty(typecode))
+                        {
+                            typecode = "Default";
+                        }
+
+
                         return typecode;
                     }
                     // string typecode = aircraftDatabase.GetField("'typecode'");
-                    if (id == null)
-                    {
-                        string typecode = "Default";
-                        Debug.WriteLine($"No match for icao24: {icao24} in aircraft database");
-                    }
+                   
                 }
             }
             //not found
-            return null;
+
+            return "Default" ;
         }
         /// <summary>
         /// Search custom fuel daatabase CSV at the moment contains most common aircraft typecodes and their fuel flow data for takeoff, cruise
@@ -94,6 +105,7 @@ namespace ProductionProject
         /// <returns></returns>
         public fuelData GetFuelFLowData(string typecode)
         {
+           // counter +=1;
             Debug.WriteLine($"Retrieving Fuel FLow Data for {typecode}");
             //default values utilised if typcode is not matched in database
             var defaultD = new fuelData
@@ -103,6 +115,7 @@ namespace ProductionProject
                 fuelFlowCruise = "1.976761168",
                 fuelFlowApproach = "1.395479484",
                 fuelFlowIdle = "0.113",
+                engineCount = "2"
             };
 
             //same use of CSV helper library to read first then iterate through to match
@@ -125,6 +138,7 @@ namespace ProductionProject
                             fuelFlowApproach = fuelFlowData.GetField("Fuel Flow App (kg/sec)")?.Trim(),
                             fuelFlowIdle = fuelFlowData.GetField("Fuel Flow Idle (kg/sec)")?.Trim(),
                             engineCount = fuelFlowData.GetField("Engine Number")?.Trim(),
+                           
                         };
                         Debug.WriteLine($"DB Fuel Flow: TakeOff- {data.fuelFlowTakeOff}, Cruise- {data.fuelFlowCruise}, Approach- {data.fuelFlowApproach} for {id} typecode ");
                         //  calculatecCurrentFuelFlow(data);
@@ -137,6 +151,11 @@ namespace ProductionProject
                     }
                 }
                 Debug.WriteLine($"default: no data in db for this typecode:{typecode}");
+
+                if (counter == 1)
+                {
+                   MessageBox.Show($"No fuel flow data in database for this typecode: {typecode} \n Default fuel flow values are applied");
+                }
                 return defaultD;
             }
         }
@@ -146,7 +165,7 @@ namespace ProductionProject
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public double CalculatecCurrentFuelFlow(fuelData data, string icao24, string callsign, double verticalRate, double velocity, bool onGround, double baroAltitude ) 
+        public double CalculatecCurrentFuelFlow(fuelData data, string icao24, string callsign, double verticalRate, double velocity, bool onGround, double baroAltitude, string typecode ) 
         {
             //parse the fuel flow data from string to double to be able to do calculations with it
             double.TryParse(data.fuelFlowTakeOff, out double ffTakeOff);
@@ -155,6 +174,7 @@ namespace ProductionProject
             double.TryParse(data.engineCount, out double engine);
             double.TryParse(data.fuelFlowIdle, out double ffIdle);
 
+            string flightPhase = "";
             double fuelFlowPerEngine = 0;
             //determing flight phase based of the specifc flights vertical rate 
             Debug.WriteLine($"Vertical Rate: {verticalRate} m/s for: {callsign}");
@@ -162,39 +182,46 @@ namespace ProductionProject
             if (onGround == true)
             {
                 fuelFlowPerEngine = ffIdle;
+                flightPhase = "Idle";
             }
-            if (baroAltitude < 1500)
+            else if (baroAltitude < 1500)
             {
                 if (verticalRate < 0)
                 {
                     fuelFlowPerEngine = ffApproach;
+                    flightPhase = "Approach";
                 }
                 else
                 {
                     fuelFlowPerEngine = ffTakeOff;
+                    flightPhase = "Climb";
                 }
             }
             else
             {
-                // Above 1500m — classify by vertical rate thresholds
-                // Thresholds derived from ADS-B vertical rate interpretation (Sun, 2021)
-                if (verticalRate < -2.0)
+                // Above 1500m — classify by vertical rate thresholds   
+                if (verticalRate < 0)
                 {
                     fuelFlowPerEngine = ffApproach;
+                    flightPhase = "Approach";
                 }
-                else if (verticalRate > 0.5)
+                else if (verticalRate > 2)
                 {
                     fuelFlowPerEngine = ffTakeOff;
+                    flightPhase = "Climb";
                 }
                 else
                 {
                     fuelFlowPerEngine = ffCruise;
+                    flightPhase = "Cruise";
                 }
             }
             //calulate and return 
             double fuelFlow = fuelFlowPerEngine * engine;
+            double fuelFlowKgPerHour = fuelFlow * 3600; // Convert kg/sec to kg/hour
             Debug.WriteLine($"Fuel Flow: {fuelFlowPerEngine} kg/sec for: {icao24} with callsign: {callsign}");
-            MessageBox.Show($"Fuel Flow: {fuelFlowPerEngine} \nkg/sec for: {icao24} \ncallsign: {callsign}");
+           // MessageBox.Show($"Flight Phase: {flightPhase}\nFuel Flow: {fuelFlowPerEngine} kg/sec \n{icao24} Aircraft Model: {typecode} \nCallsign: {callsign} \n Engines: {engine}");
+            this.flightPhase = flightPhase;
             return fuelFlow;
         }
     }
