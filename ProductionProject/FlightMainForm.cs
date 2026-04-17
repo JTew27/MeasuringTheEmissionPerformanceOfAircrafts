@@ -235,7 +235,7 @@ namespace ProductionProject
                 var fuelConsumption = new FlightFuelConsumption(flight);
 
                 updateFuelInfo(flight, fuelConsumption);
-                gMapControl1.Zoom = 7;
+                gMapControl1.Zoom = 6;
                 gMapControl1.Refresh();
             }
         }
@@ -302,7 +302,7 @@ namespace ProductionProject
             if (marker != null)
             {
                 gMapControl1.Position = marker.Position;
-                gMapControl1.Zoom = 12;
+                gMapControl1.Zoom = 10;
                 gMapControl1.Refresh();
             }
         }
@@ -395,6 +395,16 @@ namespace ProductionProject
         }
 
         private void departureLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
