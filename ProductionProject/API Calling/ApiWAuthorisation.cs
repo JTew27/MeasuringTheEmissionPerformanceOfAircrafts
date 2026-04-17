@@ -174,8 +174,8 @@ namespace ProductionProject
                     velocity = (float)(obj[9] ),//9 speed in m/s
 
                     // Value<float?>() is used to handle null values that were throwing exceptions if 0
-                    geo_altitude = obj[13].Value<float?>() ?? -0f,//13 - geometric altitude in meters of specifc flight
-                    baro_altitude = obj[7].Value<float?>() ?? -0f,//7  - barometric altitude in meters of specifc flight
+                    geo_altitude = obj[13].Value<float?>() ?? 0f,//13 - geometric altitude in meters of specifc flight
+                    baro_altitude = obj[7].Value<float?>() ?? 0f,//7  - barometric altitude in meters of specifc flight
                     vertical_rate = obj[11].Value<float?>() ?? 0f,//11 - used for determinging flight phase
 
                     category = (int)(obj[17]??0),//17- aircraft category that has key in doc but defaults to 0 as this is not always given so causes index out of range error

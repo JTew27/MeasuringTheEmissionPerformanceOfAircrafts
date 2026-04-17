@@ -48,7 +48,7 @@ namespace ProductionProject
 
             typecode = GetTypecodeByIcao(icao24);
             this.fuelData = GetFuelFLowData(typecode);
-            fuelFlow = CalculatecCurrentFuelFlow(this.fuelData,icao24,callsign,speed,verticalRate,onGround, baroAltitude, typecode);
+            fuelFlow = CalculatecCurrentFuelFlow(this.fuelData,icao24,callsign,verticalRate,speed,onGround, baroAltitude, typecode);
             //Debug.WriteLine($"Typecode: {typecode}");  
 
         }
@@ -203,12 +203,12 @@ namespace ProductionProject
                 if (verticalRate < 0)
                 {
                     fuelFlowPerEngine = ffApproach;
-                    flightPhase = "Approach";
+                    flightPhase = "Descending";
                 }
                 else if (verticalRate > 2)
                 {
                     fuelFlowPerEngine = ffTakeOff;
-                    flightPhase = "Climb";
+                    flightPhase = "Climbing";
                 }
                 else
                 {
