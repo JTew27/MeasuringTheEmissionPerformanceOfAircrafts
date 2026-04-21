@@ -165,7 +165,7 @@
             dataGridViewCellStyle3.NullValue = "--";
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.RowTemplate.ReadOnly = true;
-            dataGridView1.Size = new Size(960, 304);
+            dataGridView1.Size = new Size(964, 304);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
@@ -318,7 +318,7 @@
             // splitContainer1
             // 
             splitContainer1.AllowDrop = true;
-            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             splitContainer1.Location = new Point(2, 10);
             splitContainer1.Margin = new Padding(2);
             splitContainer1.Name = "splitContainer1";
@@ -821,9 +821,9 @@
             ShowDetectBox.Location = new Point(10, 878);
             ShowDetectBox.Margin = new Padding(2);
             ShowDetectBox.Name = "ShowDetectBox";
-            ShowDetectBox.Size = new Size(150, 23);
+            ShowDetectBox.Size = new Size(156, 23);
             ShowDetectBox.TabIndex = 7;
-            ShowDetectBox.Text = "Show Detection Box";
+            ShowDetectBox.Text = "Show Detection Area";
             ShowDetectBox.UseVisualStyleBackColor = true;
             ShowDetectBox.CheckedChanged += ShowDetectBox_CheckedChanged;
             // 
@@ -838,12 +838,13 @@
             // 
             // checkBox1
             // 
+            checkBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(165, 878);
+            checkBox1.Location = new Point(200, 879);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(162, 23);
+            checkBox1.Size = new Size(176, 23);
             checkBox1.TabIndex = 8;
-            checkBox1.Text = "Dyamic Detection Box";
+            checkBox1.Text = "Dynamic Detection Area";
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 

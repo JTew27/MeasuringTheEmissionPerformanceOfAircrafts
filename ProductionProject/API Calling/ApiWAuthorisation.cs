@@ -46,7 +46,7 @@ namespace ProductionProject
             
             
 
-            return await GetStatesAsync(client);
+            return await GetStatesAsync(client, lamin, lamax, lomin, lomax);
         }
         /// <summary>
         /// Called at the start of each endpoint call method to ensure there is a valid token before
@@ -126,18 +126,13 @@ namespace ProductionProject
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static async Task<List<flightsInfo>> GetStatesAsync(HttpClient client)
+        public static async Task<List<flightsInfo>> GetStatesAsync(HttpClient client,double lamin, double lamax, double lomin, double lomax)
         {
             Debug.WriteLine("\nNew Response\nRetrieving current flight states ");
 
             //calls the authorisation method to ensure there is a valid token before sending the request to the API endpoint
             await Authorise(client);
 
-            //manual declaration of a bounding box coordinate corners that covers north yorkshire and leeds
-            double lamin = 53.6;
-            double lomin = -2.0;
-            double lamax = 54.0;
-            double lomax = 0.0;
 
             //API endpoint that will be called with passed in bounding parameters to get states in specifc area
             var url = "https://opensky-network.org/api/states/all?extended=1"+ $"&lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";

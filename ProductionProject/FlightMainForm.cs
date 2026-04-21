@@ -40,6 +40,12 @@ namespace ProductionProject
         public Image redPlaneIcon;
         public Image selectedPlaneIcon;
 
+        private double lamin = 53.6;
+        private double lomin = -2.0;
+        private double lamax = 54.0;
+        private double lomax = 0.0;
+        private bool dynamicBound = false;
+
         public string userSearch = "EGCC";//defualt parameter to use for displaying arrivals and departures for an airport (manchester) when the program starts which can be changed with search box and button
 
         public FlightMainForm() // constructor to instantiate form and set up timers and map linking to the form interface
@@ -92,7 +98,7 @@ namespace ProductionProject
             {
 
                 //call the states endpoint for flight information so that the interface can be updated with relevant information
-                flightList = await apiWAuthorisation.GetStatesAsync(client);
+                flightList = await apiWAuthorisation.GetStatesAsync(client, lamin, lamax, lomin, lomax);
                 Debug.WriteLine("API was called");
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = flightList;
@@ -127,7 +133,7 @@ namespace ProductionProject
         {
             try
             {
-                flightList = await apiWAuthorisation.FetchFlightDataAsync(client);
+                flightList = await apiWAuthorisation.FetchFlightDataAsync(client, lamin, lamax, lomin, lomax);
                 Debug.WriteLine("API was called");
                 //dataGridView1.DataSource = null;
                 dataGridView1.DataSource = flightList;
@@ -149,8 +155,17 @@ namespace ProductionProject
         {
             try
             {
+                if (dynamicBound)
+                {
+                    var area = gMapControl1.ViewArea;
+                    lamin = area.Bottom;
+                    lamax = area.Top;
+                    lomin = area.Left;
+                    lomax = area.Right;
+                }
+
                 // calls class to get flight data from API
-                flightList = await apiWAuthorisation.FetchFlightDataAsync(client);
+                flightList = await apiWAuthorisation.FetchFlightDataAsync(client, lamin, lamax, lomin, lomax);
                 Debug.WriteLine("API was called");
 
                 // resets datagridview
@@ -411,12 +426,28 @@ namespace ProductionProject
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            var area = gMapControl1.ViewArea;
+            if (checkBox1.Checked)
+            {
+                dynamicBound = true;
 
-            double lamin = area.Bottom;
-            double lamax = area.Top;
-            double lomin = area.Left;
-            double lomax = area.Right;
+                var area = gMapControl1.ViewArea;
+
+                double lamin = area.Bottom;
+                double lamax = area.Top;
+                double lomin = area.Left;
+                double lomax = area.Right;
+
+            }
+
+            else
+            {
+                dynamicBound = false;
+
+                lamin = 53.6;
+                lomin = -2.0;
+                lamax = 54.0;
+                lomax = 0.0;
+            }
 
 
         }
