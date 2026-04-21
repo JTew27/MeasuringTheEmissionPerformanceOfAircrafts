@@ -22,6 +22,12 @@ namespace ProductionProject
 
     public class apiWAuthorisation
     {
+        public double lamin;
+        public double lamax;
+        public double lomin;
+        public double lomax;
+
+
         private static HttpClient _httpClient = new HttpClient();
         // temporary token used as a bearer token in each header of API endpoint calls
         private static Token cachedToken;
@@ -34,9 +40,12 @@ namespace ProductionProject
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static async Task<List<flightsInfo>> FetchFlightDataAsync(HttpClient client)
+        public static async Task<List<flightsInfo>> FetchFlightDataAsync(HttpClient client,double lamin,double lamax,double lomin,double lomax)
         {
             //Token token = await getToken(client);
+            
+            
+
             return await GetStatesAsync(client);
         }
         /// <summary>

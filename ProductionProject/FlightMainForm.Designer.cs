@@ -95,6 +95,7 @@
             ShowDetectBox = new CheckBox();
             printDialog1 = new PrintDialog();
             sensorsBindingSource = new BindingSource(components);
+            checkBox1 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)flightsInfoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)aPIBindingSource).BeginInit();
@@ -164,7 +165,7 @@
             dataGridViewCellStyle3.NullValue = "--";
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.RowTemplate.ReadOnly = true;
-            dataGridView1.Size = new Size(954, 304);
+            dataGridView1.Size = new Size(960, 304);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
@@ -517,13 +518,14 @@
             // 
             // firstSeenDataGridViewTextBoxColumn1
             // 
+            firstSeenDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
             firstSeenDataGridViewTextBoxColumn1.DataPropertyName = "firstSeen";
             firstSeenDataGridViewTextBoxColumn1.HeaderText = "First Seen ";
             firstSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
             firstSeenDataGridViewTextBoxColumn1.Name = "firstSeenDataGridViewTextBoxColumn1";
             firstSeenDataGridViewTextBoxColumn1.ReadOnly = true;
             firstSeenDataGridViewTextBoxColumn1.ToolTipText = "Date/Time was first detected";
-            firstSeenDataGridViewTextBoxColumn1.Width = 79;
+            firstSeenDataGridViewTextBoxColumn1.Width = 8;
             // 
             // estDepartureAirportDataGridViewTextBoxColumn1
             // 
@@ -536,6 +538,7 @@
             // 
             // lastSeenDataGridViewTextBoxColumn1
             // 
+            lastSeenDataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             lastSeenDataGridViewTextBoxColumn1.DataPropertyName = "lastSeen";
             lastSeenDataGridViewTextBoxColumn1.HeaderText = "Last Seen";
             lastSeenDataGridViewTextBoxColumn1.MinimumWidth = 8;
@@ -833,6 +836,17 @@
             sensorsBindingSource.DataMember = "sensors";
             sensorsBindingSource.DataSource = flightsInfoBindingSource;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(165, 878);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(162, 23);
+            checkBox1.TabIndex = 8;
+            checkBox1.Text = "Dyamic Detection Box";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // FlightMainForm
             // 
             AcceptButton = Refresh;
@@ -842,6 +856,7 @@
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1717, 913);
+            Controls.Add(checkBox1);
             Controls.Add(Refresh);
             Controls.Add(ShowDetectBox);
             Controls.Add(splitContainer1);
@@ -914,11 +929,6 @@
         private TableLayoutPanel tableLayoutPanel2;
         private ComboBox comboBox1;
         private TableLayoutPanel tableLayoutPanel3;
-        private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn firstSeenDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn estDepartureAirportDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn callsign;
         private DataGridViewTextBoxColumn origincountryDataGridViewTextBoxColumn;
@@ -929,5 +939,11 @@
         private DataGridViewTextBoxColumn vertical_rate;
         private DataGridViewTextBoxColumn geo_altitude;
         private DataGridViewTextBoxColumn category;
+        private DataGridViewTextBoxColumn icao24DataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn firstSeenDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn estDepartureAirportDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn lastSeenDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn callsignDataGridViewTextBoxColumn1;
+        private CheckBox checkBox1;
     }
 }

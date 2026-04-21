@@ -84,6 +84,7 @@ namespace ProductionProject
                         if (string.IsNullOrEmpty(typecode))
                         {
                             typecode = "Default";
+                            Debug.WriteLine("Typecode not founf using default");
                         }
 
 
@@ -219,7 +220,8 @@ namespace ProductionProject
             //calulate and return 
             double fuelFlow = fuelFlowPerEngine * engine;
             double fuelFlowKgPerHour = fuelFlow * 3600; // Convert kg/sec to kg/hour
-            Debug.WriteLine($"Fuel Flow: {fuelFlowPerEngine} kg/sec for: {icao24} with callsign: {callsign}");
+            Debug.WriteLine(fuelFlowPerEngine);
+            Debug.WriteLine($"Fuel Flow: {fuelFlow} kg/sec for: {icao24} with callsign: {callsign}");
            // MessageBox.Show($"Flight Phase: {flightPhase}\nFuel Flow: {fuelFlowPerEngine} kg/sec \n{icao24} Aircraft Model: {typecode} \nCallsign: {callsign} \n Engines: {engine}");
             this.flightPhase = flightPhase;
             return fuelFlow;

@@ -356,7 +356,7 @@ namespace ProductionProject
         {
             IcaoLabelInfo.Text = flight.icao24;
             CallsignLabelInfo.Text = flight.callsign;
-            FuelFlowLabelInfo.Text = fuelConsumption.fuelFlow.ToString("F2") + " kg/h";
+            FuelFlowLabelInfo.Text = fuelConsumption.fuelFlow.ToString("F2") + " kg/s";
             FlightPhaseInfoLabel.Text = fuelConsumption.flightPhase;
             EngineCountLabelInfo.Text = fuelConsumption.fuelData.engineCount.ToString();
             TypecodeLabelInfo.Text = fuelConsumption.typecode;
@@ -406,6 +406,18 @@ namespace ProductionProject
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            var area = gMapControl1.ViewArea;
+
+            double lamin = area.Bottom;
+            double lamax = area.Top;
+            double lomin = area.Left;
+            double lomax = area.Right;
+
 
         }
     }
