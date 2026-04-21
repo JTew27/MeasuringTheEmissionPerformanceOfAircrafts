@@ -38,8 +38,9 @@ namespace ProductionProject.Visualisation
             map.MapProvider = GMapProviders.GoogleMap;
             map.MinZoom = 4;
             map.MaxZoom = 20;
-            map.Zoom = 10;
+          
             map.Position = new PointLatLng(53.8, -1.6); // Centered on Leeds
+            map.Zoom = 15;
             map.DragButton = MouseButtons.Left;
 
             //initialise overlays for different map elements

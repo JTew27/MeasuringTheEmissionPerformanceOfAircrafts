@@ -71,7 +71,7 @@ namespace ProductionProject
             flightsMap = new flightsMap(gMapControl1, redPlaneIcon);
 
             //set up label text to show user what data they are looking at based on the search parameter
-            flightInfoLabel.Text = "Live Flight Data for Yorkshire ";
+            flightInfoLabel.Text = "Live Flight Information for Yorkshire ";
             departureLabel.Text = "Airport Departures (24hrs) for: " + userSearch;
             arrivalLabel.Text = "Aiport Arrivals (24hrs) for: " + userSearch;
 
@@ -81,7 +81,7 @@ namespace ProductionProject
             //defines the split contatiner and adds the gMap to the left panel of the split container and sets up the map properties and event handlers
             splitContainer1.Panel1.Controls.Add(gmap);
             gMapControl1.Dock = DockStyle.Fill;
-            gMapControl1.Zoom = 2;
+            gMapControl1.Zoom = 8;
             gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
             gMapControl1.OnPolygonClick += gMapControl1_OnPolygonClick;
 
@@ -250,7 +250,7 @@ namespace ProductionProject
                 var fuelConsumption = new FlightFuelConsumption(flight);
 
                 updateFuelInfo(flight, fuelConsumption);
-                gMapControl1.Zoom = 6;
+                gMapControl1.Zoom = 8;
                 gMapControl1.Refresh();
             }
         }
@@ -428,6 +428,7 @@ namespace ProductionProject
         {
             if (checkBox1.Checked)
             {
+                flightInfoLabel.Text = "Live Flight Information for Map Area ";
                 dynamicBound = true;
 
                 var area = gMapControl1.ViewArea;
@@ -441,6 +442,7 @@ namespace ProductionProject
 
             else
             {
+                flightInfoLabel.Text = "Live Flight Information for Yorkshire ";
                 dynamicBound = false;
 
                 lamin = 53.6;

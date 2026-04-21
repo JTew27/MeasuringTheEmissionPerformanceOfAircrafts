@@ -43,9 +43,6 @@ namespace ProductionProject
         public static async Task<List<flightsInfo>> FetchFlightDataAsync(HttpClient client,double lamin,double lamax,double lomin,double lomax)
         {
             //Token token = await getToken(client);
-            
-            
-
             return await GetStatesAsync(client, lamin, lamax, lomin, lomax);
         }
         /// <summary>

@@ -165,7 +165,7 @@
             dataGridViewCellStyle3.NullValue = "--";
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.RowTemplate.ReadOnly = true;
-            dataGridView1.Size = new Size(964, 304);
+            dataGridView1.Size = new Size(977, 304);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
@@ -821,9 +821,9 @@
             ShowDetectBox.Location = new Point(10, 878);
             ShowDetectBox.Margin = new Padding(2);
             ShowDetectBox.Name = "ShowDetectBox";
-            ShowDetectBox.Size = new Size(156, 23);
+            ShowDetectBox.Size = new Size(204, 23);
             ShowDetectBox.TabIndex = 7;
-            ShowDetectBox.Text = "Show Detection Area";
+            ShowDetectBox.Text = "Show Default Detection Area";
             ShowDetectBox.UseVisualStyleBackColor = true;
             ShowDetectBox.CheckedChanged += ShowDetectBox_CheckedChanged;
             // 
@@ -838,9 +838,9 @@
             // 
             // checkBox1
             // 
-            checkBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            checkBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(200, 879);
+            checkBox1.Location = new Point(339, 879);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(176, 23);
             checkBox1.TabIndex = 8;
