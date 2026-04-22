@@ -133,6 +133,15 @@ namespace ProductionProject
         {
             try
             {
+                if (dynamicBound == true)
+                {
+                    var area = gMapControl1.ViewArea;
+
+                    double lamin = area.Bottom;
+                    double lamax = area.Top;
+                    double lomin = area.Left;
+                    double lomax = area.Right;
+                }
                 flightList = await apiWAuthorisation.FetchFlightDataAsync(client, lamin, lamax, lomin, lomax);
                 Debug.WriteLine("API was called");
                 //dataGridView1.DataSource = null;
