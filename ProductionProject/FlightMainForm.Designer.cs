@@ -165,7 +165,7 @@
             dataGridViewCellStyle3.NullValue = "--";
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.RowTemplate.ReadOnly = true;
-            dataGridView1.Size = new Size(979, 304);
+            dataGridView1.Size = new Size(983, 304);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
