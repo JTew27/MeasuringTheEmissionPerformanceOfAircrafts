@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
-namespace ProductionProject
+namespace ProductionProject.API_Calling
 {
     /// <summary>
     /// All API calls are called here with first authorising my opensky usr account to get a Oauth2 
@@ -73,11 +73,15 @@ namespace ProductionProject
             {
                 return cachedToken;
             }
+
+            var json = File.ReadAllText("credentials.json");
+            var credentials = JsonConvert.DeserializeObject<ApiCredentials>(json);
+
             //opensky authroisation that needs to be called as REST API documentation says 
             string baseAddress = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
             string grant_type = "client_credentials";
-            string client_id = "jtew-api-client";
-            string REMOVED = "etSfC0ftIAQLzCN4L4GcI5aPQ3IdlijA";
+            string client_id = credentials.ClientId;
+            string REMOVED = credentials.ClientSecret;
             ///request body is stored as a dictionary with each key being credtionals to be passed in the header of 
             /// the POST request to the auth server endpoint to get the token
             var requestBody = new Dictionary<string, string>

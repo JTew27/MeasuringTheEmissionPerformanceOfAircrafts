@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#api
+credentials.json
+
+#large database
+aircraft-database-complete-2025-08.csv
