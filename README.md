@@ -71,7 +71,7 @@ The project was successfully demonstrated at the University Computing Showcase a
 ![Flight Path](Images/flightpath.png)
 
 ### Fuel Consumption Metrics
-![Fuel Metrics](images/fuelconsumption.png)
+![Fuel Metrics](Images/fuelconsumption.png)
 
 
 
