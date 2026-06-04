@@ -2,6 +2,9 @@
 
 A C# Windows Forms application that visualises live aircraft movements using ADS-B data from the OpenSky Network and estimates insantaneous aircraft fuel consumption using engine performance data from the ICAO/EASA emissions databank.
 
+Below is a link to the showcase video providing a walkthrough for the project when it was handed in.
+https://www.youtube.com/watch?v=xT5WbN-ur3o
+
 ## Features
 
 - Real-time aircraft tracking and visualisation
@@ -67,7 +70,7 @@ The project was successfully demonstrated at the University Computing Showcase a
 ![Flight Path](Images/flightpath.png)
 
 ### Fuel Consumption Metrics
-![Fuel Metrics](images/fuel-metrics.png)
+![Fuel Metrics](images/fuelconsumption.png)
 
 
 
