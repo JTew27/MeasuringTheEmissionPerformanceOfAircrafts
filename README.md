@@ -13,6 +13,7 @@ A C# Windows Forms application that visualises live aircraft movements using ADS
 - Arrivals and Departures by Airport
 - OAuth2 authenticated API integration
 - Dynamic map-based aircraft filtering
+- area specifc tracking eg Yorkshire
 
 ## Technologies Used
 
@@ -46,7 +47,7 @@ The application retrieves live flight information from the OpenSky Network, visu
 
 
 ### Main Flight Tracker
-![Main Application](images/main-app.png)
+![Main Application](images/overview.png)
 
 ### Flight Path Visualisation
 ![Flight Path](images/flight-path.png)
