@@ -42,6 +42,18 @@ The application retrieves live flight information from the OpenSky Network, visu
 - Visualising geographic data using GIS mapping tools
 - Designing and evaluating a software solution using Agile methodologies
 
+## Future Improvements
+
+- Total flight fuel consumption calculations (Interval Fuel Consumption)
+- Expanding aircraft performance database with further aircrafts and their engine types
+- Higher-frequency updates using a local ADS-B receiver
+- Cross-platform deployment using .NET MAUI
+- Additional environmental metrics and visualisations
+
+## Project Outcome
+
+The project was successfully demonstrated at the University Computing Showcase and achieved a **First-Class grade**.
+
 ## Screenshots
 
 
@@ -57,15 +69,5 @@ The application retrieves live flight information from the OpenSky Network, visu
 ### Fuel Consumption Metrics
 ![Fuel Metrics](images/fuel-metrics.png)
 
-## Future Improvements
 
-- Total flight fuel consumption calculations (Interval Fuel Consumption)
-- Expanding aircraft performance database with further aircrafts and their engine types
-- Higher-frequency updates using a local ADS-B receiver
-- Cross-platform deployment using .NET MAUI
-- Additional environmental metrics and visualisations
-
-## Project Outcome
-
-The project was successfully demonstrated at the University Computing Showcase and achieved a **First-Class grade**.
 
