@@ -50,7 +50,7 @@ The application retrieves live flight information from the OpenSky Network, visu
 ![Main Application](Images/overview.png)
 
 ### Flight Path Visualisation
-![Flight Path](Images/flightPath.png)
+![Flight Path](Images/flightpath.png)
 
 ### Fuel Consumption Metrics
 ![Fuel Metrics](images/fuel-metrics.png)
