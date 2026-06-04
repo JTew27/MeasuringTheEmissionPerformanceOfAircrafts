@@ -47,7 +47,7 @@ The application retrieves live flight information from the OpenSky Network, visu
 
 
 ### Main Flight Tracker
-![Main Application](images/overview.png)
+![Main Application](Images/overview.png)
 
 ### Flight Path Visualisation
 ![Flight Path](images/flight-path.png)
