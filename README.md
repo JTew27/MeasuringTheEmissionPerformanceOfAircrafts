@@ -1,4 +1,4 @@
-# Flight Tracker with Real-Time Fuel Consumption Estimation
+# Measuring the performance of real-time aircrafts
 
 A C# Windows Forms application that visualises live aircraft movements using ADS-B data from the OpenSky Network and estimates insantaneous aircraft fuel consumption using engine performance data from the ICAO/EASA emissions databank.
 
@@ -28,7 +28,7 @@ A C# Windows Forms application that visualises live aircraft movements using ADS
 
 ## Project Overview
 
-This project was developed as a final-year Computing project and explores how real-time aviation data can be combined with aircraft performance information to provide environmental insights that are not commonly available in existing flight tracking platforms.
+This project was developed as a final-year Computing project and explores how real-time aviation data can be combined with aircraft performance information to provide environmental insights that are not available in existing flight tracking platforms such as flighttracker24.
 
 The application retrieves live flight information from the OpenSky Network, visualises aircraft on an interactive map, and uses aircraft-specific engine coefficients derived from the ICAO/EASA emissions databank to estimate instantaneous fuel consumption based on flight phase and performance characteristics.
 
@@ -56,7 +56,7 @@ The application retrieves live flight information from the OpenSky Network, visu
 
 ## Future Improvements
 
-- Total flight fuel consumption calculations
+- Total flight fuel consumption calculations (Interval Fuel Consumption)
 - Expanding aircraft performance database with further aircrafts and their engine types
 - Higher-frequency updates using a local ADS-B receiver
 - Cross-platform deployment using .NET MAUI
