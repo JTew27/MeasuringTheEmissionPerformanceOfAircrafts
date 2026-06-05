@@ -71,6 +71,9 @@ The project was successfully demonstrated at the University Computing Showcase a
 ### Flight Path Visualisation
 ![Flight Path](Images/flightpath.png)
 
+### Dynamic Detection Area
+![Dynamic Detection](Images/flightpath.png)
+
 ### Fuel Consumption Metrics
 ![Fuel Metrics](Images/fuelconsumption.png)
 
